@@ -1,9 +1,27 @@
 /* Main styles file */
+body{
+	background:#efefef;
+}
 #main{
 	/*background:#efefef;*/
 }
 
 .panel{
 	border:#ccc 1px solid;
-	box-shadow:#efefef 0 0 0 4px;
+	box-shadow:rgba(0,0,0,0.05) 0 0 0 4px;
+	padding:19px;
+}
+.well{
+	border:#ccc 1px solid;
+	box-shadow:rgba(0,0,0,0.05) 0 0 0 4px;
+	background:#222;
+	color:#efefef;
+}
+#simulador{
+	height:500px;
+	position:relative;
+}
+#comentarios{
+	height:400px;
+	overflow:auto;
 }
