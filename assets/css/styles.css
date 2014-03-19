@@ -18,10 +18,16 @@ body{
 	color:#efefef;
 }
 #simulador{
-	height:500px;
 	position:relative;
+	text-align:center;
 }
 #comentarios{
-	height:400px;
+	height:255px;
 	overflow:auto;
+}
+#palancas{
+	text-align:center;
+}
+#palancas i{
+	font-size:2.5em;
 }
