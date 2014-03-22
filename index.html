@@ -8,27 +8,6 @@
     <link href="assets/lib/bootstrap-3.1.1/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <link href="assets/css/styles.css" rel="stylesheet">
     <link href="assets/css/slider.css" rel="stylesheet">
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
-	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-
-	<script type="text/javascript">
-	$(document).ready(function(){
-		$('#palancas #sol').slider().on('slide', function(v){
-			console.log(-1*(v.value-100));
-		});
-		$('#palancas #agua').slider();
-		$('#palancas #nutrientes').slider();
-		$('#palancas #espacio').slider()
-	});
-	</script>
 </head>
 
 <body>
@@ -39,7 +18,9 @@
 				<div class="row">
 					<div class="col-md-8">
 						<div class="panel" id="simulador">
-							<i class="glyphicon glyphicon-tree-conifer" style="font-size:10em; margin-top:312px"></i>
+							<div id="plantContainer">
+								<i class="glyphicon glyphicon-tree-conifer" id="plant"></i>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -51,14 +32,14 @@
 											<div class="pull-right">
 												<input id="sol" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-certificate"></i><br />
+											<i class="glyphicon glyphicon-certificate" id="sun-img"></i><br />
 											sol/luz
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6">
 											<div class="pull-right">
 												<input id="espacio" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-cloud"></i><br />
+											<i class="glyphicon glyphicon-cloud" id="space-img"></i><br />
 											espacio
 										</div>
 									</div>
@@ -69,14 +50,14 @@
 											<div class="pull-right">
 												<input id="agua" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-tint"></i><br />
+											<i class="glyphicon glyphicon-tint" id="water-img"></i><br />
 											agua
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6">
 											<div class="pull-right">
 												<input id="nutrientes" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-filter"></i><br />
+											<i class="glyphicon glyphicon-filter" id="food-img"></i><br />
 											nutrientes
 										</div>
 									</div>
@@ -87,36 +68,22 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="panel" id="comentarios">
-									<h4>Comentarios</h4>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed 
-
-										diam nonummy nibh euismod tincidunt ut laoreet dolore 
-										
-										magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
-										
-										quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut 
-										
-										aliquip ex ea commodo consequat. Duis autem vel eum iriure 
-										
-										dolor in hendrerit in vulputate velit esse molestie consequat, 
-										
-										vel illum dolore eu feugiat nulla facilisis at vero eros et accum-
-										san et iusto odio dignissim qui blandit praesent luptatum zzril 
-										
-										delenit augue duis dolore te feugait nulla facilisi.
-										
-										Nam liber tempor cum soluta nobis eleifend option congue 
-										
-										nihil imperdiet doming id quod mazim placerat facer possim 
-										
-										assum. Typi non habent claritatem insitam; est usus legentis in 
-										
-										iis qui facit eorum claritatem. Investigationes demonstra-
-										verunt lectores legere me lius quod ii legunt saepius. Claritas 
-										
-										est etiam processus dynamicus, qui sequitur mutationem 
-										
-										consuetudium lectorum.</p>
+									<h4>Explicación</h4>
+									<p>
+										La planta inicialmente es una semilla. Si le damos algo de agua, sol y nutrientes no crecerá por falta de espacio.
+									</p>
+									<p>
+										El espacio se puede incrementar todo lo que se quiera, únicamente es un factor limitante.
+									</p>
+									<p>
+										La planta necesita inicialmente poca agua/luz/nutrientes, si recibe más de lo necesario el icono se pone rojo (de momento, para que se entienda lo que pasa). Cuando el simulador esté más avanzado la planta se morirá si está un rato recibiendo más de lo necesario.
+									</p>
+									<p>
+										Cuanto más va creciendo, más necesitará. Si se le da justo el minimo que necesita se quedara viva pero sin crecer. Si se da menos o más enfermara y acabara muriendo. Si se da cerca del máximo que puede aceptar crecerá al maximo ritmo.
+									</p>
+									<p>
+										El ritmo de crecimiento, necesidades... etc son totalmente configurables de manera fácil.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -130,5 +97,22 @@
 			&copy; Universidad de Mondragón?
 		</p>
 	</footer>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <script src="assets/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
+	<script type="text/javascript" src="assets/js/main.js"></script>
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		Simulator.start();
+	});
+	</script>
 </body>
 </html>
