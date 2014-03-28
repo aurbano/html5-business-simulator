@@ -18,8 +18,12 @@
 				<div class="row">
 					<div class="col-md-8">
 						<div class="panel" id="simulador">
-							<div id="plantContainer">
-								<i class="glyphicon glyphicon-tree-conifer" id="plant"></i>
+							<div class="layer" id="plant" style="z-index:2; bottom:37px">
+								<img src="assets/img/planta/sana/1.png" />
+							</div>
+
+							<div class="layer" id="earth" style="z-index:1">
+								<img src="assets/img/planta/sana/tierra.png" />
 							</div>
 						</div>
 					</div>
@@ -107,7 +111,7 @@
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
-	<script type="text/javascript" src="assets/js/main.min.js"></script>
+	<script type="text/javascript" src="assets/js/main.js"></script>
 
 	<script type="text/javascript">
 	$(document).ready(function(){

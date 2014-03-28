@@ -9,12 +9,13 @@
 	// todos ellos estan explicados a continuacion.
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config : {
-		cycle: 100,				// Tiempo entre cada comprobacion. Decrementarlo hace mas rapida la simulacion
+		cycle: 250,				// Tiempo entre cada comprobacion. Decrementarlo hace mas rapida la simulacion
 		maxGrowth: 100,			// Maximo crecimiento, deberia ser 100 siempre
 		needsRangeUnder: 10,	// El nivel de crecimiento actual menos esto es el minimo de cada palanca
 		needsRangeOver: 10,		// El nivel de crecimiento actual mas esto es el maximo de cada palanca
 		growthRate : 0.3,		// Ritmo de crecimiento (0-1). Si se decrementa 'cycle' deberia disminuir este para compensar.
-		debug : false			// Activar mensajes de debug en la consola
+		debug : true,			// Activar mensajes de debug en la consola
+		sickRate : 0.03			// Ritmo al que enferma la planta cuando las condiciones no son favorables
 	},
 
 	// ------------------------------------------- //
@@ -23,6 +24,19 @@
 	 *	This will start the event dispatch system and the lifecycle one.
 	 */
 	start: function(){
+
+		Simulator.layers = {
+			earth : {
+				el : $('#earth img')
+			},
+			plant : {
+				el: $('#plant img'),
+				cur: 0
+			},
+			leaves : {
+				el : $('#plant leaves')
+			}
+		};
 		
 		Simulator.sliders = {
 			sun : $('#palancas #sol').slider().data('slider'),
@@ -36,6 +50,8 @@
 				log : function(text){}
 			};
 		}
+
+		console.log("Launch simulator");
 
 		// Add in the main lifecycle element
 		Simulator.addLifecycle(function(){
@@ -53,7 +69,7 @@
 			$('#plant').css({
 				fontSize: size
 			});
-			console.log("Plant size: "+size);
+			console.log("Plant size: "+size+", sickness="+Simulator.Plant.sickness);
 		});
 
 		Simulator.startLife();
@@ -103,7 +119,7 @@
 	Plant : {
 		growth : 0,
 		sickness: 0,
-		state : 'alive',
+		state : 'sana',
 		problems : [],
 
 		grow : function(amount){
@@ -149,7 +165,8 @@
 				color: '#fff'
 			});
 
-			var ok = true;
+			var ok = true,
+				unbalance = 0;
 
 			if(Simulator.Plant.growth >= e.space){
 				$('#space-img').css({
@@ -167,18 +184,36 @@
 					color: 'red'
 				});
 				ok = false;
+				// Update the unbalance level
+				if(e.water < needs.water.min){
+					unbalance += needs.water.min - e.water;
+				}else if(e.water > needs.water.max){
+					unbalance += e.water - needs.water.max;
+				}
 			}
 			if(e.sun < needs.sun.min || e.sun > needs.sun.max){
 				$('#sun-img').css({
 					color: 'red'
 				});
 				ok = false;
+				// Update the unbalance level
+				if(e.sun < needs.sun.min){
+					unbalance += needs.sun.min - e.sun;
+				}else if(e.sun > needs.sun.max){
+					unbalance += e.sun - needs.sun.max;
+				}
 			}
 			if(e.food < needs.food.min || e.food > needs.food.max){
 				$('#food-img').css({
 					color: 'red'
 				});
 				ok = false;
+				// Update the unbalance level
+				if(e.food < needs.food.min){
+					unbalance += needs.food.min - e.food;
+				}else if(e.food > needs.food.max){
+					unbalance += e.food - needs.food.max;
+				}
 			}
 
 			if(ok && e.food > 0 && e.sun > 0 && e.water > 0){
@@ -189,12 +224,17 @@
 
 				console.log("Growth = "+Simulator.Plant.growth+". Growing "+value);
 
+				Simulator.Plant.sickness -= 50*value*Simulator.config.sickRate;
+
 				Simulator.Plant.grow(value);
-			}else if(ok){
+			}else if(e.food === 0 && e.sun === 0 && e.water === 0){
 				console.log("Something is 0");
 			}else{
-				console.log("Not OK!");
+				console.log("Not OK! Unbalance: "+unbalance);
+				Simulator.Plant.sickness += unbalance*Simulator.config.sickRate;
 			}
+
+			Simulator.Plant.sickness = Math.max(Math.min(Simulator.Plant.sickness, 100), 0);
 		},
 
 		/**

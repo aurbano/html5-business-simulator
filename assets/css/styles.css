@@ -19,12 +19,12 @@ body{
 	text-align:center;
 	height:400px;
 }
-#plantContainer{
+.layer{
 	position:absolute;
 	bottom:0;
 	left:0;
 	width:100%;
-	text-align:center;
+	text-align: center;
 }
 #comentarios{
 	height:255px;
