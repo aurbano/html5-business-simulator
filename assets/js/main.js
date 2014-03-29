@@ -11,11 +11,14 @@
 	config : {
 		cycle: 250,				// Tiempo entre cada comprobacion. Decrementarlo hace mas rapida la simulacion
 		maxGrowth: 100,			// Maximo crecimiento, deberia ser 100 siempre
-		needsRangeUnder: 10,	// El nivel de crecimiento actual menos esto es el minimo de cada palanca
-		needsRangeOver: 10,		// El nivel de crecimiento actual mas esto es el maximo de cada palanca
-		growthRate : 0.3,		// Ritmo de crecimiento (0-1). Si se decrementa 'cycle' deberia disminuir este para compensar.
+		needsRangeUnder: 30,	// El nivel de crecimiento actual menos esto es el minimo de cada palanca
+		needsRangeOver: 30,		// El nivel de crecimiento actual mas esto es el maximo de cada palanca
+		growthRate : 1,			// Ritmo de crecimiento (0-1). Si se decrementa 'cycle' deberia disminuir este para compensar.
+		minGrowthRate: 1,		// Minimo ritmo de crecimiento, si la planta no recibe todo lo que necesita crece mas despacio, hasta alcanzar este valor.
 		debug : true,			// Activar mensajes de debug en la consola
-		sickRate : 0.03			// Ritmo al que enferma la planta cuando las condiciones no son favorables
+		sickRate : 0.5,			// Ritmo al que enferma la planta cuando las condiciones no son favorables
+		minSick : 6,			// Valor 0-100 a partir del cual la planta se ve enferma
+		maxSick : 100,			// Valor a partir del cual la planta se muere
 	},
 
 	// ------------------------------------------- //
@@ -26,16 +29,8 @@
 	start: function(){
 
 		Simulator.layers = {
-			earth : {
-				el : $('#earth img')
-			},
-			plant : {
-				el: $('#plant img'),
-				cur: 0
-			},
-			leaves : {
-				el : $('#plant leaves')
-			}
+			earth : $('#earth-img'),
+			plant : $('#plant-img')
 		};
 		
 		Simulator.sliders = {
@@ -65,11 +60,34 @@
 
 		// Update visually the plant
 		Simulator.addLifecycle(function(){
-			var size = Simulator.Plant.growth*4+'px';
-			$('#plant').css({
-				fontSize: size
-			});
-			console.log("Plant size: "+size+", sickness="+Simulator.Plant.sickness);
+			
+			// Ok state
+			var status = 'ok';
+			
+			if( Simulator.Plant.sickness >= Simulator.config.maxSick){
+				Simulator.stopLife();
+				// Dead state
+				status = 'dead';
+				
+			}else if(Simulator.Plant.sickness > Simulator.config.minSick){
+				// Sick state
+				status = 'sick';
+			}
+			
+			// Get growth level from 1-6
+			var level = Math.round(Simulator.Plant.growth * 5 / 100)+1;
+			
+			Simulator.layers.plant.attr('src','assets/img/planta/'+status+'/'+level+'-'+status+'.png');
+			
+			if(status == 'dead'){
+				Simulator.layers.earth.hide();
+				alert('La planta ha muerto');
+			}
+			
+			if(Simulator.Plant.growth >= 100){
+				Simulator.stopLife();
+				alert('Enhorabuena! La planta ha crecido al maximo');
+			}
 		});
 
 		Simulator.startLife();
@@ -119,7 +137,7 @@
 	Plant : {
 		growth : 0,
 		sickness: 0,
-		state : 'sana',
+		state : 'ok',
 		problems : [],
 
 		grow : function(amount){
@@ -220,17 +238,19 @@
 				// It will grow from 0-1, 0 being the minimum necessary, 1 being the max
 				// Since all is ok we know that all levels are withing boundaries, get the average
 				// substract the minimum level and thats it :)
-				var value = Simulator.config.growthRate*((e.water + e.sun + e.food)/3 - needs.food.min)/needs.food.max;
-
+				var value = Simulator.config.growthRate*Math.max(Simulator.config.minGrowthRate, ((e.water + e.sun + e.food)/3 - needs.food.min)/needs.food.max);
+				
 				console.log("Growth = "+Simulator.Plant.growth+". Growing "+value);
 
 				Simulator.Plant.sickness -= 50*value*Simulator.config.sickRate;
+				
+				Simulator.Plant.state = 'ok';
 
 				Simulator.Plant.grow(value);
 			}else if(e.food === 0 && e.sun === 0 && e.water === 0){
 				console.log("Something is 0");
 			}else{
-				console.log("Not OK! Unbalance: "+unbalance);
+				console.log("Not OK! Unbalance: "+unbalance+', sickness: '+Simulator.Plant.sickness);
 				Simulator.Plant.sickness += unbalance*Simulator.config.sickRate;
 			}
 
