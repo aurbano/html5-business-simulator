@@ -15,7 +15,7 @@
 		needsRangeOver: 30,		// El nivel de crecimiento actual mas esto es el maximo de cada palanca
 		growthRate : 1,			// Ritmo de crecimiento (0-1). Si se decrementa 'cycle' deberia disminuir este para compensar.
 		minGrowthRate: 1,		// Minimo ritmo de crecimiento, si la planta no recibe todo lo que necesita crece mas despacio, hasta alcanzar este valor.
-		debug : true,			// Activar mensajes de debug en la consola
+		debug : false,			// Activar mensajes de debug en la consola
 		sickRate : 0.5,			// Ritmo al que enferma la planta cuando las condiciones no son favorables
 		minSick : 6,			// Valor 0-100 a partir del cual la planta se ve enferma
 		maxSick : 100,			// Valor a partir del cual la planta se muere
