@@ -38,7 +38,7 @@
 			$('#help-modal').modal('hide');
 		});
 		
-		//$('#help-modal').modal();
+		$('#help-modal').modal();
 		
 		$('#help').click(function(e){
 			e.preventDefault();
