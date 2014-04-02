@@ -27,6 +27,23 @@
 	 *	This will start the event dispatch system and the lifecycle one.
 	 */
 	start: function(){
+		
+		$('#mensaje .btn-primary').click(function(e){
+			e.preventDefault();
+			window.location.reload();
+		});
+		
+		$('#help-modal .btn-default').click(function(e){
+			e.preventDefault();
+			$('#help-modal').modal('hide');
+		});
+		
+		//$('#help-modal').modal();
+		
+		$('#help').click(function(e){
+			e.preventDefault();
+			$('#help-modal').modal();
+		});
 
 		Simulator.layers = {
 			earth : $('#earth-img'),
@@ -77,16 +94,33 @@
 			// Get growth level from 1-6
 			var level = Math.round(Simulator.Plant.growth * 5 / 100)+1;
 			
+			if(level !== Simulator.Plant.level && level <= 3){
+				// Just upgraded, take down the width
+				Simulator.Plant.levelGrowth = Simulator.Plant.growth;
+			}
+			
+			Simulator.Plant.level = level;
+			
 			Simulator.layers.plant.attr('src','assets/img/planta/'+status+'/'+level+'-'+status+'.png');
+			
+			var mult = 0.5;
+			if(level >= 3) mult = 0.1;
+			
+			var width = (Simulator.Plant.growth - Simulator.Plant.levelGrowth)*mult + 30 + level*2;
+			
+			Simulator.layers.plant.css({
+				'width' : width+'%',
+				'marginBottom': 1/(width*0.005)+'px'
+			});
 			
 			if(status == 'dead'){
 				Simulator.layers.earth.hide();
-				alert('La planta ha muerto');
+				Simulator.displayMessage('Atención!', 'La planta ha muerto.');
 			}
 			
 			if(Simulator.Plant.growth >= 100){
 				Simulator.stopLife();
-				alert('Enhorabuena! La planta ha crecido al maximo');
+				Simulator.displayMessage('Genial!', 'La planta ha crecido al maximo.');
 			}
 		});
 
@@ -127,6 +161,19 @@
 	},
 
 	lifeInterval : null,
+	
+	// Internal method
+	setSrc: function(which, state){
+		var attr = which;
+		if(state==1) attr+='-2';
+		$('#'+which+'-img').attr('src', 'assets/img/iconos/'+attr+'.png');
+	},
+	
+	displayMessage: function(title, text, dismiss){
+		$('#mensaje .modal-title').text(title);
+		$('#mensaje .modal-body').html(text);
+		$('#mensaje').modal();
+	},
 
 	/**
 	 * Array of functions to be executed in the plant lifecycle. All the functions will be executed one after the other
@@ -139,6 +186,8 @@
 		sickness: 0,
 		state : 'ok',
 		problems : [],
+		level: 0,
+		levelGrowth: 0,
 
 		grow : function(amount){
 			if(Simulator.Plant.growth>=Simulator.config.maxGrowth){
@@ -179,17 +228,16 @@
 		 */
 		update: function(e){
 
-			$('#palancas i').css({
-				color: '#fff'
-			});
-
+			Simulator.setSrc('agua');
+			Simulator.setSrc('entorno');
+			Simulator.setSrc('sol');
+			Simulator.setSrc('nutriente');
+			
 			var ok = true,
 				unbalance = 0;
 
 			if(Simulator.Plant.growth >= e.space){
-				$('#space-img').css({
-					color: 'red'
-				});
+				Simulator.setSrc('entorno',1);
 				ok = false;
 			}
 
@@ -198,9 +246,7 @@
 			console.log("Plant needs: ",needs);
 
 			if(e.water < needs.water.min || e.water > needs.water.max){
-				$('#water-img').css({
-					color: 'red'
-				});
+				Simulator.setSrc('agua',1);
 				ok = false;
 				// Update the unbalance level
 				if(e.water < needs.water.min){
@@ -210,9 +256,7 @@
 				}
 			}
 			if(e.sun < needs.sun.min || e.sun > needs.sun.max){
-				$('#sun-img').css({
-					color: 'red'
-				});
+				Simulator.setSrc('sol',1);
 				ok = false;
 				// Update the unbalance level
 				if(e.sun < needs.sun.min){
@@ -222,9 +266,7 @@
 				}
 			}
 			if(e.food < needs.food.min || e.food > needs.food.max){
-				$('#food-img').css({
-					color: 'red'
-				});
+				Simulator.setSrc('nutriente',1);
 				ok = false;
 				// Update the unbalance level
 				if(e.food < needs.food.min){

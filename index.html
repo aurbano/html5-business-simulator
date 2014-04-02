@@ -14,7 +14,7 @@
 	<div class="container" id="main">
 		<div class="row">
 			<div class="col-md-12">
-				<h1>El Jardinero</h1>
+				<h1>La metáfora del jardinero</h1>
 				<div class="row">
 					<div class="col-md-8">
 						<div class="panel" id="simulador">
@@ -33,36 +33,44 @@
 								<div class="well" id="palancas">
 									<div class"row">
 										<div class="col-md-6 col-sm-6 col-xs-6">
-											<div class="pull-right">
+											<div class="text-center" style="margin-right:20px;">
+												<img src="assets/img/iconos/sol.png" id="sol-img" style="max-width:100px; width:100%; margin:0 auto;" />
+												sol
+											</div>
+											<div style="position:absolute; right:0; top:0">
 												<input id="sol" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-certificate" id="sun-img"></i><br />
-											sol/luz
+											
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6">
-											<div class="pull-right">
+											<div style="position:absolute; right:0; top:0">
 												<input id="espacio" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-cloud" id="space-img"></i><br />
-											espacio
+											<div class="text-center" style="margin-right:20px;">
+												<img src="assets/img/iconos/entorno.png" id="entorno-img" style="max-width:100px; width:100%; margin:0 auto;" />
+												entorno
+											</div>
 										</div>
 									</div>
-									<div class="clearfix"></div>
-									<hr />
+									<div class="clearfix" style="margin-bottom:20px"></div>
 									<div class"row">
 										<div class="col-md-6 col-sm-6 col-xs-6">
-											<div class="pull-right">
+											<div style="position:absolute; right:0; top:0">
 												<input id="agua" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-tint" id="water-img"></i><br />
-											agua
+											<div class="text-center" style="margin-right:20px;">
+												<img src="assets/img/iconos/agua.png" id="agua-img" style="max-width:100px; width:100%; margin:0 auto;" />
+												agua
+											</div>
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6">
-											<div class="pull-right">
+											<div style="position:absolute; right:0; top:0">
 												<input id="nutrientes" type="text" value="0" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="100" data-slider-orientation="vertical" data-slider-tooltip="hide" />
 											</div>
-											<i class="glyphicon glyphicon-filter" id="food-img"></i><br />
-											nutrientes
+											<div class="text-center" style="margin-right:20px;">
+												<img src="assets/img/iconos/nutriente.png" id="nutriente-img" style="max-width:100px; width:100%; margin:0 auto;" />
+												nutrientes
+											</div>
 										</div>
 									</div>
 									<div class="clearfix"></div>
@@ -72,22 +80,13 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="panel" id="comentarios">
-									<h4>Explicación</h4>
-									<p>
-										La planta inicialmente es una semilla. Si le damos algo de agua, sol y nutrientes no crecerá por falta de espacio.
-									</p>
-									<p>
-										El espacio se puede incrementar todo lo que se quiera, únicamente es un factor limitante.
-									</p>
-									<p>
-										La planta necesita inicialmente poca agua/luz/nutrientes, si recibe más de lo necesario el icono se pone rojo (de momento, para que se entienda lo que pasa). Cuando el simulador esté más avanzado la planta se morirá si está un rato recibiendo más de lo necesario.
-									</p>
-									<p>
-										Cuanto más va creciendo, más necesitará. Si se le da justo el minimo que necesita se quedara viva pero sin crecer. Si se da menos o más enfermara y acabara muriendo. Si se da cerca del máximo que puede aceptar crecerá al maximo ritmo.
-									</p>
-									<p>
-										El ritmo de crecimiento, necesidades... etc son totalmente configurables de manera fácil.
-									</p>
+									<p>Gestiona las “palancas” para que la planta maximice sus frutos. Pulsa la opción de “Reiniciar” para volver a comenzar.</p>
+									<p>Preguntas para la reflexión:</p>
+
+									<ol>
+										<li>¿En qué condiciones la planta crece más alto y da más frutos? Esto es, ¿Cómo se encuentran las “palancas” configuradas en ese caso?</li>
+										<li>¿En qué condiciones muere la planta? Esto es, ¿Cómo se encuentran las palancas cuando muere la planta? </li>
+									</ol>     
 								</div>
 							</div>
 						</div>
@@ -98,9 +97,56 @@
 	</div>
 	<footer>
 		<p class="text-muted text-center">
-			&copy; Universidad de Mondragón?
+			<a href="#" id="help"><i class="fa fa-question-circle"></i> Ayuda</a> &bull; <a href="javascript:window.location.reload()"><i class="fa fa-repeat"></i> Reiniciar</a>
 		</p>
 	</footer>
+	
+	<div class="modal fade" id="mensaje" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Atención</h4>
+	      </div>
+	      <div class="modal-body"></div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary">Reiniciar</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Ayuda</h4>
+	      </div>
+	      <div class="modal-body">
+				<p>Senge et al. (1999) sugieren a los responsables de las organizaciones a pensar en términos más biológicos que mecánicos. Esto es, a actuar más como jardineros que como mecánicos a la hora de lograr una mayor implicación de las personas en la organización.</p>
+				
+				<p>La naturaleza de la semilla es crecer y dar frutos (si encuentra las condiciones adecuadas para ello). Siguiendo la misma lógica, las personas tenemos el potencial de comprometernos, crecer y dar frutos en beneficio de un proyecto común; está en nuestra naturaleza. La función del “jardinero” es crear las condiciones adecuadas para ello.</p>
+				
+				<p>De la misma forma que el jardinero no se pone a estirar la planta para que crezca más alto, el responsable de la organización no puede pedir a las personas que se impliquen y participen en el logro de los retos de la organización.</p>
+				
+				<p>Normalmente las personas no participan y “dan frutos” porque se lo pida el responsable sino porque lo deciden por sí mismas. Esta decisión depende, entre otros, de las condiciones del entorno / contexto en el que desarrollar su actividad. Esto es, las personas eligen comprometerse y liberar su energía en beneficio de la organización cuando encuentran las condiciones adecuadas para ello. Se trata de una elección.</p>
+				
+				<p>La función del responsable debería ser gestionar los factores de contexto (agua, espacio, luz, etc) en los que “la planta” crece por sí misma y da frutos, de forma natural.</p>
+				
+				<p>Te proponemos un juego para trabajar las bases del modelo teórico.</p>
+				 
+				<p class="text-muted">Referencia:<br />
+					<small>Senge, P., Kleiner, A., Roberts, C., Ross, R., Roth, G. & Smith, B. (1999). The dance of change: The challenges of sustaining momentum in learning organizations. London: Nicholas Breagley Publishing.</small></p>
+
+	      	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
