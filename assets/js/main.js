@@ -18,7 +18,8 @@
 		debug : false,			// Activar mensajes de debug en la consola
 		sickRate : 0.5,			// Ritmo al que enferma la planta cuando las condiciones no son favorables
 		minSick : 6,			// Valor 0-100 a partir del cual la planta se ve enferma
-		maxSick : 100,			// Valor a partir del cual la planta se muere
+		maxSick : 100,			// Valor a partir del cual la planta se muere,
+		showStartModal: false,	// Mostrar la ventana de ayuda nada mas abrir el simulador
 	},
 
 	// ------------------------------------------- //
@@ -38,7 +39,8 @@
 			$('#help-modal').modal('hide');
 		});
 		
-		$('#help-modal').modal();
+		if(Simulator.config.showStartModal)
+			$('#help-modal').modal();
 		
 		$('#help').click(function(e){
 			e.preventDefault();
