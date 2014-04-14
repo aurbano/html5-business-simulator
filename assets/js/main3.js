@@ -94,6 +94,12 @@ Simulator = {
 
     //Simulator.newTask('Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.');
 
+    var status;
+
+    $('#palancas select').change(function(){
+      status = Simulator.getStatus();
+    });
+
   },
 
   /**
@@ -132,8 +138,8 @@ Simulator = {
     }*/
 
     for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
-      var btn = '<select class="form-control">'+
-                    '<option>' + Simulator.palancas[i].name + '</option>';
+      var btn = '<select class="form-control" data-index="'+i+'">'+
+                    '<option value="-1">' + Simulator.palancas[i].name + '</option>';
       for (var a = 0; a < Simulator.palancas[i].opciones.length; a++) {
         btn += '<option value="'+a+'">' + Simulator.palancas[i].opciones[a] + '</option>';
       }
@@ -141,5 +147,48 @@ Simulator = {
       btn +=     '</select>';
       $('#palancas').prepend(btn);
     }
+  },
+
+  /**
+   * Return the combined status of all user settings.
+   * If all the items are configured in one of the three states then it will
+   * return its number, if not it will return the index of the faulty settings.
+   * @return {Array} 0=> valid (true, false). If true, 1=> Column index (0-3). If false 1=> Array with the faulty settings.
+   */
+  getStatus: function(){
+    var eachColumnCount = [0, 0, 0];
+    var faulty = [];
+    var palancas = $('#palancas select');
+    for(var i in palancas){
+      console.log($(palancas[i]).val());
+      if($(palancas[i]).val()<0){
+        // This setting hasn't been configured!
+        console.log('Por favor configura todas las palancas!');
+        return {status: false, message: 'Por favor configura todas las palancas!'};
+      }
+      eachColumnCount[$(palancas[i]).val()]++;
+    }
+
+    var mostPopular = 0;
+    if(eachColumnCount[1]>eachColumnCount[0]) mostPopular = 1;
+    if(eachColumnCount[2]>eachColumnCount[mostPopular]) mostPopular = 2;
+
+    console.log("Most popular column: "+mostPopular);
+
+    // Check if there are faulty settings
+    if(eachColumnCount[mostPopular] == Simulator.palancas.length){
+      console.log('No faulty settings!');
+      return {status: true, column: mostPopular};
+    }
+
+    for(i in palancas){
+      if($(palancas[i]).val() !== mostPopular){
+        faulty.push($(palancas[i]).attr('data-index'));
+      }
+    }
+
+    console.log("Faulty columns: ",faulty);
+
+    return {status: false, faulty: faulty};
   }
 };
