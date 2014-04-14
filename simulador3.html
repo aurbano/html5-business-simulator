@@ -24,20 +24,7 @@
 					<div class="col-md-12">
 						<div class="panel" id="simulador">
 							<div id="animation">
-								<div id="palancas">
-									<div class="btn-group">
-									  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									    Liderazgo <span class="caret"></span>
-									  </button>
-									  <ul class="dropdown-menu" role="menu">
-									    <li><a href="#">Action</a></li>
-									    <li><a href="#">Another action</a></li>
-									    <li><a href="#">Something else here</a></li>
-									    <li class="divider"></li>
-									    <li><a href="#">Separated link</a></li>
-									  </ul>
-									</div>
-								</div>
+								<form class="form-inline" id="palancas"></form>
 							</div>
 						</div>
 					</div>
@@ -51,7 +38,24 @@
 		</p>
 	</footer>
 
-	<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="instruction-modal" tabindex="-1" role="dialog" aria-labelledby="Tarea actual" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Tarea</h4>
+	      </div>
+	      <div class="modal-body">
+				<p>Tarea actual</p>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="Ayuda" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">

@@ -83,10 +83,64 @@ Simulator = {
    */
   start: function(){
 
+    Simulator.setup();
+
     $('#help').click(function(e){
       e.preventDefault();
       $('#help-modal').modal();
     });
 
+    Simulator.$tarea = $('#instruction-modal');
+
+    Simulator.newTask('Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.');
+
+  },
+
+  /**
+   * Show the new task modal with the updated text
+   * @param  {String} task
+   * @return {void}
+   */
+  newTask : function(task){
+      Simulator.$tarea.find(".modal-body").html(task);
+      Simulator.$tarea.modal();
+  },
+
+  /* ----------------------------------------- */
+  /*           INTERNAL FUNCTIONS              */
+
+  /**
+   * Display all the buttons and get things ready
+   * @return {void}
+   */
+  setup: function(){
+    $('#palancas').html();
+
+    /*for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
+      var btn = '<div class="btn-group">'+
+                    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'+
+                      Simulator.palancas[i].name+' <span class="caret"></span>'+
+                    '</button>'+
+                    '<ul class="dropdown-menu" role="menu">';
+      for (var a = 0; a < Simulator.palancas[i].opciones.length; a++) {
+        btn += '<li><a href="#">'+Simulator.palancas[i].opciones[a]+'</a></li>';
+      }
+
+      btn +=        '</ul>'+
+                  '</div>';
+      $('#palancas').prepend(btn);
+    }*/
+
+    for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
+      var btn = '<select class="form-control">'+
+                    '<option>' + Simulator.palancas[i].name + '</option>';
+      for (var a = 0; a < Simulator.palancas[i].opciones.length; a++) {
+        btn += '<option value="'+a+'">' + Simulator.palancas[i].opciones[a] + '</option>';
+      }
+
+      btn +=     '</select>';
+      $('#palancas').prepend(btn);
+    }
   }
+
 };
