@@ -3,77 +3,90 @@
  * @author Alejandro U. Alvarez <alejandro@urbanoalvarez.es>
  */
 
- var width = 960,
-    height = 500;
+Simulator = {
 
-var color = d3.scale.category20();
+  // Para configurar el Simulador unicamente se deberian modificar los parametros a continuacion
+  // todos ellos estan explicados a continuacion.
+  // Para arrancar el simulador hay que llamar a 'Simulator.start();''
+  config : {
+    
+  },
 
-var force = d3.layout.force()
-    .charge(-120)
-    .linkDistance(30)
-    .size([width, height]);
+  // "Palancas" -> Nombre y opciones
+  // Las opciones deben ir en orden (columna 1, columna 2 y columna 3)
+  palancas: [
+    {
+      name: "Liderazgo",
+      opciones: ["Clásico", "Clásico", "Transformacional"]
+    },
+    {
+      name: "Formación",
+      opciones: ['La justa/sólo para la "tarea"','Algo más','Se potencia el desarrollo profesional']
+    },
+    {
+      name: "Transparencia en las cuentas",
+      opciones: ["No existe","No existe","Total. Se comparten sistemáticamente."]
+    },
+    {
+      name: "Participación en los beneficios",
+      opciones: ["No", "No", "Si"]
+    },
+    {
+      name: "Incentivos individuales",
+      opciones: ["Basados en niveles de productividad/calidad", "Basados en niveles de productividad/calidad", "No existen"]
+    },
+    {
+      name: "Autonomía en el trabajo",
+      opciones: ["Limitada a la ejecución de la tarea", "Amplia (calidad, objetivos...", "Amplia (Calidad, objetivos...)"]
+    },
+    {
+      name: "Participación en la estrategia",
+      opciones: ["Inexistente", "Algo (Iniciativas timidas)", "La mayor posible"]
+    }
+  ],
 
-var svg = d3.select("#animation").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+  // Cada Array corresponde con una columna.
+  // Los elementos 4 y 5 se muestran alternativamente de manera aleatoria.
+  comments: [
+    [
+      "La organización no confía en nosotros/as",
+      "No somos parte del proyecto",
+      'Somos un "recurso" al servicio de un proyecto ajeno a nosotros',
+      'OP1: En esta organización hago el esfuerzo justo, y si tenemos la suerte de trabajar menos por averías/ineficiencias... mejor!',
+      'OP2: blabla'
+    ],
+    [
+      "Parece que confian en nosotros/as",
+      "Por el momento no somos parte del proyecto, pero en un futuro...",
+      'Parece que somos un "activo" clave',
+      'OP1: Es un engaño, pues se trata de una iniciativa disfrazada de buenas palabras para darnos otra "vuelta de tuerca" más!',
+      'OP2: Están confiando en nosotros y parece que reconocen nuestro potencial para aportar y hacer sostenible el proyecto.'
+    ],
+    [
+      "La organización confía en nosotros/as",
+      "Somos parte del proyecto",
+      'Somos un "activo" clave para el éxito del proyecto',
+      'Nos esforzamos continuamente para mejorar la calidad del servicio que ofrecemos a nuestros clientes',
+      'Realizamos esfuerzos extra en el trabajo para que el proyecto tenga éxito.'
+    ]
+  ],
 
-var palancas = [
-	{ "x_axis": 30, "y_axis": 30, "radius": 20, "color" : "green" },
-	{ "x_axis": 70, "y_axis": 70, "radius": 20, "color" : "purple"},
-	{ "x_axis": 110, "y_axis": 100, "radius": 20, "color" : "red"}];
+  gerente: [
+    "Viene a controlarlos",
+    "",
+    "Viene a escucharnos; Quiere estar cerca de nosotros/as"
+  ],
 
-var circles = svg.selectAll("circle")
-                          .data(palancas)
-                          .enter()
-                          .append("circle");
+  // ------------------------------------------- //
+  /**
+   *  Launch the simulator
+   */
+  start: function(){
 
-var circleAttributes = circles
-                       .attr("cx", function (d) { return d.x_axis; })
-                       .attr("cy", function (d) { return d.y_axis; })
-                       .attr("r", function (d) { return d.radius; })
-                       .style("fill", function(d) { return d.color; });
+    $('#help').click(function(e){
+      e.preventDefault();
+      $('#help-modal').modal();
+    });
 
-var circlesTransition = d3.selectAll("circle")
-   .transition()
-   .duration(5000)
-   .attr("cy", "0")
-   .attrTween('cx', function (d, i, a) {
-        return function (t) {
-          // Add salt, pepper and constants as per your taste
-          return a + (Math.random() - 0.5) * 10;
-        };
-});
-
-/*d3.json("test.json", function(error, graph) {
-  force
-      .nodes(graph.nodes)
-      .links(graph.links)
-      .start();
-
-  var link = svg.selectAll(".link")
-      .data(graph.links)
-    .enter().append("line")
-      .attr("class", "link")
-      .style("stroke-width", function(d) { return Math.sqrt(d.value); });
-
-  var node = svg.selectAll(".node")
-      .data(graph.nodes)
-    .enter().append("circle")
-      .attr("class", "node")
-      .attr("r", 15)
-      .style("fill", function(d) { return color(d.group); })
-      .call(force.drag);
-
-  node.append("title")
-      .text(function(d) { return d.name; });
-
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-  });
-});*/
+  }
+};

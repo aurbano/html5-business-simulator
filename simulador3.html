@@ -9,29 +9,36 @@
     <link href="assets/css/styles.css" rel="stylesheet">
     <link href="assets/css/slider.css" rel="stylesheet">
     <style>
+	
 
-	.node {
-	  stroke: #fff;
-	  stroke-width: 1.5px;
-	}
-
-	.link {
-	  stroke: #999;
-	  stroke-opacity: .6;
-	}
 
 	</style>
 </head>
 
 <body>
-	<div class="container" id="main">
+	<div class="container" id="">
 		<div class="row">
 			<div class="col-md-12">
 				<h1>Simulador 3</h1>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel" id="simulador">
-							<div id="animation"></div>
+							<div id="animation">
+								<div id="palancas">
+									<div class="btn-group">
+									  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									    Liderazgo <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" role="menu">
+									    <li><a href="#">Action</a></li>
+									    <li><a href="#">Another action</a></li>
+									    <li><a href="#">Something else here</a></li>
+									    <li class="divider"></li>
+									    <li><a href="#">Separated link</a></li>
+									  </ul>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -40,9 +47,26 @@
 	</div>
 	<footer>
 		<p class="text-muted text-center">
-			&copy; Universidad de Mondragón?
+			<a href="#" id="help"><i class="fa fa-question-circle"></i> Explicación para el juego</a> &bull; <a href="javascript:window.location.reload()"><i class="fa fa-repeat"></i> Reiniciar</a>
 		</p>
 	</footer>
+
+	<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Ayuda</h4>
+	      </div>
+	      <div class="modal-body">
+				<p>Texto de ayuda sobre el simulador</p>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -53,11 +77,10 @@
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script type="text/javascript" src="assets/js/main3.js"></script>
 
 	<script type="text/javascript">
-	
+		Simulator.start();
 	</script>
 </body>
 </html>
