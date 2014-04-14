@@ -92,7 +92,7 @@ Simulator = {
 
     Simulator.$tarea = $('#instruction-modal');
 
-    Simulator.newTask('Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.');
+    //Simulator.newTask('Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.');
 
   },
 
@@ -142,5 +142,4 @@ Simulator = {
       $('#palancas').prepend(btn);
     }
   }
-
 };
