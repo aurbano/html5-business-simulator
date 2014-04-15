@@ -8,19 +8,21 @@
     <link href="assets/lib/bootstrap-3.1.1/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <link href="assets/css/styles.css" rel="stylesheet">
     <link href="assets/css/slider.css" rel="stylesheet">
-    <style>
-
-	.node {
-	  stroke: #fff;
-	  stroke-width: 1.5px;
-	}
-
-	.link {
-	  stroke: #999;
-	  stroke-opacity: .6;
-	}
-
-	</style>
+    <style type="text/css">
+    	.btn-title{
+    		display:block;
+    		margin:-6px -12px;
+    		padding:6px 13px 9px 13px;
+    	}
+    	.btn-value{
+    		box-shadow:rgba(0,0,0,0.3) 0 3px 6px inset;
+    		display:block;
+    		border-top:1px solid rgba(0,0,0,0.5);
+    		background:rgba(255,255,255,0.2);
+    		margin:-6px -12px;
+    		padding:6px 13px;
+    	}
+    </style>
 </head>
 
 <body>
@@ -31,7 +33,60 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel" id="simulador">
-							<div id="animation"></div>
+							<div id="animation">
+								
+								<div id="palancas" style="width:700px;">
+									
+									<div class="btn-group">
+									  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									    Liderazgo <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" role="menu">
+									    <li><a href="#">Clasico</a></li>
+									    <li><a href="#">Transformacional</a></li>
+									  </ul>
+									</div>
+									
+									<div class="btn-group">
+									  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									    Liderazgo <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" role="menu">
+									    <li><a href="#">Clasico</a></li>
+									    <li><a href="#">Transformacional</a></li>
+									  </ul>
+									</div>
+    
+									<hr />
+									<hr />
+									<hr />
+									
+									<a id="p1" href="#p1" class="btn btn-primary">
+										<span class="btn-title">Liderazgo</span>
+										<span class="btn-value">Clásico</span>
+									</a>
+									
+									<a id="p1" href="#p1" class="btn btn-info">
+										<span class="btn-title">Formación</span>
+										<span class="btn-value">La justa / sólo para la "tarea"</span>
+									</a>
+									
+									<a id="p1" href="#p1" class="btn btn-warning">
+										<span class="btn-title">Participación en la estrategia</span>
+										<span class="btn-value">Inexistente</span>
+									</a>
+									
+									<a id="p1" href="#p1" class="btn btn-danger">
+										<span class="btn-title">Incentivos individuales</span>
+										<span class="btn-value">Basados en niveles de productividad/calidad</span>
+									</a>
+									
+									<a id="p1" href="#p1" class="btn btn-success">
+										<span class="btn-title">Participación en Beneficios</span>
+										<span class="btn-value">No</span>
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -53,7 +108,6 @@
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script type="text/javascript" src="assets/js/main3.js"></script>
 
 	<script type="text/javascript">
