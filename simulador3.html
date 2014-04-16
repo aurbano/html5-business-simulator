@@ -61,7 +61,8 @@
 		}
 
 		.animated{
-			-webkit-animation: spinX 10s;
+			-webkit-animation: spinX;
+			-webkit-animation-duration: 10s;
 		}
 
 		@-webkit-keyframes spinX{  
@@ -86,7 +87,6 @@
 		}
 
 		.message{
-			background-color:#FFA62D;
 			border-radius:10px;
 			border:#E1E1E1 solid 3px;
 			padding:10px;
@@ -112,6 +112,15 @@
 			width:140px;
 		}
 
+		#questions{
+			font-size: 14em;
+			position: absolute;
+			top: -1.2em;
+			left: 0.2em;
+			color:rgba(200,200,200,0.7);
+			display:none;
+		}
+
 		#boss{
 			height:105px;
 			background-image: url(assets/img/sim3/jefe.png);
@@ -119,7 +128,7 @@
 			background-size: 150px;
 			background-position: -53px -24px;
 			right:-40%;
-			top: -45%;
+			top: -15%;
 			padding:10px 10px 10px 60px;
 			font-size:1.3em;
 			background-color:#BBE0FF;
@@ -172,14 +181,16 @@
 											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-10px;">
 											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-50px;">
 
+											<div id="questions">?</div>
+
 											<div class="bubble bubbleRight" id="m1" style="top:-10px; right: -250px">Text 1</div>
 											<div class="bubble bubbleLeft" id="m2" style="top:-50px; left: -240px">Text 2</div>
 											<div class="bubble bubbleBottom" id="m3" style="bottom:-150px; left: -200px">Text 3</div>
 										</div>
-										<div id="boss" class="message">
+										<div id="boss" class="message bg-info">
 											El gerente empieza a bajar a tomar el café
 										</div>
-										<div id="result" class="message">
+										<div id="result" class="message bg-warning">
 											Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.
 										</div>
 										<div id="spinner" class="animated"></div>

@@ -9,7 +9,7 @@ Simulator = {
 	// todos ellos estan explicados a continuacion.
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config: {
-
+		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más despacio
 	},
 
 	// "Palancas" -> Nombre y opciones
@@ -72,7 +72,7 @@ Simulator = {
 	],
 
 	gerente: [
-		"Viene a controlarnos",
+		"¡Viene a controlarnos!",
 		"",
 		"Viene a escucharnos; Quiere estar cerca de nosotros/as"
 	],
@@ -107,14 +107,19 @@ Simulator = {
 			$('#help-modal').modal();
 		});
 
+		// Adjust spinner speed
+		$('#spinner').css({
+			'-webkit-animation-duration': 10 * Simulator.config.speed + 's'
+		});
+
 		Simulator.$tarea = $('#instruction-modal');
+
+		Simulator.startAnimation(0);
 
 		// Initial task and target setup
 		// Simulator.newTask(
 		// 	'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.', [0, 0, 0, 0, 0, 0, 0]
 		// );
-
-		Simulator.startAnimation(0);
 
 		var status;
 
@@ -242,6 +247,24 @@ Simulator = {
 		Simulator.displayCircle();
 		Simulator.animateSpinner();
 		Simulator.cycleComments(0);
+
+		setTimeout(function () {
+			Simulator.showResult(0);
+		}, 10000 * Simulator.config.speed);
+
+
+		setTimeout(function () {
+			Simulator.showBoss();
+
+			// This will trigger a new spinner and a new result
+			Simulator.animateSpinner();
+			Simulator.animateQuestionMark();
+		}, 14000 * Simulator.config.speed);
+
+		setTimeout(function () {
+			// Add consequence to the result box
+			$('#result').append('<p style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type] + '</p>');
+		}, 19000 * Simulator.config.speed);
 	},
 
 	/**
@@ -275,15 +298,13 @@ Simulator = {
 		if (typeof (Simulator.comments[index]) == 'undefined')
 			return;
 
-		var times = [1000, 3000, 7000];
+		var times = [1000 * Simulator.config.speed, 3000 * Simulator.config.speed, 7000 * Simulator.config.speed];
+
+		Simulator.animateQuestionMark();
 
 		for (var i = 0; i < 3; i++) {
 			Simulator.displayComment(index, i, times[i]);
 		}
-
-		setTimeout(function () {
-			Simulator.showResult(0);
-		}, 10000);
 	},
 
 	/**
@@ -294,11 +315,27 @@ Simulator = {
 	 * @return {void}
 	 */
 	displayComment: function (phase, comment, time) {
-		console.log('Display comment for phase ' + phase + ', id=' + comment + ' after ' + time);
 		setTimeout(function () {
-			console.log('timeout: Display comment for phase ' + phase + ', id=' + comment + ' after ' + time);
 			$('#m' + (comment + 1)).html(Simulator.comments[phase][comment]).fadeIn();
 		}, time);
+	},
+
+	animateQuestionMark: function () {
+		setTimeout(function () {
+			$('#questions').fadeToggle();
+		}, 500 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#questions').fadeToggle();
+		}, 1500 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#questions').fadeToggle();
+		}, 3500 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#questions').fadeOut();
+		}, 5000 * Simulator.config.speed);
 	},
 
 	/**
@@ -331,6 +368,9 @@ Simulator = {
 	 * @return {void}
 	 */
 	showResult: function (index) {
+
+		$('#spinner').fadeOut();
+
 		if (index > Simulator.currentResult) {
 			var text = Simulator.result[0].text;
 			// Get the next result with <= index
@@ -348,12 +388,11 @@ Simulator = {
 	},
 
 	/**
-	 * Show the next boss message
-	 * @param  {int} index Message index
+	 * Show the boss message
 	 * @return {void}
 	 */
-	showBoss: function (index) {
-		$('#boss').html(Simulator.gerente[index]).fadeIn();
+	showBoss: function () {
+		$('#boss').fadeIn();
 	},
 
 	/**
