@@ -78,12 +78,19 @@ Simulator = {
 	],
 
 	result: [
-		'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
-		'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.'
+		{
+			index: 0,
+			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.'
+		},
+		{
+			index: 6,
+			text: 'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.'
+		}
 	],
 
 	// ------------------------------------------- //
 	target: false, // Current target position for all settings
+	currentResult: -1, // Current result index
 
 	// ------------------------------------------- //
 	/**
@@ -92,6 +99,8 @@ Simulator = {
 	start: function () {
 
 		Simulator.setup();
+
+		Simulator.showResult(0);
 
 		$('#help').click(function (e) {
 			e.preventDefault();
@@ -113,7 +122,7 @@ Simulator = {
 			if (status.status) {
 				// All are ok
 				// Since this is task 1, they must all be in the first setting
-				console.log('Settings match case 1, start animation!');
+				console.log('start: Settings match case 1, start animation!');
 				Simulator.startAnimation(0);
 			}
 		});
@@ -204,13 +213,13 @@ Simulator = {
 		}
 
 		if (faulty.length === 0) {
-			console.log('All settings are OK');
+			console.log('getStatus: All settings are OK');
 			return {
 				status: true
 			};
 		}
 
-		console.log("Faulty settings: ", faulty);
+		console.log("getStatus: Faulty settings: ", faulty);
 
 		return {
 			status: false,
@@ -224,7 +233,7 @@ Simulator = {
 	 * @return {void}
 	 */
 	startAnimation: function (type) {
-		console.log("Animation of type " + type + ' triggered! Blocking all settings');
+		console.log("startAnimation: Animation of type " + type + ' triggered! Blocking all settings');
 		$('#palancas select').prop('disabled', true);
 	},
 
@@ -248,7 +257,29 @@ Simulator = {
 		if (eachColumnCount[1] > eachColumnCount[0]) mostPopular = 1;
 		if (eachColumnCount[2] > eachColumnCount[mostPopular]) mostPopular = 2;
 
-		console.log("Most popular column: " + mostPopular);
+		console.log("findPopular: Most popular column: " + mostPopular);
 		return mostPopular;
+	},
+
+	/**
+	 * Show the next result for the given index
+	 * @param  {int} index Index corresponding to the current step
+	 * @return {void}
+	 */
+	showResult: function (index) {
+		if (index > Simulator.currentResult) {
+			var text = Simulator.result[0].text;
+			// Get the next result with <= index
+			for (var i = Simulator.currentResult; i < Simulator.result.length; i++) {
+				if (typeof (Simulator.result[i]) == 'undefined') continue;
+				if (Simulator.result[i].index > index) break;
+				text = Simulator.result[i].text;
+				console.log("showResult: Valid result (Index=" + i + "): " + text);
+			}
+			// Display the text and the result
+			$('#result').html(text).fadeIn();
+		} else {
+			$('#result').fadeIn();
+		}
 	}
 };
