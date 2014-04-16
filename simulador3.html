@@ -8,6 +8,7 @@
     <link href="assets/lib/bootstrap-3.1.1/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <link href="assets/css/styles.css" rel="stylesheet">
     <link href="assets/css/slider.css" rel="stylesheet">
+    <link href="assets/css/bubbles.css" rel="stylesheet">
     <style>
 
     	#showTask{
@@ -15,7 +16,12 @@
     		top:3px;
     		right: 8px;
     		font-size:small;
+    		z-index:9;
     	}
+
+    	#simulador{
+			height:730px;
+		}
 	
 		#palancas{
 			background-color:#DBDBDB;
@@ -31,6 +37,80 @@
 			height: 100%;
 		}
 
+		#circle{
+			position: absolute;
+			top: 30%;
+			left:24%;
+			width: 45%;
+			height: 400px;
+			z-index:1;
+		}
+
+		#spinner{
+			position:absolute;
+			width:400px;
+			height:400px;
+			background-image: url(assets/img/sim3/spinner.png);
+			background-repeat: no-repeat;
+			background-size: 400px;
+			top:-5%;
+			left:13%;
+			z-index:2;
+			-webkit-animation: spinX 10s;
+		}
+
+		@-webkit-keyframes spinX{  
+		0%   {-webkit-transform: rotate(0deg);}  
+		100% {-webkit-transform: rotate(360deg);}  
+		}
+
+		.worker{
+			width:80px;
+			height:120px;
+			background-image: url(assets/img/sim3/trabajador.png);
+			background-repeat: no-repeat;
+			background-size: 200px;
+			background-position: center;
+			position: absolute;
+			z-index:3;
+		}
+
+		.message{
+			background-color:#FFA62D;
+			border-radius:10px;
+			border:#E1E1E1 solid 3px;
+		}
+
+		#boss{
+			height:105px;
+			background-image: url(assets/img/sim3/jefe.png);
+			background-repeat: no-repeat;
+			background-size: 150px;
+			background-position: -53px -24px;
+			position: absolute;
+			z-index:3;
+			right:-40%;
+			top: -45%;
+			padding:10px 10px 10px 60px;
+			font-size:1.3em;
+		}
+
+		#w1{
+			right:0;
+			top: 40px;
+		}
+
+
+		#w2{
+			bottom: -20px;
+			left:40%;
+		}
+
+		#w3{
+			left:0;
+			top:30px;
+		}
+
 	</style>
 </head>
 
@@ -43,9 +123,33 @@
 					<div class="col-md-12">
 						<div class="panel" id="simulador">
 							<div id="viewport">
-								<div id="animation">
-									<a href="#instruction-modal" data-toggle="modal" id="showTask"><i class="fa fa-plus-square-o"></i> Tarea actual</a>
+								<a href="#instruction-modal" data-toggle="modal" id="showTask"><i class="fa fa-plus-square-o"></i> Tarea actual</a>
+								<div class="animation" id="contains-palancas">
 									<form class="form-inline" id="palancas"></form>
+								</div>
+
+								<div class="animation" id="mainAnimation">
+									<div id="circle">
+										<div class="worker" id="w1">
+											<div class="bubble bubbleRight" style="right:-80px; top:-60px">
+												Mensaje del trabajador 1
+											</div>
+										</div>
+										<div class="worker" id="w2">
+											<div class="bubble bubbleBottom" style="right:-100px; top:30px">
+												Mensaje del trabajador 2
+											</div>
+										</div>
+										<div class="worker" id="w3">
+											<div class="bubble bubbleLeft" style="left:-230px; top:-60px">
+												Mensaje del trabajador 3
+											</div>
+										</div>
+										<div id="boss" class="message">
+											El gerente empieza a bajar a tomar el café
+										</div>
+										<div id="spinner"></div>
+									</div>
 								</div>
 							</div>
 						</div>

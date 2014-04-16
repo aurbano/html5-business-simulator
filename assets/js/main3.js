@@ -75,7 +75,10 @@ Simulator = {
 		"Viene a controlarlos",
 		"",
 		"Viene a escucharnos; Quiere estar cerca de nosotros/as"
-  ],
+	],
+
+	// ------------------------------------------- //
+	target: [], // Current target position for all settings
 
 	// ------------------------------------------- //
 	/**
@@ -92,22 +95,21 @@ Simulator = {
 
 		Simulator.$tarea = $('#instruction-modal');
 
-		//Simulator.newTask('Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.');
+		// Initial task and target setup
+		// Simulator.newTask(
+		// 	'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.', [0, 0, 0, 0, 0, 0, 0]
+		// );
 
 		var status;
 
 		$('#palancas select').change(function () {
 			status = Simulator.getStatus();
 
-			if(status.status){
+			if (status.status) {
 				// All are ok
 				// Since this is task 1, they must all be in the first setting
-				if(status.column !== 0){
-					console.log('They are not in the correct setting!');
-				}else{
-					console.log('Settings match case 1, start animation!');
-					Simulator.startAnimation(0);
-				}
+				console.log('Settings match case 1, start animation!');
+				Simulator.startAnimation(0);
 			}
 		});
 	},
@@ -117,9 +119,10 @@ Simulator = {
 	 * @param  {String} task
 	 * @return {void}
 	 */
-	newTask: function (task) {
+	newTask: function (task, target) {
 		Simulator.$tarea.find(".modal-body").html(task);
 		Simulator.$tarea.modal();
+		Simulator.target = target;
 	},
 
 	/* ----------------------------------------- */
@@ -166,43 +169,39 @@ Simulator = {
 	 * @return {Array} 0=> valid (true, false). If true, 1=> Column index (0-3). If false 1=> Array with the faulty settings.
 	 */
 	getStatus: function () {
-		var eachColumnCount = [0, 0, 0];
-		var faulty = [];
-		var palancas = $('#palancas select');
 
+		var mostPopular = 0,
+			faulty = [],
+			palancas = $('#palancas select');
+
+		palancas.css({
+			background: 'white'
+		});
+
+		// Check if there is a defined target
+		if (!Simulator.target) {
+			mostPopular = Simulator.findPopular();
+			Simulator.target = [];
+			for (var i = 0; i < Simulator.palancas.length; i++) {
+				Simulator.target.push(mostPopular);
+			}
+		}
+
+		// Now compare each setting with the target settings
 		for (var i = 0; i < palancas.length; i++) {
-			if ($(palancas[i]).val() < 0) {
-				// This setting hasn't been configured!
-				console.log('Por favor configura todas las palancas!');
-				return {
-					status: false,
-					message: 'Por favor configura todas las palancas!'
-				};
-			}
-			eachColumnCount[$(palancas[i]).val()]++;
-		}
-
-		var mostPopular = 0;
-		if (eachColumnCount[1] > eachColumnCount[0]) mostPopular = 1;
-		if (eachColumnCount[2] > eachColumnCount[mostPopular]) mostPopular = 2;
-
-		console.log("Most popular column: " + mostPopular);
-
-		// Check if there are faulty settings
-		if (eachColumnCount[mostPopular] == Simulator.palancas.length) {
-			console.log('No faulty settings!');
-			return {
-				status: true,
-				column: mostPopular
-			};
-		}
-
-		palancas = $('#palancas select');
-
-		for (i = 0; i < palancas.length; i++) {
-			if ($(palancas[i]).val()-mostPopular !== 0) {
+			if ($(palancas[i]).val() - Simulator.target[i] !== 0) {
 				faulty.push(i);
+				$(palancas[i]).css({
+					background: 'rgba(255,0,0,0.1)'
+				});
 			}
+		}
+
+		if (faulty.length === 0) {
+			console.log('All settings are OK');
+			return {
+				status: true
+			};
 		}
 
 		console.log("Faulty settings: ", faulty);
@@ -218,8 +217,32 @@ Simulator = {
 	 * @param  {int} type Column index (0-2)
 	 * @return {void}
 	 */
-	startAnimation: function(type){
-		console.log("Animation of type "+type+' triggered! Blocking all settings');
+	startAnimation: function (type) {
+		console.log("Animation of type " + type + ' triggered! Blocking all settings');
 		$('#palancas select').prop('disabled', true);
+	},
+
+	/**
+	 * Returns the most popular column
+	 * @return {int} Most popular column (0-3)
+	 */
+	findPopular: function () {
+		var eachColumnCount = [0, 0, 0],
+			palancas = $('#palancas select');
+
+		for (var i = 0; i < palancas.length; i++) {
+			if ($(palancas[i]).val() < 0) {
+				console.log('Por favor configura todas las palancas!');
+				return false;
+			}
+			eachColumnCount[$(palancas[i]).val()]++;
+		}
+
+		var mostPopular = 0;
+		if (eachColumnCount[1] > eachColumnCount[0]) mostPopular = 1;
+		if (eachColumnCount[2] > eachColumnCount[mostPopular]) mostPopular = 2;
+
+		console.log("Most popular column: " + mostPopular);
+		return mostPopular;
 	}
 };
