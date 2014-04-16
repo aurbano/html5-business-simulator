@@ -77,6 +77,11 @@ Simulator = {
 		"Viene a escucharnos; Quiere estar cerca de nosotros/as"
 	],
 
+	result: [
+		'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
+		'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.'
+	],
+
 	// ------------------------------------------- //
 	target: false, // Current target position for all settings
 
