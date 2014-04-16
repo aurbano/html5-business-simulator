@@ -100,8 +100,7 @@ Simulator = {
 
 		Simulator.setup();
 
-		Simulator.showResult(0);
-		Simulator.showBoss(0);
+		Simulator.disableSettings();
 
 		$('#help').click(function (e) {
 			e.preventDefault();
@@ -114,6 +113,8 @@ Simulator = {
 		// Simulator.newTask(
 		// 	'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.', [0, 0, 0, 0, 0, 0, 0]
 		// );
+
+		Simulator.startAnimation(0);
 
 		var status;
 
@@ -136,7 +137,9 @@ Simulator = {
 	 */
 	newTask: function (task, target) {
 		Simulator.$tarea.find(".modal-body").html(task);
-		Simulator.$tarea.modal();
+		Simulator.$tarea.modal().on('hidden.bs.modal', function () {
+			Simulator.enableSettings();
+		});
 		Simulator.target = target;
 	},
 
@@ -235,7 +238,67 @@ Simulator = {
 	 */
 	startAnimation: function (type) {
 		console.log("startAnimation: Animation of type " + type + ' triggered! Blocking all settings');
-		$('#palancas select').prop('disabled', true);
+		Simulator.disableSettings();
+		Simulator.displayCircle();
+		Simulator.animateSpinner();
+		Simulator.cycleComments(0);
+	},
+
+	/**
+	 * Displays the animation area
+	 * @return {void}
+	 */
+	displayCircle: function () {
+		$('.bubble').hide();
+		$('#boss').hide();
+		$('#result').hide();
+		$('#circle').fadeIn();
+	},
+
+	/**
+	 * Triggers the animation again
+	 * @return {void}
+	 */
+	animateSpinner: function () {
+		$('#spinner').removeClass('animated').fadeIn();
+		$('#spinner').prop('offsetWidth', $('#spinner').prop('offsetWidth'));
+		$('#spinner').addClass('animated');
+	},
+
+	/**
+	 * Start displaying the comments for the specified index
+	 * in a timed order
+	 * @param  {int} index Phase number
+	 * @return {void}
+	 */
+	cycleComments: function (index) {
+		if (typeof (Simulator.comments[index]) == 'undefined')
+			return;
+
+		var times = [1000, 3000, 7000];
+
+		for (var i = 0; i < 3; i++) {
+			Simulator.displayComment(index, i, times[i]);
+		}
+
+		setTimeout(function () {
+			Simulator.showResult(0);
+		}, 10000);
+	},
+
+	/**
+	 * Display the specified comment after time has passed
+	 * @param  {int} phase   Current phase
+	 * @param  {int} comment Comment index (0-3)
+	 * @param  {int} time    Time in ms until the comment is displayed
+	 * @return {void}
+	 */
+	displayComment: function (phase, comment, time) {
+		console.log('Display comment for phase ' + phase + ', id=' + comment + ' after ' + time);
+		setTimeout(function () {
+			console.log('timeout: Display comment for phase ' + phase + ', id=' + comment + ' after ' + time);
+			$('#m' + (comment + 1)).html(Simulator.comments[phase][comment]).fadeIn();
+		}, time);
 	},
 
 	/**
@@ -291,5 +354,23 @@ Simulator = {
 	 */
 	showBoss: function (index) {
 		$('#boss').html(Simulator.gerente[index]).fadeIn();
+	},
+
+	/**
+	 * Sets the settings into editable mode
+	 */
+	enableSettings: function () {
+		$('#palancas').animate({
+			backgroundColor: '#79B6FF'
+		}, 600).find('select').prop('disabled', false);
+	},
+
+	/**
+	 * Sets the settings into editable mode
+	 */
+	disableSettings: function () {
+		$('#palancas').animate({
+			backgroundColor: '#DBDBDB'
+		}, 400).find('select').prop('disabled', true);
 	}
 };

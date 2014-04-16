@@ -44,6 +44,7 @@
 			width: 45%;
 			height: 400px;
 			z-index:1;
+			display:none;
 		}
 
 		#spinner{
@@ -56,12 +57,16 @@
 			top:-5%;
 			left:13%;
 			z-index:2;
+			display:none;
+		}
+
+		.animated{
 			-webkit-animation: spinX 10s;
 		}
 
 		@-webkit-keyframes spinX{  
-		0%   {-webkit-transform: rotate(0deg);}  
-		100% {-webkit-transform: rotate(360deg);}  
+			0%   {-webkit-transform: rotate(0deg);}  
+			100% {-webkit-transform: rotate(360deg);}  
 		}
 
 		.worker{
@@ -73,6 +78,11 @@
 			background-position: center;
 			position: absolute;
 			z-index:3;
+			display:none;
+		}
+
+		.worker .bubble{
+			display:none;
 		}
 
 		.message{
@@ -84,6 +94,22 @@
 			position: absolute;
 			z-index:3;
 			display:none;
+		}
+
+		#people{
+			position:absolute;
+			z-index:3;
+			bottom:10%;
+			right:0;
+			background-color:rgba(200,200,200,0.7);
+			width:200px;
+			height:180px;
+			border-radius:90px;
+		}
+
+		#people img{
+			position:absolute;
+			width:140px;
 		}
 
 		#boss{
@@ -139,20 +165,16 @@
 
 								<div class="animation" id="mainAnimation">
 									<div id="circle">
-										<div class="worker" id="w1">
-											<div class="bubble bubbleRight" style="right:-80px; top:-60px">
-												Mensaje del trabajador 1
-											</div>
-										</div>
-										<div class="worker" id="w2">
-											<div class="bubble bubbleBottom" style="right:-100px; top:30px">
-												Mensaje del trabajador 2
-											</div>
-										</div>
-										<div class="worker" id="w3">
-											<div class="bubble bubbleLeft" style="left:-230px; top:-60px">
-												Mensaje del trabajador 3
-											</div>
+										<div id="people">
+											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:20px; left:15px; z-index:2">
+											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:50px;">
+											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:-40px; left:80px; z-">
+											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-10px;">
+											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-50px;">
+
+											<div class="bubble bubbleRight" id="m1" style="top:-10px; right: -250px">Text 1</div>
+											<div class="bubble bubbleLeft" id="m2" style="top:-50px; left: -240px">Text 2</div>
+											<div class="bubble bubbleBottom" id="m3" style="bottom:-150px; left: -200px">Text 3</div>
 										</div>
 										<div id="boss" class="message">
 											El gerente empieza a bajar a tomar el café
@@ -160,7 +182,7 @@
 										<div id="result" class="message">
 											Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.
 										</div>
-										<div id="spinner"></div>
+										<div id="spinner" class="animated"></div>
 									</div>
 								</div>
 							</div>
@@ -216,6 +238,7 @@
     <![endif]-->
     
     <script src="assets/lib/jquery-1.9.1.min.js"></script>
+    <script src="assets/lib/jquery.color-2.1.2.min.js"></script>
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
