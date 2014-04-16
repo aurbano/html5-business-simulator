@@ -72,7 +72,7 @@ Simulator = {
 	],
 
 	gerente: [
-		"Viene a controlarlos",
+		"Viene a controlarnos",
 		"",
 		"Viene a escucharnos; Quiere estar cerca de nosotros/as"
 	],
@@ -101,6 +101,7 @@ Simulator = {
 		Simulator.setup();
 
 		Simulator.showResult(0);
+		Simulator.showBoss(0);
 
 		$('#help').click(function (e) {
 			e.preventDefault();
@@ -281,5 +282,14 @@ Simulator = {
 		} else {
 			$('#result').fadeIn();
 		}
+	},
+
+	/**
+	 * Show the next boss message
+	 * @param  {int} index Message index
+	 * @return {void}
+	 */
+	showBoss: function (index) {
+		$('#boss').html(Simulator.gerente[index]).fadeIn();
 	}
 };
