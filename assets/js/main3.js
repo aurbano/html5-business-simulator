@@ -78,7 +78,7 @@ Simulator = {
 	],
 
 	// ------------------------------------------- //
-	target: [], // Current target position for all settings
+	target: false, // Current target position for all settings
 
 	// ------------------------------------------- //
 	/**
@@ -172,24 +172,25 @@ Simulator = {
 
 		var mostPopular = 0,
 			faulty = [],
-			palancas = $('#palancas select');
+			palancas = $('#palancas select'),
+			target = Simulator.target;
 
 		palancas.css({
 			background: 'white'
 		});
 
 		// Check if there is a defined target
-		if (!Simulator.target) {
+		if (!target) {
 			mostPopular = Simulator.findPopular();
-			Simulator.target = [];
+			target = [];
 			for (var i = 0; i < Simulator.palancas.length; i++) {
-				Simulator.target.push(mostPopular);
+				target.push(mostPopular);
 			}
 		}
 
 		// Now compare each setting with the target settings
 		for (var i = 0; i < palancas.length; i++) {
-			if ($(palancas[i]).val() - Simulator.target[i] !== 0) {
+			if ($(palancas[i]).val() - target[i] !== 0) {
 				faulty.push(i);
 				$(palancas[i]).css({
 					background: 'rgba(255,0,0,0.1)'
@@ -232,8 +233,8 @@ Simulator = {
 
 		for (var i = 0; i < palancas.length; i++) {
 			if ($(palancas[i]).val() < 0) {
-				console.log('Por favor configura todas las palancas!');
-				return false;
+				// Skip unselected values
+				continue;
 			}
 			eachColumnCount[$(palancas[i]).val()]++;
 		}
