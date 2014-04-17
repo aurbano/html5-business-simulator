@@ -86,14 +86,18 @@
 			display:none;
 		}
 
+		.messages{
+			position: absolute;
+			z-index:3;
+			left:30%;
+			top: -35%;
+		}
+
 		.message{
 			border-radius:10px;
 			border:#E1E1E1 solid 3px;
 			padding:10px;
 			max-width:250px;
-			position: absolute;
-			z-index:3;
-			display:none;
 		}
 
 		#people{
@@ -132,11 +136,8 @@
 			padding:10px 10px 10px 60px;
 			font-size:1.3em;
 			background-color:#BBE0FF;
-		}
-
-		#result{
-			left:30%;
-			top: -35%;
+			position: absolute;
+			z-index:3;
 		}
 
 		#w1{
@@ -190,8 +191,8 @@
 										<div id="boss" class="message bg-info">
 											El gerente empieza a bajar a tomar el café
 										</div>
-										<div id="result" class="message bg-warning">
-											Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.
+										<div class="messages">
+											<div id="result" class="message bg-warning">Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.</div>
 										</div>
 										<div id="spinner" class="animated"></div>
 									</div>

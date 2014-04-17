@@ -17,31 +17,31 @@ Simulator = {
 	palancas: [
 		{
 			name: "Liderazgo",
-			opciones: ["Clásico", "Clásico", "Transformacional"]
+			opciones: ["Clásico", "Transformacional"]
 		},
 		{
 			name: "Formación",
-			opciones: ['La justa/sólo para la "tarea"', 'Algo más', 'Se potencia el desarrollo profesional']
+			opciones: ['La justa/sólo para la "tarea"', 'Se potencia el desarrollo profesional']
 		},
 		{
 			name: "Transparencia en las cuentas",
-			opciones: ["No existe", "No existe", "Total. Se comparten sistemáticamente."]
+			opciones: ["No existe", "Total. Se comparten sistemáticamente."]
 		},
 		{
 			name: "Participación en los beneficios",
-			opciones: ["No", "No", "Si"]
+			opciones: ["No", "Si"]
 		},
 		{
 			name: "Incentivos individuales",
-			opciones: ["Basados en niveles de productividad/calidad", "Basados en niveles de productividad/calidad", "No existen"]
+			opciones: ["Basados en niveles de productividad/calidad", "No existen"]
 		},
 		{
 			name: "Autonomía en el trabajo",
-			opciones: ["Limitada a la ejecución de la tarea", "Amplia (calidad, objetivos...", "Amplia (Calidad, objetivos...)"]
+			opciones: ["Limitada a la ejecución de la tarea", "Amplia (Calidad, objetivos...)"]
 		},
 		{
 			name: "Participación en la estrategia",
-			opciones: ["Inexistente", "Algo (Iniciativas timidas)", "La mayor posible"]
+			opciones: ["Inexistente", "La mayor posible"]
 		}
 	],
 
@@ -59,8 +59,9 @@ Simulator = {
 			"Parece que confian en nosotros/as",
 			"Por el momento no somos parte del proyecto, pero en un futuro...",
 			'Parece que somos un "activo" clave',
-			'OP1: Es un engaño, pues se trata de una iniciativa disfrazada de buenas palabras para darnos otra "vuelta de tuerca" más!',
-			'OP2: Están confiando en nosotros y parece que reconocen nuestro potencial para aportar y hacer sostenible el proyecto.'
+			'OP1: Están confiando en nosotros y parece que reconocen nuestro potencial para aportar y hacer sostenible el proyecto.',
+			'OP2: Es un engaño, pues se trata de una iniciativa disfrazada de buenas palabras para darnos otra "vuelta de tuerca" más!',
+
 		],
 		[
 			"La organización confía en nosotros/as",
@@ -72,31 +73,60 @@ Simulator = {
 	],
 
 	gerente: [
-		"¡Viene a controlarnos!",
-		"",
-		"Viene a escucharnos; Quiere estar cerca de nosotros/as"
+		{
+			text: "¡Viene a controlarnos!",
+			style: 'bg-danger'
+		},
+		{
+			text: '¡Viene a controlarnos!',
+			style: 'bg-danger'
+		},
+		{
+			text: 'Viene a escucharnos; Quiere estar cerca de nosotros/as',
+			style: 'bg-success'
+		}
 	],
 
 	result: [
 		{
 			index: 0,
-			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.'
+			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
+			style: 'bg-warning'
 		},
 		{
 			index: 6,
-			text: 'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.'
+			text: 'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.',
+			style: 'bg-success'
+		}
+	],
+
+	tasks: [
+		{
+			text: 'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.',
+			target: [0, 0, 0, 0, 0, 0, 0]
+		},
+		{
+			text: 'La gerencia decide probar una nueva iniciativa, modifica por favor la configuración de Autonomía',
+			target: [0, 0, 0, 0, 0, 1, 0]
+		},
+		{
+			text: 'Por favor, vuelve a configurar nuevamente el sistema de prácticas, pero en este caso sigue un planteamiento de compromiso total en las personas.',
+			target: [1, 1, 1, 1, 1, 1, 1]
 		}
 	],
 
 	// ------------------------------------------- //
 	target: false, // Current target position for all settings
 	currentResult: -1, // Current result index
+	animationPhase: 0, // Current animation phase
 
 	// ------------------------------------------- //
 	/**
 	 *  Launch the simulator
 	 */
 	start: function () {
+
+		// ---------- SIMULATOR CONFIGURATION AND SETUP ------------- //
 
 		Simulator.setup();
 
@@ -114,23 +144,23 @@ Simulator = {
 
 		Simulator.$tarea = $('#instruction-modal');
 
-		Simulator.startAnimation(0);
+		// ---------------------------------------------------------- //
+		// ---------------------------------------------------------- //
 
 		// Initial task and target setup
-		// Simulator.newTask(
-		// 	'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.', [0, 0, 0, 0, 0, 0, 0]
-		// );
+		Simulator.newTask(0);
 
 		var status;
 
 		$('#palancas select').change(function () {
+
 			status = Simulator.getStatus();
 
 			if (status.status) {
 				// All are ok
 				// Since this is task 1, they must all be in the first setting
-				console.log('start: Settings match case 1, start animation!');
-				Simulator.startAnimation(0);
+				console.log('start: Start simulation phase ' + Simulator.animationPhase);
+				Simulator.startAnimation(Simulator.animationPhase);
 			}
 		});
 	},
@@ -140,38 +170,39 @@ Simulator = {
 	 * @param  {String} task
 	 * @return {void}
 	 */
-	newTask: function (task, target) {
-		Simulator.$tarea.find(".modal-body").html(task);
+	newTask: function (task) {
+		console.log("Starting new phase: " + task);
+		Simulator.$tarea.find(".modal-body").html(Simulator.tasks[task].text);
 		Simulator.$tarea.modal().on('hidden.bs.modal', function () {
 			Simulator.enableSettings();
 		});
-		Simulator.target = target;
+		Simulator.target = Simulator.tasks[task].target;
 	},
 
 	/* ----------------------------------------- */
 	/*           INTERNAL FUNCTIONS              */
 
 	/**
-	 * Display all the buttons and get things ready
+	 * Display the setting buttons
 	 * @return {void}
 	 */
 	setup: function () {
 		$('#palancas').html();
 
 		/*for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
-      var btn = '<div class="btn-group">'+
-                    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'+
-                      Simulator.palancas[i].name+' <span class="caret"></span>'+
-                    '</button>'+
-                    '<ul class="dropdown-menu" role="menu">';
-      for (var a = 0; a < Simulator.palancas[i].opciones.length; a++) {
-        btn += '<li><a href="#">'+Simulator.palancas[i].opciones[a]+'</a></li>';
-      }
+	      var btn = '<div class="btn-group">'+
+	                    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'+
+	                      Simulator.palancas[i].name+' <span class="caret"></span>'+
+	                    '</button>'+
+	                    '<ul class="dropdown-menu" role="menu">';
+	      for (var a = 0; a < Simulator.palancas[i].opciones.length; a++) {
+	        btn += '<li><a href="#">'+Simulator.palancas[i].opciones[a]+'</a></li>';
+	      }
 
-      btn +=        '</ul>'+
-                  '</div>';
-      $('#palancas').prepend(btn);
-    }*/
+	      btn +=        '</ul>'+
+	                  '</div>';
+	      $('#palancas').prepend(btn);
+	    }*/
 
 		for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
 			var btn = '<select class="form-control" data-index="' + i + '">' +
@@ -246,11 +277,11 @@ Simulator = {
 		Simulator.disableSettings();
 		Simulator.displayCircle();
 		Simulator.animateSpinner();
-		Simulator.cycleComments(0);
+		Simulator.cycleComments(type);
 
 		setTimeout(function () {
 			Simulator.showResult(0);
-		}, 10000 * Simulator.config.speed);
+		}, 13000 * Simulator.config.speed);
 
 
 		setTimeout(function () {
@@ -259,12 +290,22 @@ Simulator = {
 			// This will trigger a new spinner and a new result
 			Simulator.animateSpinner();
 			Simulator.animateQuestionMark();
-		}, 14000 * Simulator.config.speed);
+		}, 17000 * Simulator.config.speed);
 
 		setTimeout(function () {
 			// Add consequence to the result box
-			$('#result').append('<p style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type] + '</p>');
-		}, 19000 * Simulator.config.speed);
+			$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
+		}, 27000 * Simulator.config.speed);
+
+		setTimeout(function () {
+			// If there are more tasks, restart the process
+			if (Simulator.animationPhase < Simulator.tasks.length) {
+				Simulator.animationPhase++;
+				Simulator.newTask(Simulator.animationPhase);
+			} else {
+				alert("Has acabado la demostración.");
+			}
+		}, 32000 * Simulator.config.speed);
 	},
 
 	/**
@@ -275,6 +316,7 @@ Simulator = {
 		$('.bubble').hide();
 		$('#boss').hide();
 		$('#result').hide();
+		$('.messages .message').remove();
 		$('#circle').fadeIn();
 	},
 
@@ -298,7 +340,7 @@ Simulator = {
 		if (typeof (Simulator.comments[index]) == 'undefined')
 			return;
 
-		var times = [1000 * Simulator.config.speed, 3000 * Simulator.config.speed, 7000 * Simulator.config.speed];
+		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed];
 
 		Simulator.animateQuestionMark();
 
@@ -323,19 +365,19 @@ Simulator = {
 	animateQuestionMark: function () {
 		setTimeout(function () {
 			$('#questions').fadeToggle();
-		}, 500 * Simulator.config.speed);
+		}, 100 * Simulator.config.speed);
 
 		setTimeout(function () {
 			$('#questions').fadeToggle();
-		}, 1500 * Simulator.config.speed);
+		}, 2500 * Simulator.config.speed);
 
 		setTimeout(function () {
 			$('#questions').fadeToggle();
-		}, 3500 * Simulator.config.speed);
+		}, 6500 * Simulator.config.speed);
 
 		setTimeout(function () {
 			$('#questions').fadeOut();
-		}, 5000 * Simulator.config.speed);
+		}, 8000 * Simulator.config.speed);
 	},
 
 	/**
@@ -381,7 +423,7 @@ Simulator = {
 				console.log("showResult: Valid result (Index=" + i + "): " + text);
 			}
 			// Display the text and the result
-			$('#result').html(text).fadeIn();
+			$('.messages').append('<div id="result" class="message ' + Simulator.result[i].style + '">' + text + '</div>').fadeIn();
 		} else {
 			$('#result').fadeIn();
 		}
