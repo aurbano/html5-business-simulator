@@ -70,27 +70,11 @@
 			100% {-webkit-transform: rotate(360deg);}  
 		}
 
-		.worker{
-			width:80px;
-			height:120px;
-			background-image: url(assets/img/sim3/trabajador.png);
-			background-repeat: no-repeat;
-			background-size: 200px;
-			background-position: center;
-			position: absolute;
-			z-index:3;
-			display:none;
-		}
-
-		.worker .bubble{
-			display:none;
-		}
-
 		.messages{
 			position: absolute;
 			z-index:3;
 			left:30%;
-			top: -35%;
+			top: -45%;
 		}
 
 		.message{
@@ -131,29 +115,13 @@
 			background-repeat: no-repeat;
 			background-size: 150px;
 			background-position: -53px -24px;
-			right:-40%;
-			top: -15%;
+			right:-50%;
+			top: -25%;
 			padding:10px 10px 10px 60px;
 			font-size:1.3em;
 			background-color:#BBE0FF;
 			position: absolute;
 			z-index:3;
-		}
-
-		#w1{
-			right:0;
-			top: 40px;
-		}
-
-
-		#w2{
-			bottom: -20px;
-			left:40%;
-		}
-
-		#w3{
-			left:0;
-			top:30px;
 		}
 
 	</style>
@@ -187,6 +155,7 @@
 											<div class="bubble bubbleRight" id="m1" style="top:-10px; right: -250px">Text 1</div>
 											<div class="bubble bubbleLeft" id="m2" style="top:-50px; left: -240px">Text 2</div>
 											<div class="bubble bubbleBottom" id="m3" style="bottom:-150px; left: -200px">Text 3</div>
+											<div class="bubble bubbleUnder" id="m4" style="top:-140px; left: 20px">Text 4</div>
 										</div>
 										<div id="boss" class="message bg-info">
 											El gerente empieza a bajar a tomar el café

@@ -52,8 +52,7 @@ Simulator = {
 			"La organización no confía en nosotros/as",
 			"No somos parte del proyecto",
 			'Somos un "recurso" al servicio de un proyecto ajeno a nosotros',
-			'OP1: En esta organización hago el esfuerzo justo, y si tenemos la suerte de trabajar menos por averías/ineficiencias... mejor!',
-			'OP2: blabla'
+			'En esta organización hago el esfuerzo justo, y si tenemos la suerte de trabajar menos por averías/ineficiencias... mejor!',
 		],
 		[
 			"Parece que confian en nosotros/as",
@@ -67,8 +66,8 @@ Simulator = {
 			"La organización confía en nosotros/as",
 			"Somos parte del proyecto",
 			'Somos un "activo" clave para el éxito del proyecto',
-			'Nos esforzamos continuamente para mejorar la calidad del servicio que ofrecemos a nuestros clientes',
-			'Realizamos esfuerzos extra en el trabajo para que el proyecto tenga éxito.'
+			'1: Nos esforzamos continuamente para mejorar la calidad del servicio que ofrecemos a nuestros clientes',
+			'2: Realizamos esfuerzos extra en el trabajo para que el proyecto tenga éxito.'
 		]
 	],
 
@@ -89,12 +88,14 @@ Simulator = {
 
 	result: [
 		{
-			index: 0,
 			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
 			style: 'bg-warning'
 		},
 		{
-			index: 6,
+			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
+			style: 'bg-warning'
+		},
+		{
 			text: 'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.',
 			style: 'bg-success'
 		}
@@ -117,6 +118,7 @@ Simulator = {
 
 	// ------------------------------------------- //
 	target: false, // Current target position for all settings
+	editable: false, // Could the settings be editable? Should be false during animation cycles.
 	currentResult: -1, // Current result index
 	animationPhase: 0, // Current animation phase
 
@@ -172,6 +174,13 @@ Simulator = {
 	 */
 	newTask: function (task) {
 		console.log("Starting new phase: " + task);
+
+		$('.bubble').hide();
+		$('#boss').hide();
+		$('#result').hide();
+		$('.messages .message').remove();
+
+		Simulator.editable = true;
 		Simulator.$tarea.find(".modal-body").html(Simulator.tasks[task].text);
 		Simulator.$tarea.modal().on('hidden.bs.modal', function () {
 			Simulator.enableSettings();
@@ -274,38 +283,39 @@ Simulator = {
 	 */
 	startAnimation: function (type) {
 		console.log("startAnimation: Animation of type " + type + ' triggered! Blocking all settings');
+		Simulator.editable = false;
 		Simulator.disableSettings();
 		Simulator.displayCircle();
 		Simulator.animateSpinner();
-		Simulator.cycleComments(type);
+		Simulator.cycleComments(type, function () {
+			setTimeout(function () {
+				Simulator.showResult(type);
+			}, 3000 * Simulator.config.speed);
 
-		setTimeout(function () {
-			Simulator.showResult(0);
-		}, 13000 * Simulator.config.speed);
 
+			setTimeout(function () {
+				Simulator.showBoss();
 
-		setTimeout(function () {
-			Simulator.showBoss();
+				// This will trigger a new spinner and a new result
+				Simulator.animateSpinner();
+				Simulator.animateQuestionMark();
+			}, 7000 * Simulator.config.speed);
 
-			// This will trigger a new spinner and a new result
-			Simulator.animateSpinner();
-			Simulator.animateQuestionMark();
-		}, 17000 * Simulator.config.speed);
+			setTimeout(function () {
+				// Add consequence to the result box
+				$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
+			}, 17000 * Simulator.config.speed);
 
-		setTimeout(function () {
-			// Add consequence to the result box
-			$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
-		}, 27000 * Simulator.config.speed);
-
-		setTimeout(function () {
-			// If there are more tasks, restart the process
-			if (Simulator.animationPhase < Simulator.tasks.length) {
+			setTimeout(function () {
 				Simulator.animationPhase++;
-				Simulator.newTask(Simulator.animationPhase);
-			} else {
-				alert("Has acabado la demostración.");
-			}
-		}, 32000 * Simulator.config.speed);
+				// If there are more tasks, restart the process
+				if (Simulator.animationPhase < Simulator.tasks.length) {
+					Simulator.newTask(Simulator.animationPhase);
+				} else {
+					alert("Has acabado la demostración.");
+				}
+			}, 22000 * Simulator.config.speed);
+		});
 	},
 
 	/**
@@ -325,9 +335,12 @@ Simulator = {
 	 * @return {void}
 	 */
 	animateSpinner: function () {
+		console.log("animateSpinner()");
 		$('#spinner').removeClass('animated').fadeIn();
 		$('#spinner').prop('offsetWidth', $('#spinner').prop('offsetWidth'));
-		$('#spinner').addClass('animated');
+		setTimeout(function () {
+			$('#spinner').addClass('animated');
+		}, 10);
 	},
 
 	/**
@@ -336,17 +349,61 @@ Simulator = {
 	 * @param  {int} index Phase number
 	 * @return {void}
 	 */
-	cycleComments: function (index) {
+	cycleComments: function (index, callback) {
 		if (typeof (Simulator.comments[index]) == 'undefined')
 			return;
 
-		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed];
+		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed],
+			lastTime = times[times.length - 1];
 
 		Simulator.animateQuestionMark();
 
 		for (var i = 0; i < 3; i++) {
 			Simulator.displayComment(index, i, times[i]);
 		}
+
+		// Check if there is an extra comment for this phase
+		if (Simulator.comments[index].length > 3) {
+			console.log("cycleComments: There are more comments, spin again and show them");
+
+			setTimeout(function () {
+				// More comments, turn again!
+				Simulator.animateQuestionMark();
+				Simulator.animateSpinner();
+			}, lastTime);
+
+			lastTime += 9000 * Simulator.config.speed;
+
+			if (index > 1) {
+				var display = 3;
+				if (Simulator.comments[index].length > 4) {
+					display = Math.floor((Math.random() * (Simulator.comments[index].length - 1)) + 3);
+				}
+				console.log('cycleComments: Phase ' + index + ', chosen randomly comment: ' + display);
+				Simulator.displayComment(index, display, lastTime);
+			} else {
+				Simulator.displayComment(index, 3, lastTime);
+			}
+
+		}
+
+		// In phase 2 we have to spin twice, and then show what they realized
+		if (index == 1) {
+			console.log("cycleComments: Phase 2, show the conclussion they get after a given time.");
+
+			setTimeout(function () {
+				// More comments, turn again!
+				Simulator.animateSpinner();
+				Simulator.animateQuestionMark();
+			}, lastTime);
+
+			lastTime += 9000 * Simulator.config.speed;
+			Simulator.displayComment(index, 4, lastTime);
+		}
+
+		setTimeout(function () {
+			callback.call();
+		}, lastTime);
 	},
 
 	/**
@@ -358,7 +415,12 @@ Simulator = {
 	 */
 	displayComment: function (phase, comment, time) {
 		setTimeout(function () {
-			$('#m' + (comment + 1)).html(Simulator.comments[phase][comment]).fadeIn();
+			var id = comment + 1;
+			if (id > 4) {
+				id = 4;
+				$('#m' + id).fadeOut();
+			}
+			$('#m' + id).html(Simulator.comments[phase][comment]).fadeIn();
 		}, time);
 	},
 
@@ -413,20 +475,12 @@ Simulator = {
 
 		$('#spinner').fadeOut();
 
-		if (index > Simulator.currentResult) {
-			var text = Simulator.result[0].text;
-			// Get the next result with <= index
-			for (var i = Simulator.currentResult; i < Simulator.result.length; i++) {
-				if (typeof (Simulator.result[i]) == 'undefined') continue;
-				if (Simulator.result[i].index > index) break;
-				text = Simulator.result[i].text;
-				console.log("showResult: Valid result (Index=" + i + "): " + text);
-			}
-			// Display the text and the result
-			$('.messages').append('<div id="result" class="message ' + Simulator.result[i].style + '">' + text + '</div>').fadeIn();
-		} else {
-			$('#result').fadeIn();
+		if (typeof (Simulator.result[index]) === 'undefined') {
+			console.err('showResult: undefined index ' + index);
+			return;
 		}
+
+		$('.messages').append('<div id="result" class="message ' + Simulator.result[index].style + '">' + Simulator.result[index].text + '</div>').fadeIn();
 	},
 
 	/**
@@ -441,6 +495,7 @@ Simulator = {
 	 * Sets the settings into editable mode
 	 */
 	enableSettings: function () {
+		if (!Simulator.editable) return;
 		$('#palancas').animate({
 			backgroundColor: '#79B6FF'
 		}, 600).find('select').prop('disabled', false);

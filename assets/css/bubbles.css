@@ -66,3 +66,13 @@
 	right: -10px;
 	background: #2e88c4;
 }
+
+.bubbleUnder:before {
+	bottom: -20px;
+	left: 80px;
+}
+
+.bubbleUnder:after {
+	bottom: -40px;
+	left: 75px;
+}
