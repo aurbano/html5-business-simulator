@@ -1,0 +1,78 @@
+.bubble {
+	position: absolute;
+	width: 250px;
+	padding: 20px 10px;
+	margin: 1em auto 80px;
+	text-align: center;
+	color: #fff;
+	background: #075698;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+	background: -moz-linear-gradient(#2e88c4, #075698);
+	background: -o-linear-gradient(#2e88c4, #075698);
+	background: linear-gradient(#2e88c4, #075698);
+	border-radius: 30px;
+	z-index:4;
+}
+.bubble:before {
+	content: "";
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background: #075698;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+
+.bubble:after {
+	content: "";
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	background: #075698;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+.bubbleRight:before {
+	bottom: -20px;
+	left: 30px;
+}
+
+.bubbleRight:after {
+	bottom: -30px;
+	left: 15px;
+}
+
+.bubbleLeft:before {
+	bottom: -20px;
+	right: 30px;
+}
+
+.bubbleLeft:after {
+	bottom: -30px;
+	right: 15px;
+}
+
+.bubbleBottom:before {
+	top: -20px;
+	right: 10px;
+	background: #2e88c4;
+}
+
+.bubbleBottom:after {
+	top: -30px;
+	right: -10px;
+	background: #2e88c4;
+}
+
+.bubbleUnder:before {
+	bottom: -20px;
+	left: 80px;
+}
+
+.bubbleUnder:after {
+	bottom: -40px;
+	left: 75px;
+}

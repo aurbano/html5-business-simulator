@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mondragon - 3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="assets/lib/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="assets/lib/bootstrap-3.1.1/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/css/slider.css" rel="stylesheet">
+    <link href="assets/css/bubbles.css" rel="stylesheet">
+    <style>
+
+    	#showTask{
+    		position: absolute;
+    		top:3px;
+    		right: 8px;
+    		font-size:small;
+    		z-index:9;
+    	}
+
+    	#simulador{
+			height:730px;
+		}
+	
+		#palancas{
+			background-color:#DBDBDB;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			border-top:solid #ccc 1px;
+		}
+
+		#viewport{
+			overflow: hidden;
+			width: 100%;
+			height: 100%;
+		}
+
+		#circle{
+			position: absolute;
+			top: 30%;
+			left:24%;
+			width: 45%;
+			height: 400px;
+			z-index:1;
+			display:none;
+		}
+
+		#spinner{
+			position:absolute;
+			width:400px;
+			height:400px;
+			background-image: url(assets/img/sim3/spinner.png);
+			background-repeat: no-repeat;
+			background-size: 400px;
+			top:-5%;
+			left:13%;
+			z-index:2;
+			display:none;
+		}
+
+		.animated{
+			-webkit-animation: spinX;
+			-webkit-animation-duration: 10s;
+		}
+
+		@-webkit-keyframes spinX{  
+			0%   {-webkit-transform: rotate(0deg);}  
+			100% {-webkit-transform: rotate(360deg);}  
+		}
+
+		.messages{
+			position: absolute;
+			z-index:3;
+			left:30%;
+			top: -45%;
+		}
+
+		.message{
+			border-radius:10px;
+			border:#E1E1E1 solid 3px;
+			padding:10px;
+			max-width:250px;
+		}
+
+		#people{
+			position:absolute;
+			z-index:3;
+			bottom:10%;
+			right:0;
+			background-color:rgba(200,200,200,0.7);
+			width:200px;
+			height:180px;
+			border-radius:90px;
+		}
+
+		#people img{
+			position:absolute;
+			width:140px;
+		}
+
+		#questions{
+			font-size: 14em;
+			position: absolute;
+			top: -1.2em;
+			left: 0.2em;
+			color:rgba(200,200,200,0.7);
+			display:none;
+		}
+
+		#boss{
+			height:105px;
+			background-image: url(assets/img/sim3/jefe.png);
+			background-repeat: no-repeat;
+			background-size: 150px;
+			background-position: -53px -24px;
+			right:-50%;
+			top: -25%;
+			padding:10px 10px 10px 60px;
+			font-size:1.3em;
+			background-color:#BBE0FF;
+			position: absolute;
+			z-index:3;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Simulador 3</h1>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel" id="simulador">
+							<div id="viewport">
+								<a href="#instruction-modal" data-toggle="modal" id="showTask"><i class="fa fa-plus-square-o"></i> Tarea actual</a>
+								<div class="animation" id="contains-palancas">
+									<form class="form-inline" id="palancas"></form>
+								</div>
+
+								<div class="animation" id="mainAnimation">
+									<div id="circle">
+										<div id="people">
+											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:20px; left:15px; z-index:2">
+											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:50px;">
+											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:-40px; left:80px; z-">
+											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-10px;">
+											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-50px;">
+
+											<div id="questions">?</div>
+
+											<div class="bubble bubbleRight" id="m1" style="top:-10px; right: -250px">Text 1</div>
+											<div class="bubble bubbleLeft" id="m2" style="top:-50px; left: -240px">Text 2</div>
+											<div class="bubble bubbleBottom" id="m3" style="bottom:-150px; left: -200px">Text 3</div>
+											<div class="bubble bubbleUnder" id="m4" style="top:-140px; left: 20px">Text 4</div>
+										</div>
+										<div id="boss" class="message bg-info">
+											El gerente empieza a bajar a tomar el café
+										</div>
+										<div class="messages">
+											<div id="result" class="message bg-warning">Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.</div>
+										</div>
+										<div id="spinner" class="animated"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<p class="text-muted text-center">
+			<a href="#" id="help"><i class="fa fa-question-circle"></i> Explicación para el juego</a> &bull; <a href="javascript:window.location.reload()"><i class="fa fa-repeat"></i> Reiniciar</a>
+		</p>
+	</footer>
+
+	<div class="modal fade" id="instruction-modal" tabindex="-1" role="dialog" aria-labelledby="Tarea actual" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Tarea</h4>
+	      </div>
+	      <div class="modal-body">
+				<p>Tarea actual</p>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="Ayuda" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Ayuda</h4>
+	      </div>
+	      <div class="modal-body">
+				<p>Texto de ayuda sobre el simulador</p>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <script src="assets/lib/jquery-1.9.1.min.js"></script>
+    <script src="assets/lib/jquery.color-2.1.2.min.js"></script>
+	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
+	<script type="text/javascript" src="assets/js/main3.js"></script>
+
+	<script type="text/javascript">
+		Simulator.start();
+	</script>
+</body>
+</html>
