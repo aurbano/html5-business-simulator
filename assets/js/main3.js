@@ -58,16 +58,16 @@ Simulator = {
 			"Parece que confian en nosotros/as",
 			"Por el momento no somos parte del proyecto, pero en un futuro...",
 			'Parece que somos un "activo" clave',
-			'OP1: Están confiando en nosotros y parece que reconocen nuestro potencial para aportar y hacer sostenible el proyecto.',
-			'OP2: Es un engaño, pues se trata de una iniciativa disfrazada de buenas palabras para darnos otra "vuelta de tuerca" más!',
+			'Están confiando en nosotros y parece que reconocen nuestro potencial para aportar y hacer sostenible el proyecto.',
+			'Es un engaño, pues se trata de una iniciativa disfrazada de buenas palabras para darnos otra "vuelta de tuerca" más!',
 
 		],
 		[
 			"La organización confía en nosotros/as",
 			"Somos parte del proyecto",
 			'Somos un "activo" clave para el éxito del proyecto',
-			'1: Nos esforzamos continuamente para mejorar la calidad del servicio que ofrecemos a nuestros clientes',
-			'2: Realizamos esfuerzos extra en el trabajo para que el proyecto tenga éxito.'
+			'Nos esforzamos continuamente para mejorar la calidad del servicio que ofrecemos a nuestros clientes',
+			'Realizamos esfuerzos extra en el trabajo para que el proyecto tenga éxito.'
 		]
 	],
 
@@ -418,9 +418,12 @@ Simulator = {
 			var id = comment + 1;
 			if (id > 4) {
 				id = 4;
-				$('#m' + id).fadeOut();
+				$('#m' + id).fadeOut(250, function () {
+					$('#m' + id).html(Simulator.comments[phase][comment]).fadeIn();
+				});
+			} else {
+				$('#m' + id).html(Simulator.comments[phase][comment]).fadeIn();
 			}
-			$('#m' + id).html(Simulator.comments[phase][comment]).fadeIn();
 		}, time);
 	},
 
