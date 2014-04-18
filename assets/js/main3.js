@@ -9,7 +9,7 @@ Simulator = {
 	// todos ellos estan explicados a continuacion.
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config: {
-		debug: true, // Turn console debugging on/off
+		debug: false, // Turn console debugging on/off
 		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más despacio
 	},
 
@@ -208,12 +208,15 @@ Simulator = {
 		$('#palancas').html();
 
 		for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
+
 			var index = Math.round((Math.random()) * (Simulator.palancas[i].opciones.length - 1)),
 				btn = '<button class="btn btn-default" data-setting="' + i + '">' +
 					'<span class="btn-title">' + Simulator.palancas[i].name + '</span>' +
 					'<span class="btn-value" data-index="' + index + '">' + Simulator.palancas[i].opciones[index] + '</span>' +
 					'</button>';
 			$('#palancas').prepend(btn);
+
+			if (i > 0 && i % 2 == 0) $('#palancas').prepend('<br />');
 		}
 
 		// Set them up to change on click and trigger the change event
@@ -438,7 +441,7 @@ Simulator = {
 
 		// Check if there is an extra comment for this phase
 		if (Simulator.comments[index].length > 3) {
-			console.log("cycleComments: There are more comments, spin again and show them");
+			console.log("cycleComments: Phase " + index + " There are more comments, spin again and show them");
 
 			setTimeout(function () {
 				// More comments, turn again!
@@ -463,7 +466,7 @@ Simulator = {
 
 		// In phase 2 we have to spin twice, and then show what they realized
 		if (index == 1) {
-			console.log("cycleComments: Phase 2, show the conclussion they get after a given time.");
+			console.log("cycleComments: Phase 1, show the conclussion they get after a given time.");
 
 			setTimeout(function () {
 				// More comments, turn again!
