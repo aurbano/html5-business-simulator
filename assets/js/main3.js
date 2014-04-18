@@ -320,12 +320,15 @@ Simulator = {
 			};
 		}
 
+		var linger = 0;
+		if (position == 1) linger = 4000;
+
 		Simulator.highlightWrong();
 
 		console.log("moveAnimation(), pos: ", pos);
 		setTimeout(function () {
 			$('#app').animate(pos, 2000 * Simulator.config.speed, 'swing', callback);
-		}, 2000 * Simulator.config.speed);
+		}, linger * Simulator.config.speed);
 	},
 
 	/**
