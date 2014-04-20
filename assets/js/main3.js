@@ -9,7 +9,7 @@ Simulator = {
 	// todos ellos estan explicados a continuacion.
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config: {
-		debug: false, // Turn console debugging on/off
+		debug: true, // Turn console debugging on/off
 		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más despacio
 	},
 
@@ -161,7 +161,7 @@ Simulator = {
 
 		var status;
 
-		$('#palancas button').change(function () {
+		$('#palancas input').click(function (e) {
 
 			status = Simulator.getStatus();
 
@@ -170,6 +170,8 @@ Simulator = {
 				// Since this is task 1, they must all be in the first setting
 				console.log('start: Start simulation phase ' + Simulator.animationPhase);
 				Simulator.startAnimation(Simulator.animationPhase);
+			} else {
+				Simulator.highlightTarget();
 			}
 		});
 	},
@@ -185,7 +187,7 @@ Simulator = {
 		if (task > 0) Simulator.moveAnimation(0);
 
 		$('.bubble').hide();
-		$('#boss').hide();
+		Simulator.hideBoss();
 		$('#result').hide();
 		$('.messages .message').remove();
 
@@ -207,17 +209,34 @@ Simulator = {
 	setup: function () {
 		$('#palancas').html();
 
+		// Test element
+		var div = document.createElement('div');
+		document.body.appendChild(div);
+		$(div).css({
+			position: 'absolute',
+			left: -1000,
+			top: -1000,
+			display: 'none'
+		});
+
+
 		for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
 
-			var index = Math.round((Math.random()) * (Simulator.palancas[i].opciones.length - 1)),
-				btn = '<button class="btn btn-default" data-setting="' + i + '">' +
-					'<span class="btn-title">' + Simulator.palancas[i].name + '</span>' +
-					'<span class="btn-value" data-index="' + index + '">' + Simulator.palancas[i].opciones[index] + '</span>' +
-					'</button>';
-			$('#palancas').prepend(btn);
+			// Get the max possible width
+			var largest = Simulator.palancas[i].name;
+			if (Simulator.palancas[i].opciones[0].length > largest.length) largest = Simulator.palancas[i].opciones[0];
+			if (Simulator.palancas[i].opciones[1].length > largest.length) largest = Simulator.palancas[i].opciones[1];
+			$(div).text(largest);
+			var width = $(div).width() + 30; // + padding
 
-			if (i > 0 && i % 2 == 0) $('#palancas').prepend('<br />');
+			var btn = '<button class="btn btn-default" data-setting="' + i + '" style="width: ' + width + 'px">' +
+				'<span class="btn-title">' + Simulator.palancas[i].name + '</span>' +
+				'<span class="btn-value" data-index="-1">-</span>' +
+				'</button>';
+			$('#palancas').prepend(btn);
 		}
+
+		$('#palancas').append('<p style="margin-bottom:-10px"><input type="button" class="btn btn-primary" value="Comprobar"/></p>');
 
 		// Set them up to change on click and trigger the change event
 		$('#palancas button').click(function (e) {
@@ -233,18 +252,6 @@ Simulator = {
 
 			$(this).trigger('change');
 		});
-
-		// Using selects:
-		// for (var i = Simulator.palancas.length - 1; i >= 0; i--) {
-		// 	var btn = '<select class="form-control" data-index="' + i + '">' +
-		// 		'<option value="-1">' + Simulator.palancas[i].name + '</option>';
-		// 	for (var a = 0; a < Simulator.palancas[i].opciones.length; a++) {
-		// 		btn += '<option value="' + a + '">' + Simulator.palancas[i].opciones[a] + '</option>';
-		// 	}
-
-		// 	btn += '</select>';
-		// 	$('#palancas').prepend(btn);
-		// }
 	},
 
 	/**
@@ -273,9 +280,9 @@ Simulator = {
 		for (var i = 0; i < palancas.length; i++) {
 			if (Simulator.getValue($(palancas[i])) - target[i] !== 0) {
 				faulty.push(i);
-				$(palancas[i]).removeClass('btn-default').removeClass('btn-success').addClass('btn-danger');
+				//$(palancas[i]).removeClass('btn-default').removeClass('btn-success').addClass('btn-danger');
 			} else {
-				$(palancas[i]).removeClass('btn-default').removeClass('btn-danger').addClass('btn-success');
+				//$(palancas[i]).removeClass('btn-default').removeClass('btn-danger').addClass('btn-success');
 			}
 		}
 
@@ -312,26 +319,25 @@ Simulator = {
 	 * @return {void}
 	 */
 	moveAnimation: function (position, callback) {
-		pos = {
-			top: 0,
-			left: 0
-		};
-		if (position == 1) {
-			pos = {
-				top: '-200px',
-				left: '-600px'
-			};
-		}
+		// Positions array
+		// [x, y, time, wait]
+		var positions = [
+			[0, 0, 2000, 0],
+			[0, -740, 2000, 4000],
+			[0, -1100, 2000, 0]
+		];
 
-		var linger = 0;
-		if (position == 1) linger = 4000;
+		pos = {
+			top: positions[position][0] + 'px',
+			left: positions[position][1] + 'px'
+		};
 
 		Simulator.highlightWrong();
 
 		console.log("moveAnimation(), pos: ", pos);
 		setTimeout(function () {
-			$('#app').animate(pos, 2000 * Simulator.config.speed, 'swing', callback);
-		}, linger * Simulator.config.speed);
+			$('#app').animate(pos, positions[position][2] * Simulator.config.speed, 'swing', callback);
+		}, positions[position][3] * Simulator.config.speed);
 	},
 
 	/**
@@ -344,6 +350,22 @@ Simulator = {
 
 		for (var i = 0; i < palancas.length; i++) {
 			if (Simulator.getValue($(palancas[i])) - right !== 0) {
+				$(palancas[i]).removeClass('btn-default').removeClass('btn-success').addClass('btn-danger');
+			} else {
+				$(palancas[i]).removeClass('btn-default').addClass('btn-success').removeClass('btn-danger');
+			}
+		}
+	},
+
+	/**
+	 * Highlight the wrong columns according to the current target
+	 * @return {void}
+	 */
+	highlightTarget: function () {
+		var palancas = $('#palancas button');
+
+		for (var i = 0; i < palancas.length; i++) {
+			if (Simulator.getValue($(palancas[i])) - Simulator.target[i] !== 0) {
 				$(palancas[i]).removeClass('btn-default').removeClass('btn-success').addClass('btn-danger');
 			} else {
 				$(palancas[i]).removeClass('btn-default').addClass('btn-success').removeClass('btn-danger');
@@ -401,7 +423,7 @@ Simulator = {
 	 */
 	displayCircle: function () {
 		$('.bubble').hide();
-		$('#boss').hide();
+		Simulator.hideBoss();
 		$('#result').hide();
 		$('.messages .message').remove();
 		$('#circle').fadeIn();
@@ -569,7 +591,19 @@ Simulator = {
 	 */
 	showBoss: function () {
 		console.log("showBoss()");
-		$('#boss').fadeIn();
+		$('#boss').fadeIn().animate({
+			top: '-100px'
+		});
+	},
+
+	/**
+	 * Hide the Boss
+	 * @return {void}
+	 */
+	hideBoss: function () {
+		$('#boss').fadeOut().css({
+			top: '-400px'
+		}, 3000 * Simulator.config.speed, 'swing');
 	},
 
 	/**
@@ -577,6 +611,7 @@ Simulator = {
 	 */
 	enableSettings: function () {
 		if (!Simulator.editable) return;
+		$('#palancas input').prop('disabled', false);
 		$('#palancas').animate({
 			backgroundColor: '#79B6FF'
 		}, 600).find('button').prop('disabled', false);
@@ -586,6 +621,7 @@ Simulator = {
 	 * Sets the settings into editable mode
 	 */
 	disableSettings: function () {
+		$('#palancas input').prop('disabled', true);
 		$('#palancas').animate({
 			backgroundColor: '#DBDBDB'
 		}, 400).find('button').prop('disabled', true);
