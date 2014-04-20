@@ -52,8 +52,8 @@
 
 		#circle{
 			position: absolute;
-			top: 480px;
-			left: 950px;
+			top: 210px;
+			left: 1050px;
 			width: 500px;
 			height: 400px;
 			z-index:1;
@@ -129,7 +129,7 @@
 			background-size: 150px;
 			background-position: -53px -24px;
 			right:-50%;
-			top: -25%;
+			top: -400px;
 			padding:10px 10px 10px 60px;
 			font-size:1.3em;
 			background-color:#BBE0FF;
@@ -154,6 +154,10 @@
 			border-top:solid 1px rgba(0,0,0,0.5);
 			margin: -5px -15px;
 			padding: 5px 15px;
+		}
+
+		.btn.disabled, .btn[disabled]{
+			opacity:1;
 		}
 
 	</style>
@@ -255,8 +259,7 @@
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
-	<script type="text/javascript" src="assets/js/main3.min.js"></script>
-
+	<script type="text/javascript" src="assets/js/main3.js"></script>
 	<script type="text/javascript">
 		Simulator.start();
 	</script>
