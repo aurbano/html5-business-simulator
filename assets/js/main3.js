@@ -78,8 +78,8 @@ Simulator = {
 			style: 'bg-danger'
 		},
 		{
-			text: '¡Viene a controlarnos!',
-			style: 'bg-danger'
+			text: '',
+			style: ''
 		},
 		{
 			text: 'Viene a escucharnos; Quiere estar cerca de nosotros/as',
@@ -117,11 +117,27 @@ Simulator = {
 		}
 	],
 
+	conclusiones: [
+		{
+			text: 'Las diferentes palancas se encuentran interrelacionadas, constituyendo un sistema (o configuración) más o menos coherente.'
+		},
+		{
+			text: 'Las personas se encuentran continuamente atribuyendo significados (de forma colectiva) a los cambios / contenidos de las palancas. Es una forma de reducir la incertidumbre y un paso clave para la generación de valores y normas compartidas (cultura). De esta forma, se generan comportamientos colectivos de un tipo u otro.'
+		},
+		{
+			text: 'Cualquier evento (p.ej. modificación de una palanca) está transmitiendo un "mensaje" al colectivo. De la misma forma, no modificar nunca un evento, sigue transmitiendo un "mensaje" al colectivo. El conjunto de palancas que constituyen el sistema / configuración transmitirá por tanto un conjunto de mensajes coherentes (o no).'
+		},
+		{
+			text: 'Cualquier nuevo evento, será interpretado desde la cultura previamente generada y se le atribuirá un significado acorde a los significados creados para el resto de palancas. Esto es, el significado que se le atribuye a un nuevo evento estará fuertemente influenciado por cómo están configuradas otras palancas y los significados previamente construidos.'
+		}
+	],
+
 	// ------------------------------------------- //
 	target: false, // Current target position for all settings
 	editable: false, // Could the settings be editable? Should be false during animation cycles.
 	currentResult: -1, // Current result index
 	animationPhase: 0, // Current animation phase
+	lastConclusion: -1,
 
 	// ------------------------------------------- //
 	/**
@@ -236,6 +252,8 @@ Simulator = {
 			$('#palancas').prepend(btn);
 		}
 
+		Simulator.showConclusion(0);
+
 		$('#palancas').append('<p style="margin-bottom:-10px"><input type="button" class="btn btn-primary" value="Comprobar"/></p>');
 
 		// Set them up to change on click and trigger the change event
@@ -322,9 +340,10 @@ Simulator = {
 		// Positions array
 		// [x, y, time, wait]
 		var positions = [
-			[0, 0, 2000, 0],
-			[0, -740, 2000, 4000],
-			[0, -1100, 2000, 0]
+			[0, 0, 2000, 0], // Initial
+			[0, -740, 2000, 2000], // People
+			[0, -1100, 2000, 0], // Right of people
+			[100, -740, 1000, 0] // Results
 		];
 
 		pos = {
@@ -373,6 +392,13 @@ Simulator = {
 		}
 	},
 
+	showConclusion: function (index) {
+		if (index <= Simulator.lastConclusion) return;
+		Simulator.lastConclusion = index;
+		if (index > 0) $('#conclusiones').append('<hr />');
+		$('#conclusiones').append(Simulator.conclusiones[index].text).scrollTop($('#conclusiones')[0].scrollHeight);
+	},
+
 	/**
 	 * Starts a new animation sequence of the given type (Column)
 	 * @param  {int} type Column index (0-2)
@@ -385,6 +411,7 @@ Simulator = {
 		Simulator.displayCircle();
 		Simulator.moveAnimation(1, function () {
 			Simulator.animateSpinner();
+			if (type == 0) Simulator.showConclusion(1);
 			Simulator.cycleComments(type, function () {
 				setTimeout(function () {
 					Simulator.showResult(type);
@@ -453,7 +480,8 @@ Simulator = {
 			return;
 
 		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed],
-			lastTime = times[times.length - 1];
+			lastTime = times[times.length - 1],
+			shouldMove = false;
 
 		Simulator.animateQuestionMark();
 
@@ -472,6 +500,8 @@ Simulator = {
 			}, lastTime);
 
 			lastTime += 9000 * Simulator.config.speed;
+
+			shouldMove = true;
 
 			if (index > 1) {
 				var display = 3;
@@ -496,12 +526,20 @@ Simulator = {
 				Simulator.animateQuestionMark();
 			}, lastTime);
 
+			shouldMove = true;
+
 			lastTime += 9000 * Simulator.config.speed;
 			Simulator.displayComment(index, 4, lastTime);
 		}
 
 		setTimeout(function () {
-			callback.call();
+			if (shouldMove) {
+				Simulator.moveAnimation(2);
+				Simulator.showConclusion(2)
+				setTimeout(function () {
+					callback.call();
+				}, 2000 * Simulator.config.speed);
+			}
 		}, lastTime);
 	},
 
@@ -574,6 +612,8 @@ Simulator = {
 	 * @return {void}
 	 */
 	showResult: function (index) {
+
+		Simulator.moveAnimation(3);
 
 		$('#spinner').fadeOut();
 

@@ -20,9 +20,14 @@
     	}
 
     	#simulador{
-			height:730px;
+			height:600px;
 			overflow:hidden;
 			position:relative;
+		}
+
+		#conclusiones{
+			max-height: 600px;
+			overflow: auto;
 		}
 
 		#app{
@@ -36,8 +41,8 @@
 		#palancas{
 			background-color:#DBDBDB;
 			position: absolute;
-			top:200px;
-			left: 300px;
+			top: 100px;
+			left: 120px;
 			width:600px;
 			border-top:solid #ccc 1px;
 			border-radius:10px;
@@ -52,8 +57,8 @@
 
 		#circle{
 			position: absolute;
-			top: 210px;
-			left: 1050px;
+			top: 100px;
+			left: 770px;
 			width: 500px;
 			height: 400px;
 			z-index:1;
@@ -169,7 +174,7 @@
 			<div class="col-md-12">
 				<h1>Simulador 3</h1>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-9">
 						<div class="panel" id="simulador">
 							<a href="#instruction-modal" data-toggle="modal" id="showTask"><i class="fa fa-plus-square-o"></i> Tarea actual</a>
 							<div id="app">
@@ -191,7 +196,8 @@
 											<div class="bubble bubbleRight" id="m1" style="top:-10px; right: -250px">Text 1</div>
 											<div class="bubble bubbleLeft" id="m2" style="top:-50px; left: -240px">Text 2</div>
 											<div class="bubble bubbleBottom" id="m3" style="bottom:-150px; left: -200px">Text 3</div>
-											<div class="bubble bubbleUnder" id="m4" style="top:-140px; left: 20px">Text 4</div>
+
+											<div class="message bg-primary" id="m4" style="top:-10px; right: -600px; display:none; position:absolute">Text 4</div>
 										</div>
 										<div id="boss" class="message bg-info">
 											El gerente empieza a bajar a tomar el café
@@ -204,6 +210,9 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="panel" id="conclusiones"></div>
 					</div>
 				</div>
 			</div>
