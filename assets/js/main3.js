@@ -426,7 +426,7 @@ Simulator = {
 		Simulator.displayCircle();
 		Simulator.moveAnimation(1, function () {
 			Simulator.animateSpinner();
-			if (type == 0) Simulator.showConclusion(1);
+			if (type === 0) Simulator.showConclusion(1);
 			Simulator.cycleComments(type, function () {
 
 				var timing = 0;
@@ -641,6 +641,8 @@ Simulator = {
 		Simulator.moveAnimation(3);
 		$('#boss').fadeIn().animate({
 			top: '-100px'
+		}, 2000 * Simulator.config.speed, 'swing', function () {
+			Simulator.animateBoss(1);
 		});
 	},
 
@@ -649,9 +651,25 @@ Simulator = {
 	 * @return {void}
 	 */
 	hideBoss: function () {
-		$('#boss').fadeOut().css({
-			top: '-400px'
-		}, 3000 * Simulator.config.speed, 'swing');
+		$('#boss').hide();
+		Simulator.animateBoss(0);
+	},
+
+	/**
+	 * Animate the boss figure to make it go near the workers
+	 * @param  {int} pos Position (0 => initial, 1 => near workers)
+	 * @return {void}
+	 */
+	animateBoss: function (pos) {
+		var positions = [
+			[-40, -120, 1],
+			[160, -170, 2000]
+		];
+
+		$('#boss img').animate({
+			top: positions[pos][0] + "px",
+			left: positions[pos][1] + "px"
+		}, positions[pos][2] * Simulator.config.speed, 'swing');
 	},
 
 	/**
@@ -682,6 +700,9 @@ Simulator = {
 			win = $(window).height(),
 			height = Math.max(win - simOff.top - footerHeight - 70, 374);
 		$('#simulador').height(height);
+		$('#conclusiones').css({
+			maxHeight: height + "px"
+		});
 
 		$('.animation').each(function () {
 			var top = height / 2 - $(this).height() / 2 + 40;
