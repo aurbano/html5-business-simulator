@@ -10,7 +10,7 @@ Simulator = {
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config: {
 		debug: true, // Turn console debugging on/off
-		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más despacio
+		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
 	},
 
 	// "Palancas" -> Nombre y opciones
@@ -77,27 +77,9 @@ Simulator = {
 			text: "¡Viene a controlarnos!",
 			style: 'bg-danger'
 		},
-		{
-			text: '',
-			style: ''
-		},
+		false,
 		{
 			text: 'Viene a escucharnos; Quiere estar cerca de nosotros/as',
-			style: 'bg-success'
-		}
-	],
-
-	result: [
-		{
-			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
-			style: 'bg-warning'
-		},
-		{
-			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
-			style: 'bg-warning'
-		},
-		{
-			text: 'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.',
 			style: 'bg-success'
 		}
 	],
@@ -129,6 +111,12 @@ Simulator = {
 		},
 		{
 			text: 'Cualquier nuevo evento, será interpretado desde la cultura previamente generada y se le atribuirá un significado acorde a los significados creados para el resto de palancas. Esto es, el significado que se le atribuye a un nuevo evento estará fuertemente influenciado por cómo están configuradas otras palancas y los significados previamente construidos.'
+		},
+		{
+			text: 'Una iniciativa aislada (p.ej. Implantar un mayor nivel de autonomía) puede generar ciertas expectativas que se materializan a corto plazo en una respuesta positiva por parte de las personas. Sin embargo, si no se materializan cambios en el resto de palancas que constituyen el sistema, las personas estarán percibiendo mensajes contradictorios (contexto "débil" - configuración o sistema incoherente) y la iniciativa tendrá previsiblemente un recorrido corto (en el mejor de los casos, pues las personas pueden sentirse engañadas y defraudadas). En este último caso, la respuesta resultante (a nivel colecitvo) es peor que no realizando ningún cambio. En resumen, es muy improbable modificar el "mensaje" atribuido por las personas a la configuración cambiando sólo una parte de la misma. O bien se cambia toda la configuración o bien se corre el riesgo de generar respuestas / reacciones contraproducentes.'
+		},
+		{
+			text: 'Al mismo acto / hecho / evento se le pueden atribuir diferentes significados. De esta forma se explica por qué diferentes colectivos puden responder de forma muy diferente a una misma iniciativa. Ello se debe a que el significado de se le atribuye a la iniciativa depende del significado que han construido / atribuido al sistema / configuración en su conjunto. Lo que se debe tener en cuenta es la coherencia del "mensaje", es decir, "hacer lo que se dice".'
 		}
 	],
 
@@ -147,7 +135,13 @@ Simulator = {
 
 		// ---------- SIMULATOR CONFIGURATION AND SETUP ------------- //
 
+		$(window).resize(function () {
+			Simulator.resize();
+		});
+
 		Simulator.setup();
+
+		Simulator.resize();
 
 		Simulator.disableSettings();
 
@@ -158,7 +152,7 @@ Simulator = {
 
 		// Adjust spinner speed
 		$('#spinner').css({
-			'-webkit-animation-duration': 10 * Simulator.config.speed + 's'
+			'-webkit-animation-duration': 5 * Simulator.config.speed + 's'
 		});
 
 		Simulator.$tarea = $('#instruction-modal');
@@ -179,6 +173,8 @@ Simulator = {
 
 		$('#palancas input').click(function (e) {
 
+			Simulator.showConclusion(0);
+
 			status = Simulator.getStatus();
 
 			if (status.status) {
@@ -186,6 +182,10 @@ Simulator = {
 				// Since this is task 1, they must all be in the first setting
 				console.log('start: Start simulation phase ' + Simulator.animationPhase);
 				Simulator.startAnimation(Simulator.animationPhase);
+
+				if (Simulator.animationPhase == 2) {
+					Simulator.showConclusion(5);
+				}
 			} else {
 				Simulator.highlightTarget();
 			}
@@ -252,20 +252,25 @@ Simulator = {
 			$('#palancas').prepend(btn);
 		}
 
-		Simulator.showConclusion(0);
-
 		$('#palancas').append('<p style="margin-bottom:-10px"><input type="button" class="btn btn-primary" value="Comprobar"/></p>');
 
 		// Set them up to change on click and trigger the change event
 		$('#palancas button').click(function (e) {
 			e.preventDefault();
-			// Get current index
+
 			var setting = $(this).attr('data-setting'),
 				index = parseInt($(this).find('.btn-value').attr('data-index')) + 1; // Next index
-			if (typeof (Simulator.palancas[setting].opciones[index]) == 'undefined') {
-				// The next element doesn't exist, back to 0
-				index = 0;
+
+			if (parseInt($(this).find('.btn-value').attr('data-index')) == -1) {
+				index = Math.round(Math.random()); // 0-1
+			} else {
+				// Get current index
+				if (typeof (Simulator.palancas[setting].opciones[index]) == 'undefined') {
+					// The next element doesn't exist, back to 0
+					index = 0;
+				}
 			}
+
 			$(this).find('.btn-value').attr('data-index', index).text(Simulator.palancas[setting].opciones[index]);
 
 			$(this).trigger('change');
@@ -392,8 +397,18 @@ Simulator = {
 		}
 	},
 
+	/**
+	 * Muestra la conclusion indicada por el parametro index, no la vuelve a mostrar
+	 * si ya la habia mostrado antes
+	 * @param  {int} index Numero de conclusion a mostrar
+	 * @return {void}
+	 */
 	showConclusion: function (index) {
-		if (index <= Simulator.lastConclusion) return;
+		console.log("showConclusion(" + index + ")");
+		if (index <= Simulator.lastConclusion) {
+			console.log("	Already shown, skipped");
+			return;
+		}
 		Simulator.lastConclusion = index;
 		if (index > 0) $('#conclusiones').append('<hr />');
 		$('#conclusiones').append(Simulator.conclusiones[index].text).scrollTop($('#conclusiones')[0].scrollHeight);
@@ -413,33 +428,41 @@ Simulator = {
 			Simulator.animateSpinner();
 			if (type == 0) Simulator.showConclusion(1);
 			Simulator.cycleComments(type, function () {
-				setTimeout(function () {
-					Simulator.showResult(type);
-				}, 3000 * Simulator.config.speed);
 
+				var timing = 0;
 
-				setTimeout(function () {
-					Simulator.showBoss();
+				if (Simulator.gerente[type]) {
+					timing += 7000;
+					setTimeout(function () {
+						Simulator.showBoss();
 
-					// This will trigger a new spinner and a new result
-					Simulator.animateSpinner();
-					Simulator.animateQuestionMark();
-				}, 7000 * Simulator.config.speed);
+						// This will trigger a new spinner and a new result
+						Simulator.animateSpinner();
+						Simulator.animateQuestionMark();
+					}, timing * Simulator.config.speed);
 
-				setTimeout(function () {
-					// Add consequence to the result box
-					$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
-				}, 17000 * Simulator.config.speed);
+					timing += 10000;
+
+					setTimeout(function () {
+						// Add consequence to the result box
+						$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
+					}, timing * Simulator.config.speed);
+				}
+
+				timing += 5000;
 
 				setTimeout(function () {
 					Simulator.animationPhase++;
 					// If there are more tasks, restart the process
 					if (Simulator.animationPhase < Simulator.tasks.length) {
 						Simulator.newTask(Simulator.animationPhase);
+						if (Simulator.animationPhase == 1) {
+							Simulator.showConclusion(4);
+						}
 					} else {
 						alert("Has acabado la demostración.");
 					}
-				}, 22000 * Simulator.config.speed);
+				}, timing * Simulator.config.speed);
 			});
 		});
 	},
@@ -533,13 +556,15 @@ Simulator = {
 		}
 
 		setTimeout(function () {
+
 			if (shouldMove) {
 				Simulator.moveAnimation(2);
-				Simulator.showConclusion(2)
+				Simulator.showConclusion(3);
 				setTimeout(function () {
 					callback.call();
 				}, 2000 * Simulator.config.speed);
 			}
+
 		}, lastTime);
 	},
 
@@ -565,6 +590,7 @@ Simulator = {
 	},
 
 	animateQuestionMark: function () {
+		Simulator.showConclusion(2);
 		setTimeout(function () {
 			$('#questions').fadeToggle();
 		}, 100 * Simulator.config.speed);
@@ -607,30 +633,12 @@ Simulator = {
 	},
 
 	/**
-	 * Show the next result for the given index
-	 * @param  {int} index Index corresponding to the current step
-	 * @return {void}
-	 */
-	showResult: function (index) {
-
-		Simulator.moveAnimation(3);
-
-		$('#spinner').fadeOut();
-
-		if (typeof (Simulator.result[index]) === 'undefined') {
-			console.err('showResult: undefined index ' + index);
-			return;
-		}
-
-		$('.messages').append('<div id="result" class="message ' + Simulator.result[index].style + '">' + Simulator.result[index].text + '</div>').fadeIn();
-	},
-
-	/**
 	 * Show the boss message
 	 * @return {void}
 	 */
 	showBoss: function () {
 		console.log("showBoss()");
+		Simulator.moveAnimation(3);
 		$('#boss').fadeIn().animate({
 			top: '-100px'
 		});
@@ -665,5 +673,21 @@ Simulator = {
 		$('#palancas').animate({
 			backgroundColor: '#DBDBDB'
 		}, 400).find('button').prop('disabled', true);
+	},
+
+	resize: function () {
+		var simOff = $('#simulador').offset(),
+			footerOff = $('footer').offset(),
+			footerHeight = $('footer').height(),
+			win = $(window).height(),
+			height = Math.max(win - simOff.top - footerHeight - 70, 374);
+		$('#simulador').height(height);
+
+		$('.animation').each(function () {
+			var top = height / 2 - $(this).height() / 2 + 40;
+			$(this).css({
+				top: top
+			});
+		});
 	}
 };
