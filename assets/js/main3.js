@@ -651,9 +651,7 @@ Simulator = {
 	 * @return {void}
 	 */
 	hideBoss: function () {
-		$('#boss').fadeOut().css({
-			top: '-400px'
-		});
+		$('#boss').hide();
 		Simulator.animateBoss(0);
 	},
 
