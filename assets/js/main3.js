@@ -256,13 +256,20 @@ Simulator = {
 		// Set them up to change on click and trigger the change event
 		$('#palancas button').click(function (e) {
 			e.preventDefault();
-			// Get current index
+
 			var setting = $(this).attr('data-setting'),
 				index = parseInt($(this).find('.btn-value').attr('data-index')) + 1; // Next index
-			if (typeof (Simulator.palancas[setting].opciones[index]) == 'undefined') {
-				// The next element doesn't exist, back to 0
-				index = 0;
+
+			if (parseInt($(this).find('.btn-value').attr('data-index')) == -1) {
+				index = Math.round(Math.random()); // 0-1
+			} else {
+				// Get current index
+				if (typeof (Simulator.palancas[setting].opciones[index]) == 'undefined') {
+					// The next element doesn't exist, back to 0
+					index = 0;
+				}
 			}
+
 			$(this).find('.btn-value').attr('data-index', index).text(Simulator.palancas[setting].opciones[index]);
 
 			$(this).trigger('change');
