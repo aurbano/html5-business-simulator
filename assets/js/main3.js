@@ -10,7 +10,7 @@ Simulator = {
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config: {
 		debug: true, // Turn console debugging on/off
-		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más despacio
+		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
 	},
 
 	// "Palancas" -> Nombre y opciones
@@ -183,7 +183,7 @@ Simulator = {
 				console.log('start: Start simulation phase ' + Simulator.animationPhase);
 				Simulator.startAnimation(Simulator.animationPhase);
 
-				if (Simulator.animationPhase == 3) {
+				if (Simulator.animationPhase == 2) {
 					Simulator.showConclusion(5);
 				}
 			} else {
@@ -404,7 +404,11 @@ Simulator = {
 	 * @return {void}
 	 */
 	showConclusion: function (index) {
-		if (index <= Simulator.lastConclusion) return;
+		console.log("showConclusion(" + index + ")");
+		if (index <= Simulator.lastConclusion) {
+			console.log("	Already shown, skipped");
+			return;
+		}
 		Simulator.lastConclusion = index;
 		if (index > 0) $('#conclusiones').append('<hr />');
 		$('#conclusiones').append(Simulator.conclusiones[index].text).scrollTop($('#conclusiones')[0].scrollHeight);
@@ -427,7 +431,7 @@ Simulator = {
 
 				var timing = 0;
 
-				if (Simulator.gerente) {
+				if (Simulator.gerente[type]) {
 					timing += 7000;
 					setTimeout(function () {
 						Simulator.showBoss();
@@ -452,6 +456,9 @@ Simulator = {
 					// If there are more tasks, restart the process
 					if (Simulator.animationPhase < Simulator.tasks.length) {
 						Simulator.newTask(Simulator.animationPhase);
+						if (Simulator.animationPhase == 1) {
+							Simulator.showConclusion(4);
+						}
 					} else {
 						alert("Has acabado la demostración.");
 					}
@@ -549,6 +556,7 @@ Simulator = {
 		}
 
 		setTimeout(function () {
+
 			if (shouldMove) {
 				Simulator.moveAnimation(2);
 				Simulator.showConclusion(3);
@@ -556,9 +564,7 @@ Simulator = {
 					callback.call();
 				}, 2000 * Simulator.config.speed);
 			}
-			if (index > 1) {
-				Simulator.showConclusion(4);
-			}
+
 		}, lastTime);
 	},
 
