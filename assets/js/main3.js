@@ -77,10 +77,7 @@ Simulator = {
 			text: "¡Viene a controlarnos!",
 			style: 'bg-danger'
 		},
-		{
-			text: '',
-			style: ''
-		},
+		false,
 		{
 			text: 'Viene a escucharnos; Quiere estar cerca de nosotros/as',
 			style: 'bg-success'
@@ -119,7 +116,7 @@ Simulator = {
 			text: 'Una iniciativa aislada (p.ej. Implantar un mayor nivel de autonomía) puede generar ciertas expectativas que se materializan a corto plazo en una respuesta positiva por parte de las personas. Sin embargo, si no se materializan cambios en el resto de palancas que constituyen el sistema, las personas estarán percibiendo mensajes contradictorios (contexto "débil" - configuración o sistema incoherente) y la iniciativa tendrá previsiblemente un recorrido corto (en el mejor de los casos, pues las personas pueden sentirse engañadas y defraudadas). En este último caso, la respuesta resultante (a nivel colecitvo) es peor que no realizando ningún cambio. En resumen, es muy improbable modificar el "mensaje" atribuido por las personas a la configuración cambiando sólo una parte de la misma. O bien se cambia toda la configuración o bien se corre el riesgo de generar respuestas / reacciones contraproducentes.'
 		},
 		{
-			text: 'al mismo acto / hecho / evento se le pueden atribuir diferentes significados. De esta forma se explica por qué diferentes colectivos puden responder de forma muy diferente a una misma iniciativa. Ello se debe a que el significado de se le atribuye a la iniciativa depende del significado que han construido / atribuido al sistema / configuración en su conjunto. Lo que se debe tener en cuenta es la coherencia del "mensaje", es decir, "hacer lo que se dice".'
+			text: 'Al mismo acto / hecho / evento se le pueden atribuir diferentes significados. De esta forma se explica por qué diferentes colectivos puden responder de forma muy diferente a una misma iniciativa. Ello se debe a que el significado de se le atribuye a la iniciativa depende del significado que han construido / atribuido al sistema / configuración en su conjunto. Lo que se debe tener en cuenta es la coherencia del "mensaje", es decir, "hacer lo que se dice".'
 		}
 	],
 
@@ -176,6 +173,8 @@ Simulator = {
 
 		$('#palancas input').click(function (e) {
 
+			Simulator.showConclusion(0);
+
 			status = Simulator.getStatus();
 
 			if (status.status) {
@@ -183,6 +182,10 @@ Simulator = {
 				// Since this is task 1, they must all be in the first setting
 				console.log('start: Start simulation phase ' + Simulator.animationPhase);
 				Simulator.startAnimation(Simulator.animationPhase);
+
+				if (Simulator.animationPhase == 3) {
+					Simulator.showConclusion(5);
+				}
 			} else {
 				Simulator.highlightTarget();
 			}
@@ -248,8 +251,6 @@ Simulator = {
 				'</button>';
 			$('#palancas').prepend(btn);
 		}
-
-		Simulator.showConclusion(0);
 
 		$('#palancas').append('<p style="margin-bottom:-10px"><input type="button" class="btn btn-primary" value="Comprobar"/></p>');
 
@@ -396,6 +397,12 @@ Simulator = {
 		}
 	},
 
+	/**
+	 * Muestra la conclusion indicada por el parametro index, no la vuelve a mostrar
+	 * si ya la habia mostrado antes
+	 * @param  {int} index Numero de conclusion a mostrar
+	 * @return {void}
+	 */
 	showConclusion: function (index) {
 		if (index <= Simulator.lastConclusion) return;
 		Simulator.lastConclusion = index;
@@ -418,18 +425,27 @@ Simulator = {
 			if (type == 0) Simulator.showConclusion(1);
 			Simulator.cycleComments(type, function () {
 
-				setTimeout(function () {
-					Simulator.showBoss();
+				var timing = 0;
 
-					// This will trigger a new spinner and a new result
-					Simulator.animateSpinner();
-					Simulator.animateQuestionMark();
-				}, 7000 * Simulator.config.speed);
+				if (Simulator.gerente) {
+					timing += 7000;
+					setTimeout(function () {
+						Simulator.showBoss();
 
-				setTimeout(function () {
-					// Add consequence to the result box
-					$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
-				}, 17000 * Simulator.config.speed);
+						// This will trigger a new spinner and a new result
+						Simulator.animateSpinner();
+						Simulator.animateQuestionMark();
+					}, timing * Simulator.config.speed);
+
+					timing += 10000;
+
+					setTimeout(function () {
+						// Add consequence to the result box
+						$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
+					}, timing * Simulator.config.speed);
+				}
+
+				timing += 5000;
 
 				setTimeout(function () {
 					Simulator.animationPhase++;
@@ -439,7 +455,7 @@ Simulator = {
 					} else {
 						alert("Has acabado la demostración.");
 					}
-				}, 22000 * Simulator.config.speed);
+				}, timing * Simulator.config.speed);
 			});
 		});
 	},
@@ -535,10 +551,13 @@ Simulator = {
 		setTimeout(function () {
 			if (shouldMove) {
 				Simulator.moveAnimation(2);
-				Simulator.showConclusion(2)
+				Simulator.showConclusion(3);
 				setTimeout(function () {
 					callback.call();
 				}, 2000 * Simulator.config.speed);
+			}
+			if (index > 1) {
+				Simulator.showConclusion(4);
 			}
 		}, lastTime);
 	},
@@ -565,6 +584,7 @@ Simulator = {
 	},
 
 	animateQuestionMark: function () {
+		Simulator.showConclusion(2);
 		setTimeout(function () {
 			$('#questions').fadeToggle();
 		}, 100 * Simulator.config.speed);
