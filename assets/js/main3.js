@@ -87,21 +87,6 @@ Simulator = {
 		}
 	],
 
-	result: [
-		{
-			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
-			style: 'bg-warning'
-		},
-		{
-			text: 'Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.',
-			style: 'bg-warning'
-		},
-		{
-			text: 'El proyecto de esta organización me ilusiona y mi labor para su materialización es importante.',
-			style: 'bg-success'
-		}
-	],
-
 	tasks: [
 		{
 			text: 'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.',
@@ -129,6 +114,12 @@ Simulator = {
 		},
 		{
 			text: 'Cualquier nuevo evento, será interpretado desde la cultura previamente generada y se le atribuirá un significado acorde a los significados creados para el resto de palancas. Esto es, el significado que se le atribuye a un nuevo evento estará fuertemente influenciado por cómo están configuradas otras palancas y los significados previamente construidos.'
+		},
+		{
+			text: 'Una iniciativa aislada (p.ej. Implantar un mayor nivel de autonomía) puede generar ciertas expectativas que se materializan a corto plazo en una respuesta positiva por parte de las personas. Sin embargo, si no se materializan cambios en el resto de palancas que constituyen el sistema, las personas estarán percibiendo mensajes contradictorios (contexto "débil" - configuración o sistema incoherente) y la iniciativa tendrá previsiblemente un recorrido corto (en el mejor de los casos, pues las personas pueden sentirse engañadas y defraudadas). En este último caso, la respuesta resultante (a nivel colecitvo) es peor que no realizando ningún cambio. En resumen, es muy improbable modificar el "mensaje" atribuido por las personas a la configuración cambiando sólo una parte de la misma. O bien se cambia toda la configuración o bien se corre el riesgo de generar respuestas / reacciones contraproducentes.'
+		},
+		{
+			text: 'al mismo acto / hecho / evento se le pueden atribuir diferentes significados. De esta forma se explica por qué diferentes colectivos puden responder de forma muy diferente a una misma iniciativa. Ello se debe a que el significado de se le atribuye a la iniciativa depende del significado que han construido / atribuido al sistema / configuración en su conjunto. Lo que se debe tener en cuenta es la coherencia del "mensaje", es decir, "hacer lo que se dice".'
 		}
 	],
 
@@ -147,7 +138,13 @@ Simulator = {
 
 		// ---------- SIMULATOR CONFIGURATION AND SETUP ------------- //
 
+		$(window).resize(function () {
+			Simulator.resize();
+		});
+
 		Simulator.setup();
+
+		Simulator.resize();
 
 		Simulator.disableSettings();
 
@@ -158,7 +155,7 @@ Simulator = {
 
 		// Adjust spinner speed
 		$('#spinner').css({
-			'-webkit-animation-duration': 10 * Simulator.config.speed + 's'
+			'-webkit-animation-duration': 5 * Simulator.config.speed + 's'
 		});
 
 		Simulator.$tarea = $('#instruction-modal');
@@ -413,10 +410,6 @@ Simulator = {
 			Simulator.animateSpinner();
 			if (type == 0) Simulator.showConclusion(1);
 			Simulator.cycleComments(type, function () {
-				setTimeout(function () {
-					Simulator.showResult(type);
-				}, 3000 * Simulator.config.speed);
-
 
 				setTimeout(function () {
 					Simulator.showBoss();
@@ -607,30 +600,12 @@ Simulator = {
 	},
 
 	/**
-	 * Show the next result for the given index
-	 * @param  {int} index Index corresponding to the current step
-	 * @return {void}
-	 */
-	showResult: function (index) {
-
-		Simulator.moveAnimation(3);
-
-		$('#spinner').fadeOut();
-
-		if (typeof (Simulator.result[index]) === 'undefined') {
-			console.err('showResult: undefined index ' + index);
-			return;
-		}
-
-		$('.messages').append('<div id="result" class="message ' + Simulator.result[index].style + '">' + Simulator.result[index].text + '</div>').fadeIn();
-	},
-
-	/**
 	 * Show the boss message
 	 * @return {void}
 	 */
 	showBoss: function () {
 		console.log("showBoss()");
+		Simulator.moveAnimation(3);
 		$('#boss').fadeIn().animate({
 			top: '-100px'
 		});
@@ -665,5 +640,21 @@ Simulator = {
 		$('#palancas').animate({
 			backgroundColor: '#DBDBDB'
 		}, 400).find('button').prop('disabled', true);
+	},
+
+	resize: function () {
+		var simOff = $('#simulador').offset(),
+			footerOff = $('footer').offset(),
+			footerHeight = $('footer').height(),
+			win = $(window).height(),
+			height = Math.max(win - simOff.top - footerHeight - 70, 374);
+		$('#simulador').height(height);
+
+		$('.animation').each(function () {
+			var top = height / 2 - $(this).height() / 2 + 40;
+			$(this).css({
+				top: top
+			});
+		});
 	}
 };
