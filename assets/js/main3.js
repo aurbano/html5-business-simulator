@@ -550,7 +550,6 @@ Simulator = {
 			setTimeout(function () {
 				// More comments, turn again!
 				Simulator.animateQuestionMark();
-				Simulator.animateSpinner();
 			}, lastTime);
 
 			lastTime += 9000 * Simulator.config.speed;
@@ -576,7 +575,6 @@ Simulator = {
 
 			setTimeout(function () {
 				// More comments, turn again!
-				Simulator.animateSpinner();
 				Simulator.animateQuestionMark();
 			}, lastTime);
 
