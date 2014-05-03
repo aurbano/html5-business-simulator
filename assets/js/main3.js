@@ -512,7 +512,6 @@ Simulator = {
 			return;
 
 		$('#comments').html('');
-		$('#result').html('');
 
 		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed],
 			lastTime = times[times.length - 1],
@@ -541,7 +540,7 @@ Simulator = {
 			if (index > 1) {
 				var display = 3;
 				if (Simulator.comments[index].length > 4) {
-					display = Math.floor((Math.random() * (Simulator.comments[index].length - 1)) + 3);
+					display = Math.floor((Math.random() * (Simulator.comments[2].length - 3))) + 2;
 				}
 				console.log('cycleComments: Phase ' + index + ', chosen randomly comment: ' + display);
 				Simulator.displayComment(index, display, lastTime);
@@ -590,7 +589,8 @@ Simulator = {
 		setTimeout(function () {
 			if (comment > 2) {
 				Simulator.animateSpinner(false);
-				$('#result').append(Simulator.comments[phase][comment]).fadeIn();
+				console.log("Displaying result: (Phase=" + phase + ", Comment=" + comment + ") :: " + Simulator.comments[phase][comment]);
+				$('#result').html(Simulator.comments[phase][comment]).fadeIn();
 			} else {
 				$('#comments').append(Simulator.comments[phase][comment] + '<br />').fadeIn();
 			}
