@@ -70,26 +70,38 @@
 			background-repeat: no-repeat;
 			background-size: 400px;
 			top:-5%;
-			left:13%;
+			left:110px;
 			z-index:2;
 			display:none;
 		}
 
 		.animated{
 			-webkit-animation: spinX;
-			-webkit-animation-duration: 10s;
+			-webkit-animation-duration: 5s;
+			-webkit-animation-iteration-count: infinite;
+    		-webkit-animation-timing-function: linear;
 		}
 
 		@-webkit-keyframes spinX{  
-			0%   {-webkit-transform: rotate(0deg);}  
-			100% {-webkit-transform: rotate(360deg);}  
+			to {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+		.messages .bg-danger{
+			background-color:#FC4314;
+			color:#fff;
+		}
+
+		.messages .bg-success{
+			background-color:#4AB900;
+			color:#fff;
 		}
 
 		.messages{
 			position: absolute;
 			z-index:3;
-			left:30%;
-			top: -45%;
+			left: 490px;
+			top: 250px;
 		}
 
 		.message{
@@ -121,7 +133,22 @@
 			top: -1.2em;
 			left: 0.2em;
 			color:rgba(200,200,200,0.7);
+		}
+
+		#questions div{
 			display:none;
+		}
+
+		#pyramid{
+			width:371px;
+			height:412px;
+			background-image:url(assets/img/sim3/piramide.png);
+			background-repeat: no-repeat;
+			background-size: 100%;
+			position: absolute;
+			z-index: 1;
+			bottom: 0;
+			right: -300px;
 		}
 
 		#boss{
@@ -174,7 +201,7 @@
 									<form class="form-inline" id="palancas"></form>
 								</div>
 
-								<div class="animation" style="left: 770px; width: 500px; height: 400px;" id="mainAnimation">
+								<div class="animation" style="left: 870px; width: 500px; height: 400px;" id="mainAnimation">
 									<div id="circle">
 										<div id="people">
 											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:20px; left:15px; z-index:2">
@@ -183,13 +210,21 @@
 											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-10px;">
 											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-50px;">
 
-											<div id="questions">?</div>
-
-											<div class="bubble bubbleRight" id="m1" style="top:-10px; right: -250px">Text 1</div>
-											<div class="bubble bubbleLeft" id="m2" style="top:-50px; left: -240px">Text 2</div>
-											<div class="bubble bubbleBottom" id="m3" style="bottom:-150px; left: -200px">Text 3</div>
-
-											<div class="message bg-primary" id="m4" style="top:-10px; right: -600px; display:none; position:absolute">Text 4</div>
+											<div id="questions">
+												<div id="q1" style="position:absolute;font-size: 0.6em;left: -50px;bottom: -300px;">?</div>
+												<div id="q2" style="position:absolute;font-size: 0.8em;right: -170px;bottom: -290px;">!</div>
+												<div id="q3" style="position:absolute;left: 10px;">?</div>
+											</div>
+										</div>
+										<div id="pyramid">
+											<div id="result" class="message bg-primary" style="top: 30px;position: absolute;left: 120px;">
+												This is the conclusion that the group reaches.
+											</div>
+											<div id="comments" class="bubble bubbleRight" style="bottom: -30px;right: -60px;">
+												Message 1<br>
+												Message 2<br>
+												Message 3
+											</div>
 										</div>
 										<div id="boss" class="message bg-info">
 											<img src="assets/img/sim3/jefe.png" height="150" style="
