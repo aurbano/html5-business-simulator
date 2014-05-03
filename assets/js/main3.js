@@ -202,6 +202,8 @@ Simulator = {
 
 		if (task > 0) Simulator.moveAnimation(0);
 
+		Simulator.animateSpinner(false);
+
 		$('.bubble').hide();
 		Simulator.hideBoss();
 		$('#result').hide();
@@ -346,7 +348,7 @@ Simulator = {
 		// [x, y, time, wait]
 		var positions = [
 			[0, 0, 2000, 0], // Initial
-			[0, -740, 2000, 2000], // People
+			[0, -920, 2000, 2000], // People
 			[0, -1100, 2000, 0], // Right of people
 			[100, -740, 1000, 0] // Results
 		];
@@ -434,11 +436,12 @@ Simulator = {
 				if (Simulator.gerente[type]) {
 					timing += 7000;
 					setTimeout(function () {
-						Simulator.showBoss();
-
-						// This will trigger a new spinner and a new result
-						Simulator.animateSpinner();
-						Simulator.animateQuestionMark();
+						Simulator.showBoss(function () {
+							console.log("    showBoss() done, inside callback.");
+							// This will trigger a new spinner and a new result
+							Simulator.animateSpinner();
+							Simulator.animateQuestionMark();
+						});
 					}, timing * Simulator.config.speed);
 
 					timing += 10000;
@@ -477,19 +480,25 @@ Simulator = {
 		$('#result').hide();
 		$('.messages .message').remove();
 		$('#circle').fadeIn();
+		$('#pyramid').fadeIn();
 	},
 
 	/**
-	 * Triggers the animation again
+	 * Starts/stops the animation
+	 * @param  {boolean} type Start/stop (true/false)
 	 * @return {void}
 	 */
-	animateSpinner: function () {
+	animateSpinner: function (type) {
 		console.log("animateSpinner()");
-		$('#spinner').removeClass('animated').fadeIn();
-		$('#spinner').prop('offsetWidth', $('#spinner').prop('offsetWidth'));
-		setTimeout(function () {
-			$('#spinner').addClass('animated');
-		}, 10);
+		if (type || typeof (type) === 'undefined') {
+			console.log("	Start");
+			$('#spinner').addClass('animated').fadeIn();
+		} else {
+			console.log("	Stop");
+			$("#spinner").one('animationiteration webkitAnimationIteration', function () {
+				$(this).removeClass("animated");
+			});
+		}
 	},
 
 	/**
@@ -501,6 +510,9 @@ Simulator = {
 	cycleComments: function (index, callback) {
 		if (typeof (Simulator.comments[index]) == 'undefined')
 			return;
+
+		$('#comments').html('');
+		$('#result').html('');
 
 		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed],
 			lastTime = times[times.length - 1],
@@ -558,7 +570,6 @@ Simulator = {
 		setTimeout(function () {
 
 			if (shouldMove) {
-				Simulator.moveAnimation(2);
 				Simulator.showConclusion(3);
 				setTimeout(function () {
 					callback.call();
@@ -577,35 +588,74 @@ Simulator = {
 	 */
 	displayComment: function (phase, comment, time) {
 		setTimeout(function () {
-			var id = comment + 1;
-			if (id > 4) {
-				id = 4;
-				$('#m' + id).fadeOut(250, function () {
-					$('#m' + id).html(Simulator.comments[phase][comment]).fadeIn();
-				});
+			if (comment > 2) {
+				Simulator.animateSpinner(false);
+				$('#result').append(Simulator.comments[phase][comment]).fadeIn();
 			} else {
-				$('#m' + id).html(Simulator.comments[phase][comment]).fadeIn();
+				$('#comments').append(Simulator.comments[phase][comment] + '<br />').fadeIn();
 			}
+
 		}, time);
 	},
 
 	animateQuestionMark: function () {
 		Simulator.showConclusion(2);
+
+		// Show
+
 		setTimeout(function () {
-			$('#questions').fadeToggle();
+			$('#q1').fadeToggle();
 		}, 100 * Simulator.config.speed);
 
 		setTimeout(function () {
-			$('#questions').fadeToggle();
+			$('#q2').fadeToggle();
+		}, 700 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#q3').fadeToggle();
+		}, 1300 * Simulator.config.speed);
+
+		// Hide
+
+		setTimeout(function () {
+			$('#q2').fadeToggle();
 		}, 2500 * Simulator.config.speed);
 
 		setTimeout(function () {
-			$('#questions').fadeToggle();
+			$('#q1').fadeToggle();
+		}, 3100 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#q3').fadeToggle();
+		}, 5000 * Simulator.config.speed);
+
+		// Show
+
+		setTimeout(function () {
+			$('#q2').fadeToggle();
 		}, 6500 * Simulator.config.speed);
 
 		setTimeout(function () {
-			$('#questions').fadeOut();
+			$('#q3').fadeToggle();
+		}, 7300 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#q1').fadeToggle();
+		}, 7600 * Simulator.config.speed);
+
+		// Hide
+
+		setTimeout(function () {
+			$('#q3').fadeOut();
 		}, 8000 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#q1').fadeOut();
+		}, 8400 * Simulator.config.speed);
+
+		setTimeout(function () {
+			$('#q2').fadeOut();
+		}, 8800 * Simulator.config.speed);
 	},
 
 	/**
@@ -636,13 +686,12 @@ Simulator = {
 	 * Show the boss message
 	 * @return {void}
 	 */
-	showBoss: function () {
+	showBoss: function (callback) {
 		console.log("showBoss()");
-		Simulator.moveAnimation(3);
 		$('#boss').fadeIn().animate({
 			top: '-100px'
 		}, 2000 * Simulator.config.speed, 'swing', function () {
-			Simulator.animateBoss(1);
+			Simulator.animateBoss(1, callback);
 		});
 	},
 
@@ -652,7 +701,7 @@ Simulator = {
 	 */
 	hideBoss: function () {
 		$('#boss').hide();
-		Simulator.animateBoss(0);
+		Simulator.animateBoss(0, function () {});
 	},
 
 	/**
@@ -660,7 +709,7 @@ Simulator = {
 	 * @param  {int} pos Position (0 => initial, 1 => near workers)
 	 * @return {void}
 	 */
-	animateBoss: function (pos) {
+	animateBoss: function (pos, callback) {
 		var positions = [
 			[-40, -120, 1],
 			[160, -170, 2000]
@@ -669,7 +718,9 @@ Simulator = {
 		$('#boss img').animate({
 			top: positions[pos][0] + "px",
 			left: positions[pos][1] + "px"
-		}, positions[pos][2] * Simulator.config.speed, 'swing');
+		}, positions[pos][2] * Simulator.config.speed, 'swing', function () {
+			callback.call();
+		});
 	},
 
 	/**
