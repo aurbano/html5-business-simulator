@@ -204,11 +204,11 @@ Simulator = {
 		}
 		Simulator.animateSpinner(false);
 		setTimeout(function () {
-			$('#conclusiones').append('<p class="text-center" id="nextTastContainer"><hr /><a class="btn btn-primary" id="nextTask">Continuar</a></p>').scrollTop($('#conclusiones')[0].scrollHeight);
+			$('#conclusiones').append('<p class="text-center" id="nextTaskContainer" style="margin-top:15px"><a class="btn btn-primary" id="nextTask">Continuar</a></p>').scrollTop($('#conclusiones')[0].scrollHeight);
 			$('#nextTask').click(function (e) {
 				e.preventDefault();
 				Simulator.nextTask(task);
-				$("#nextTastContainer").remove();
+				$("#nextTaskContainer").remove();
 			});
 		}, 100);
 	},
@@ -550,7 +550,6 @@ Simulator = {
 			setTimeout(function () {
 				// More comments, turn again!
 				Simulator.animateQuestionMark();
-				Simulator.animateSpinner();
 			}, lastTime);
 
 			lastTime += 9000 * Simulator.config.speed;
@@ -576,7 +575,6 @@ Simulator = {
 
 			setTimeout(function () {
 				// More comments, turn again!
-				Simulator.animateSpinner();
 				Simulator.animateQuestionMark();
 			}, lastTime);
 
