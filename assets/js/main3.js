@@ -193,16 +193,36 @@ Simulator = {
 	},
 
 	/**
+	 * Show the button for nextTask confirmation.
+	 * @param  {int} task Next task index.
+	 * @return {void}
+	 */
+	newTask: function (task) {
+		if (task === 0) {
+			Simulator.nextTask(task);
+			return;
+		}
+		Simulator.animateSpinner(false);
+		setTimeout(function () {
+			$('#conclusiones').append('<p class="text-center" id="nextTastContainer"><hr /><a class="btn btn-primary" id="nextTask">Continuar</a></p>').scrollTop($('#conclusiones')[0].scrollHeight);
+			$('#nextTask').click(function (e) {
+				e.preventDefault();
+				Simulator.nextTask(task);
+				$("#nextTastContainer").remove();
+			});
+		}, 100);
+	},
+
+	/**
 	 * Show the new task modal with the updated text
 	 * @param  {String} task
 	 * @return {void}
 	 */
-	newTask: function (task) {
+	nextTask: function (task) {
+
 		console.log("Starting new phase: " + task);
 
 		if (task > 0) Simulator.moveAnimation(0);
-
-		Simulator.animateSpinner(false);
 
 		$('.bubble').hide();
 		Simulator.hideBoss();
