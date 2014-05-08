@@ -11,6 +11,7 @@ Simulator = {
 	config: {
 		debug: true, // Turn console debugging on/off
 		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
+		wheel: 5, // Velocidad de giro de la rueda
 	},
 
 	// "Palancas" -> Nombre y opciones
@@ -126,6 +127,9 @@ Simulator = {
 	currentResult: -1, // Current result index
 	animationPhase: 0, // Current animation phase
 	lastConclusion: -1,
+	spinning: false, // Indicates if the spinner is active. Question marks don't appear if it isn't.
+	questionTimers: [], // Timers used by the question marks
+	questionInterval: null,
 
 	// ------------------------------------------- //
 	/**
@@ -152,7 +156,7 @@ Simulator = {
 
 		// Adjust spinner speed
 		$('#spinner').css({
-			'-webkit-animation-duration': 5 * Simulator.config.speed + 's'
+			'-webkit-animation-duration': Simulator.config.wheel * Simulator.config.speed + 's'
 		});
 
 		Simulator.$tarea = $('#instruction-modal');
@@ -181,11 +185,12 @@ Simulator = {
 				// All are ok
 				// Since this is task 1, they must all be in the first setting
 				console.log('start: Start simulation phase ' + Simulator.animationPhase);
-				Simulator.startAnimation(Simulator.animationPhase);
 
-				if (Simulator.animationPhase == 2) {
-					Simulator.showConclusion(5);
+				if (Simulator.animationPhase == 1) {
+					Simulator.showConclusion(4);
 				}
+
+				Simulator.startAnimation(Simulator.animationPhase);
 			} else {
 				Simulator.highlightTarget();
 			}
@@ -454,13 +459,12 @@ Simulator = {
 				var timing = 0;
 
 				if (Simulator.gerente[type]) {
-					timing += 7000;
+					timing += 3000;
 					setTimeout(function () {
 						Simulator.showBoss(function () {
 							console.log("    showBoss() done, inside callback.");
 							// This will trigger a new spinner and a new result
 							Simulator.animateSpinner();
-							Simulator.animateQuestionMark();
 						});
 					}, timing * Simulator.config.speed);
 
@@ -479,9 +483,6 @@ Simulator = {
 					// If there are more tasks, restart the process
 					if (Simulator.animationPhase < Simulator.tasks.length) {
 						Simulator.newTask(Simulator.animationPhase);
-						if (Simulator.animationPhase == 1) {
-							Simulator.showConclusion(4);
-						}
 					} else {
 						alert("Has acabado la demostración.");
 					}
@@ -512,12 +513,20 @@ Simulator = {
 		console.log("animateSpinner()");
 		if (type || typeof (type) === 'undefined') {
 			console.log("	Start");
+			Simulator.spinning = true;
 			$('#spinner').addClass('animated').fadeIn();
+			Simulator.animateQuestionMark(true);
+			Simulator.questionInterval = setInterval(function () {
+				Simulator.animateQuestionMark(true);
+			}, (Simulator.config.wheel * 1000) * Simulator.config.speed);
 		} else {
 			console.log("	Stop");
+			Simulator.spinning = false;
 			$("#spinner").one('animationiteration webkitAnimationIteration', function () {
 				$(this).removeClass("animated");
 			});
+			clearInterval(Simulator.questionInterval);
+			Simulator.animateQuestionMark(false);
 		}
 	},
 
@@ -537,10 +546,13 @@ Simulator = {
 			lastTime = times[times.length - 1],
 			shouldMove = false;
 
-		Simulator.animateQuestionMark();
 
 		for (var i = 0; i < 3; i++) {
 			Simulator.displayComment(index, i, times[i]);
+		}
+
+		if (index == 1) {
+			Simulator.showConclusion(5);
 		}
 
 		// Check if there is an extra comment for this phase
@@ -549,7 +561,7 @@ Simulator = {
 
 			setTimeout(function () {
 				// More comments, turn again!
-				Simulator.animateQuestionMark();
+				Simulator.animateSpinner(false);
 			}, lastTime);
 
 			lastTime += 9000 * Simulator.config.speed;
@@ -572,11 +584,6 @@ Simulator = {
 		// In phase 2 we have to spin twice, and then show what they realized
 		if (index == 1) {
 			console.log("cycleComments: Phase 1, show the conclussion they get after a given time.");
-
-			setTimeout(function () {
-				// More comments, turn again!
-				Simulator.animateQuestionMark();
-			}, lastTime);
 
 			shouldMove = true;
 
@@ -616,62 +623,75 @@ Simulator = {
 		}, time);
 	},
 
-	animateQuestionMark: function () {
+	animateQuestionMark: function (start) {
 		Simulator.showConclusion(2);
 
-		// Show
+		if (!start) {
+			console.log("animateQuestionMark(): Stop animation");
+			// Kill timers and stop
+			for (var i = 0; i < Simulator.questionTimers.length; i++) {
+				clearTimeout(Simulator.questionTimers[i]);
+			}
+			$('#q1').fadeOut();
+			$('#q2').fadeOut();
+			$('#q3').fadeOut();
+			return;
+		}
 
-		setTimeout(function () {
-			$('#q1').fadeToggle();
+		console.log("animateQuestionMark(): Start animation");
+
+		// Show
+		Simulator.questionTimers[0] = setTimeout(function () {
+			if (Simulator.spinning) $('#q1').fadeToggle();
 		}, 100 * Simulator.config.speed);
 
-		setTimeout(function () {
-			$('#q2').fadeToggle();
+		Simulator.questionTimers[1] = setTimeout(function () {
+			if (Simulator.spinning) $('#q2').fadeToggle();
 		}, 700 * Simulator.config.speed);
 
-		setTimeout(function () {
-			$('#q3').fadeToggle();
+		Simulator.questionTimers[2] = setTimeout(function () {
+			if (Simulator.spinning) $('#q3').fadeToggle();
 		}, 1300 * Simulator.config.speed);
 
 		// Hide
 
-		setTimeout(function () {
-			$('#q2').fadeToggle();
+		Simulator.questionTimers[0] = setTimeout(function () {
+			if (Simulator.spinning) $('#q2').fadeToggle();
 		}, 2500 * Simulator.config.speed);
 
-		setTimeout(function () {
-			$('#q1').fadeToggle();
+		Simulator.questionTimers[1] = setTimeout(function () {
+			if (Simulator.spinning) $('#q1').fadeToggle();
 		}, 3100 * Simulator.config.speed);
 
-		setTimeout(function () {
-			$('#q3').fadeToggle();
+		Simulator.questionTimers[2] = setTimeout(function () {
+			if (Simulator.spinning) $('#q3').fadeToggle();
 		}, 5000 * Simulator.config.speed);
 
 		// Show
 
-		setTimeout(function () {
-			$('#q2').fadeToggle();
+		Simulator.questionTimers[0] = setTimeout(function () {
+			if (Simulator.spinning) $('#q2').fadeToggle();
 		}, 6500 * Simulator.config.speed);
 
-		setTimeout(function () {
-			$('#q3').fadeToggle();
+		Simulator.questionTimers[1] = setTimeout(function () {
+			if (Simulator.spinning) $('#q3').fadeToggle();
 		}, 7300 * Simulator.config.speed);
 
-		setTimeout(function () {
-			$('#q1').fadeToggle();
+		Simulator.questionTimers[2] = setTimeout(function () {
+			if (Simulator.spinning) $('#q1').fadeToggle();
 		}, 7600 * Simulator.config.speed);
 
 		// Hide
 
-		setTimeout(function () {
+		Simulator.questionTimers[0] = setTimeout(function () {
 			$('#q3').fadeOut();
 		}, 8000 * Simulator.config.speed);
 
-		setTimeout(function () {
+		Simulator.questionTimers[1] = setTimeout(function () {
 			$('#q1').fadeOut();
 		}, 8400 * Simulator.config.speed);
 
-		setTimeout(function () {
+		Simulator.questionTimers[2] = setTimeout(function () {
 			$('#q2').fadeOut();
 		}, 8800 * Simulator.config.speed);
 	},
