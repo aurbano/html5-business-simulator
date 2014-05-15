@@ -154,9 +154,9 @@
 		#boss{
 			right:-50%;
 			top: -400px;
-			padding:10px;
+			padding:0;
+			border:none;
 			font-size:1.3em;
-			background-color:#BBE0FF;
 			position: absolute;
 			z-index:3;
 		}
@@ -226,7 +226,7 @@
 												Message 3
 											</div>
 										</div>
-										<div id="boss" class="message bg-info">
+										<div id="boss" class="message">
 											<img src="assets/img/sim3/jefe.png" height="150" style="
 											    position: absolute;
 											    top: -40px;
@@ -281,10 +281,29 @@
 	        <h4 class="modal-title">Ayuda</h4>
 	      </div>
 	      <div class="modal-body">
-				<p>Texto de ayuda sobre el simulador</p>	
+				En esta simulación se pretende:
+				<ol>
+					<li>Destacar la importancia de pensar en términos de "mensajes" cuando se configuran las palancas (teoría de la comunicación)</li>
+					<li>Reflexionar sobre la importancia de la atribución de significados (collective sensemaking)</li>
+					<li>Sobre el riesgo de implantar contextos "débiles" (poco coherentes en el mensaje).</li>
+				</ol>	
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="Ayuda" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Atención</h4>
+	      </div>
+	      <div class="modal-body">
+				Por favor, revisa la configuración de palancas que has propuesto. Modifica aquellas que se encuentra resaltadas para lograr que la configuración sea coherente / consistente.
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
