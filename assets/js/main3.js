@@ -10,7 +10,7 @@ Simulator = {
 	// Para arrancar el simulador hay que llamar a 'Simulator.start();''
 	config: {
 		debug: true, // Turn console debugging on/off
-		speed: 1, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
+		speed: 0.9, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
 		wheel: 5, // Velocidad de giro de la rueda
 	},
 
@@ -87,11 +87,16 @@ Simulator = {
 
 	tasks: [
 		{
-			text: 'Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.',
+			text: 'En esta simulación se pretende: <ol><li>Destacar la importancia de pensar en términos de "mensajes" cuando se configuran las palancas (teoría de la comunicación)</li><li>Reflexionar sobre la importancia de la atribución de significados (collective sensemaking)</li><li>Sobre el riesgo de implantar contextos "débiles" (poco coherentes en el mensaje).</li></ol>Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.',
 			target: [0, 0, 0, 0, 0, 0, 0]
 		},
 		{
-			text: 'La gerencia decide probar una nueva iniciativa, modifica por favor la configuración de Autonomía',
+			text: 'La dirección de la organización implanta un programa de desarrollo de la Autonomía de las personas. Con este programa se pretende que las personas tengan capacidad de ' +
+				'decisión y acción en ámbitos relacionados con su trabajo (tarea, calidad, mantenimiento, planificación, etc) así como en la definición y consecución de ciertos objetivos. La ' +
+				'dirección está implantando este programa con mensajes (verbales) de que las personas son un activo importante para la organización y que todos tenemos que contribuir a la ' +
+				'sostenibilidad del proyecto. A este programa de autonomía le acompañan iniciativas concretas como la de hacerles partícipes (sobre todo a nivel explicativo más que de ' +
+				'definición) de la estrategia. También está siendo acompañada de más formación pues las personas tendrán que empezar a tomar decisiones y ejecutar nuevas tareas. ' +
+				'<br />POR FAVOR, ACTUALIZA LA PALANCA DE AUTONOMÍA PARA CONTINUAR CON LA SIMULACIÓN.',
 			target: [0, 0, 0, 0, 0, 1, 0]
 		},
 		{
@@ -99,6 +104,8 @@ Simulator = {
 			target: [1, 1, 1, 1, 1, 1, 1]
 		}
 	],
+
+	mensajeError: 'Por favor, revisa la configuración de palancas que has propuesto. Modifica aquellas que se encuentra resaltadas para lograr que la configuración sea coherente / consistente.',
 
 	conclusiones: [
 		{
@@ -193,6 +200,7 @@ Simulator = {
 				Simulator.startAnimation(Simulator.animationPhase);
 			} else {
 				Simulator.highlightTarget();
+				$('#error-modal').modal();
 			}
 		});
 	},
@@ -485,6 +493,7 @@ Simulator = {
 						Simulator.newTask(Simulator.animationPhase);
 					} else {
 						alert("Has acabado la demostración.");
+						Simulator.animateSpinner(false);
 					}
 				}, timing * Simulator.config.speed);
 			});
@@ -521,12 +530,16 @@ Simulator = {
 			}, (Simulator.config.wheel * 1000) * Simulator.config.speed);
 		} else {
 			console.log("	Stop");
+
 			Simulator.spinning = false;
+
+			clearInterval(Simulator.questionInterval);
+
+			Simulator.animateQuestionMark(false);
+
 			$("#spinner").one('animationiteration webkitAnimationIteration', function () {
 				$(this).removeClass("animated");
 			});
-			clearInterval(Simulator.questionInterval);
-			Simulator.animateQuestionMark(false);
 		}
 	},
 
@@ -626,73 +639,86 @@ Simulator = {
 	animateQuestionMark: function (start) {
 		Simulator.showConclusion(2);
 
+		console.log("animateQuestionMark()");
+
 		if (!start) {
-			console.log("animateQuestionMark(): Stop animation");
+			console.log("	Stop animation");
 			// Kill timers and stop
 			for (var i = 0; i < Simulator.questionTimers.length; i++) {
 				clearTimeout(Simulator.questionTimers[i]);
 			}
-			$('#q1').fadeOut();
-			$('#q2').fadeOut();
-			$('#q3').fadeOut();
+			$('#q1').fadeOut(400 * Simulator.config.speed);
+			$('#q2').fadeOut(400 * Simulator.config.speed);
+			$('#q3').fadeOut(400 * Simulator.config.speed);
 			return;
 		}
 
-		console.log("animateQuestionMark(): Start animation");
+		console.log("	Start animation");
 
 		// Show
 		Simulator.questionTimers[0] = setTimeout(function () {
-			if (Simulator.spinning) $('#q1').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q1').fadeToggle(400 * Simulator.config.speed);
 		}, 100 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			if (Simulator.spinning) $('#q2').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q2').fadeToggle(400 * Simulator.config.speed);
 		}, 700 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			if (Simulator.spinning) $('#q3').fadeToggle();
+			if (Simulator.spinning) $('#q3').fadeToggle(400 * Simulator.config.speed);
 		}, 1300 * Simulator.config.speed);
 
 		// Hide
 
 		Simulator.questionTimers[0] = setTimeout(function () {
-			if (Simulator.spinning) $('#q2').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q2').fadeToggle(400 * Simulator.config.speed);
 		}, 2500 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			if (Simulator.spinning) $('#q1').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q1').fadeToggle(400 * Simulator.config.speed);
 		}, 3100 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			if (Simulator.spinning) $('#q3').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q3').fadeToggle(400 * Simulator.config.speed);
 		}, 5000 * Simulator.config.speed);
 
 		// Show
 
 		Simulator.questionTimers[0] = setTimeout(function () {
-			if (Simulator.spinning) $('#q2').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q2').fadeToggle(400 * Simulator.config.speed);
 		}, 6500 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			if (Simulator.spinning) $('#q3').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q3').fadeToggle(400 * Simulator.config.speed);
 		}, 7300 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			if (Simulator.spinning) $('#q1').fadeToggle();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			if (Simulator.spinning) $('#q1').fadeToggle(400 * Simulator.config.speed);
 		}, 7600 * Simulator.config.speed);
 
 		// Hide
 
 		Simulator.questionTimers[0] = setTimeout(function () {
-			$('#q3').fadeOut();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			$('#q3').fadeOut(400 * Simulator.config.speed);
 		}, 8000 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			$('#q1').fadeOut();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			$('#q1').fadeOut(400 * Simulator.config.speed);
 		}, 8400 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			$('#q2').fadeOut();
+			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
+			$('#q2').fadeOut(400 * Simulator.config.speed);
 		}, 8800 * Simulator.config.speed);
 	},
 
