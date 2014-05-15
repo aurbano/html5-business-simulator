@@ -481,6 +481,7 @@ Simulator = {
 					setTimeout(function () {
 						// Add consequence to the result box
 						$('.messages').append('<div class="message ' + Simulator.gerente[type].style + '" style="margin:10px 0; font-weight:bold;">' + Simulator.gerente[type].text + '</div>');
+						Simulator.animateSpinner(false);
 					}, timing * Simulator.config.speed);
 				}
 
@@ -572,11 +573,6 @@ Simulator = {
 		if (Simulator.comments[index].length > 3) {
 			console.log("cycleComments: Phase " + index + " There are more comments, spin again and show them");
 
-			setTimeout(function () {
-				// More comments, turn again!
-				Simulator.animateSpinner(false);
-			}, lastTime);
-
 			lastTime += 9000 * Simulator.config.speed;
 
 			shouldMove = true;
@@ -609,6 +605,7 @@ Simulator = {
 			if (shouldMove) {
 				Simulator.showConclusion(3);
 				setTimeout(function () {
+					Simulator.animateSpinner(false);
 					callback.call();
 				}, 2000 * Simulator.config.speed);
 			}
