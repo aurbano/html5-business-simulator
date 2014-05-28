@@ -11,7 +11,7 @@ Simulator = {
 	config: {
 		debug: true, // Turn console debugging on/off
 		speed: 0.9, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
-		wheel: 5, // Velocidad de giro de la rueda
+		wheel: 4, // Tiempo (s) que tarda en dar una vuelta entera la rueda, relativo a la velocidad del simulador
 	},
 
 	// "Palancas" -> Nombre y opciones
@@ -57,11 +57,13 @@ Simulator = {
 			'En esta organización hago el esfuerzo justo, y si tenemos la suerte de trabajar menos por averías/ineficiencias... mejor!',
 		],
 		[
-			"Parece que confian en nosotros/as",
-			"Por el momento no somos parte del proyecto, pero en un futuro...",
-			'Parece que somos un "activo" clave',
-			'Están confiando en nosotros y parece que reconocen nuestro potencial para aportar y hacer sostenible el proyecto.',
-			'Es un engaño, pues se trata de una iniciativa disfrazada de buenas palabras para darnos otra "vuelta de tuerca" más!',
+			'¿¿La organización CONFÍA en nosotros/as??',
+			'¿¿Seremos parte del proyecto??.',
+			'Ahora, ¿¿Somos un “activo” clave??',
+			'Proactividad inicial media / alta. Iniciativas concretas que demuestran cierto nivel de compromiso; Bastantes comportamientos favorables a los retos de la organización.',
+			'Se trata de otra iniciativa disfrazada de buenas palabras para darnos una "vuelta de tuerca" más.',
+			'Nos están engañando!!',
+			'Proactividad nula. Cumplir con la descripción del puesto, lo justo. Comportamientos pasivos debido a una falta de credibilidad.'
 
 		],
 		[
@@ -73,6 +75,8 @@ Simulator = {
 		]
 	],
 
+	// Mensajes de conclusion del gerente, uno por cada fase
+	// Como la fase dos no tiene mensaje de gerente se deja en false
 	gerente: [
 		{
 			text: "¡Viene a controlarnos!",
@@ -85,6 +89,8 @@ Simulator = {
 		}
 	],
 
+	// Descripcion de cada fase, en el texto va lo que sale en la ventana emergente
+	// en target va la configuracion esperada de las palancas
 	tasks: [
 		{
 			text: 'En esta simulación se pretende: <ol><li>Destacar la importancia de pensar en términos de "mensajes" cuando se configuran las palancas (teoría de la comunicación)</li><li>Reflexionar sobre la importancia de la atribución de significados (collective sensemaking)</li><li>Sobre el riesgo de implantar contextos "débiles" (poco coherentes en el mensaje).</li></ol>Configura, por favor, las siguientes palancas siguiendo una lógica clásica de poco compromiso en las personas.',
@@ -94,9 +100,10 @@ Simulator = {
 			text: 'La dirección de la organización implanta un programa de desarrollo de la Autonomía de las personas. Con este programa se pretende que las personas tengan capacidad de ' +
 				'decisión y acción en ámbitos relacionados con su trabajo (tarea, calidad, mantenimiento, planificación, etc) así como en la definición y consecución de ciertos objetivos. La ' +
 				'dirección está implantando este programa con mensajes (verbales) de que las personas son un activo importante para la organización y que todos tenemos que contribuir a la ' +
-				'sostenibilidad del proyecto. A este programa de autonomía le acompañan iniciativas concretas como la de hacerles partícipes (sobre todo a nivel explicativo más que de ' +
+				'sostenibilidad del proyecto.'+
+				'<br /><br />A este programa de autonomía le acompañan iniciativas concretas como la de hacerles partícipes (sobre todo a nivel explicativo más que de ' +
 				'definición) de la estrategia. También está siendo acompañada de más formación pues las personas tendrán que empezar a tomar decisiones y ejecutar nuevas tareas. ' +
-				'<br />POR FAVOR, ACTUALIZA LA PALANCA DE AUTONOMÍA PARA CONTINUAR CON LA SIMULACIÓN.',
+				'<br /><br />POR FAVOR, ACTUALIZA LA PALANCA DE AUTONOMÍA PARA CONTINUAR CON LA SIMULACIÓN.',
 			target: [0, 0, 0, 0, 0, 1, 0]
 		},
 		{
@@ -105,8 +112,11 @@ Simulator = {
 		}
 	],
 
+	// Mensaje de error que aparece cuando se configuran mal las palancas
 	mensajeError: 'Por favor, revisa la configuración de palancas que has propuesto. Modifica aquellas que se encuentra resaltadas para lograr que la configuración sea coherente / consistente.',
 
+	// Conclusiones que aparecen a la derecha
+	// Aqui no es buena idea quitar/añadir conclusiones porque estan colocadas a mano en el codigo
 	conclusiones: [
 		{
 			text: 'Las diferentes palancas se encuentran interrelacionadas, constituyendo un sistema (o configuración) más o menos coherente.'
@@ -221,7 +231,7 @@ Simulator = {
 			$('#nextTask').click(function (e) {
 				e.preventDefault();
 				Simulator.nextTask(task);
-				$("#nextTaskContainer").remove();
+				$('#conclusiones').html('');
 			});
 		}, 100);
 	},
@@ -554,52 +564,83 @@ Simulator = {
 		if (typeof (Simulator.comments[index]) == 'undefined')
 			return;
 
+		console.log("cycleComments: Fase "+index);
+
 		$('#comments').html('');
 
 		var times = [2000 * Simulator.config.speed, 5000 * Simulator.config.speed, 9000 * Simulator.config.speed],
-			lastTime = times[times.length - 1],
+			lastTime = times[times.length - 1]/Simulator.config.speed,
 			shouldMove = false;
 
+		console.log("Starting cycle 1: lastTime="+lastTime);
 
+		// Muestra los 3 primeros comentarios
 		for (var i = 0; i < 3; i++) {
 			Simulator.displayComment(index, i, times[i]);
 		}
 
+		// Fase 1
+		if(index === 0){
+			lastTime += 2000 * Simulator.config.speed;
+			Simulator.displayComment(index, 3, lastTime, true);
+		}
+
+		// Fase 2
 		if (index == 1) {
 			Simulator.showConclusion(5);
-		}
 
-		// Check if there is an extra comment for this phase
-		if (Simulator.comments[index].length > 3) {
-			console.log("cycleComments: Phase " + index + " There are more comments, spin again and show them");
-
-			lastTime += 9000 * Simulator.config.speed;
+			// La Fase 2 muestra 3 comentarios, luego una conclusion, luego otro comentario y otra conclusion
 
 			shouldMove = true;
 
-			if (index > 1) {
-				var display = 3;
-				if (Simulator.comments[index].length > 4) {
-					display = Math.floor((Math.random() * (Simulator.comments[2].length - 3))) + 2;
-				}
-				console.log('cycleComments: Phase ' + index + ', chosen randomly comment: ' + display);
-				Simulator.displayComment(index, display, lastTime);
-			} else {
-				Simulator.displayComment(index, 3, lastTime);
+			lastTime += 9000 * Simulator.config.speed;
+			Simulator.displayComment(index, 3, lastTime, true);
+
+			console.log("Conclusion 1 will be shown in "+lastTime);
+
+			setTimeout(function(){
+				$('#result').fadeOut();
+				$('#comments').html('').fadeOut();
+			}, (lastTime+5000)*Simulator.config.speed);
+
+			console.log("last time before second round = "+lastTime);
+
+			// Sigue pensando, ahora saldran los otros 3 comentarios
+			var times2 = [(lastTime+7000) * Simulator.config.speed, (lastTime+10000) * Simulator.config.speed];
+			lastTime = times2[times2.length - 1]/Simulator.config.speed;
+
+			console.log("Second round: ",times2, "lastTime="+lastTime);
+
+			for (var a = 4; a < 6; a++) {
+				Simulator.displayComment(index, a, times2[a-4]);
 			}
 
+			// Ultima conclusion
+			lastTime += 1000 * Simulator.config.speed;
+			Simulator.displayComment(index, 6, lastTime, true);
+
+			console.log("Conclusion 2 in "+lastTime);
 		}
 
-		// In phase 2 we have to spin twice, and then show what they realized
-		if (index == 1) {
-			console.log("cycleComments: Phase 1, show the conclussion they get after a given time.");
+		// Fase 3
+		if(index == 2){
+			console.log("	Fase 2 (real): Mostrando otros 3 comentarios, la conclusion, 2 mas y la segunda conclusion");
+
+			lastTime += 9000 * Simulator.config.speed;
 
 			shouldMove = true;
 
-			lastTime += 9000 * Simulator.config.speed;
-			Simulator.displayComment(index, 4, lastTime);
+			var display = 3;
+			if (Simulator.comments[index].length > 4) {
+				display = Math.floor((Math.random() * (Simulator.comments[2].length - 3))) + 2;
+			}
+			console.log('	Fase ' + index + ', chosen randomly comment: ' + display);
+			Simulator.displayComment(index, display, lastTime, true);
 		}
 
+		console.log(	'Final timeout on '+lastTime);
+
+		// After last time, execute this code and call the callback
 		setTimeout(function () {
 
 			if (shouldMove) {
@@ -608,6 +649,9 @@ Simulator = {
 					Simulator.animateSpinner(false);
 					callback.call();
 				}, 2000 * Simulator.config.speed);
+			}else{
+				Simulator.animateSpinner(false);
+				callback.call();
 			}
 
 		}, lastTime);
@@ -620,13 +664,13 @@ Simulator = {
 	 * @param  {int} time    Time in ms until the comment is displayed
 	 * @return {void}
 	 */
-	displayComment: function (phase, comment, time) {
+	displayComment: function (phase, comment, time, result) {
 		setTimeout(function () {
-			if (comment > 2) {
-				Simulator.animateSpinner(false);
-				console.log("Displaying result: (Phase=" + phase + ", Comment=" + comment + ") :: " + Simulator.comments[phase][comment]);
+			if (result) {
+				console.log("Displaying result: (Phase=" + phase + ", Comment=" + comment + ")");
 				$('#result').html(Simulator.comments[phase][comment]).fadeIn();
 			} else {
+				console.log("Displaying comment: (Phase=" + phase + ", Comment=" + comment + ")");
 				$('#comments').append(Simulator.comments[phase][comment] + '<br />').fadeIn();
 			}
 
@@ -635,11 +679,8 @@ Simulator = {
 
 	animateQuestionMark: function (start) {
 		Simulator.showConclusion(2);
-
-		console.log("animateQuestionMark()");
-
 		if (!start) {
-			console.log("	Stop animation");
+			console.log("animateQuestionMark: Stop animation");
 			// Kill timers and stop
 			for (var i = 0; i < Simulator.questionTimers.length; i++) {
 				clearTimeout(Simulator.questionTimers[i]);
@@ -650,16 +691,12 @@ Simulator = {
 			return;
 		}
 
-		console.log("	Start animation");
-
 		// Show
 		Simulator.questionTimers[0] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q1').fadeToggle(400 * Simulator.config.speed);
 		}, 100 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q2').fadeToggle(400 * Simulator.config.speed);
 		}, 700 * Simulator.config.speed);
 
@@ -670,51 +707,42 @@ Simulator = {
 		// Hide
 
 		Simulator.questionTimers[0] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q2').fadeToggle(400 * Simulator.config.speed);
 		}, 2500 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q1').fadeToggle(400 * Simulator.config.speed);
 		}, 3100 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q3').fadeToggle(400 * Simulator.config.speed);
 		}, 5000 * Simulator.config.speed);
 
 		// Show
 
 		Simulator.questionTimers[0] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q2').fadeToggle(400 * Simulator.config.speed);
 		}, 6500 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q3').fadeToggle(400 * Simulator.config.speed);
 		}, 7300 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			if (Simulator.spinning) $('#q1').fadeToggle(400 * Simulator.config.speed);
 		}, 7600 * Simulator.config.speed);
 
 		// Hide
 
 		Simulator.questionTimers[0] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			$('#q3').fadeOut(400 * Simulator.config.speed);
 		}, 8000 * Simulator.config.speed);
 
 		Simulator.questionTimers[1] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			$('#q1').fadeOut(400 * Simulator.config.speed);
 		}, 8400 * Simulator.config.speed);
 
 		Simulator.questionTimers[2] = setTimeout(function () {
-			console.log("animateQuestionMark() from timer, spinning flag=" + Simulator.spinning);
 			$('#q2').fadeOut(400 * Simulator.config.speed);
 		}, 8800 * Simulator.config.speed);
 	},
@@ -750,7 +778,7 @@ Simulator = {
 	showBoss: function (callback) {
 		console.log("showBoss()");
 		$('#boss').fadeIn().animate({
-			top: '-100px'
+			top: '0px'
 		}, 2000 * Simulator.config.speed, 'swing', function () {
 			Simulator.animateBoss(1, callback);
 		});
@@ -773,7 +801,7 @@ Simulator = {
 	animateBoss: function (pos, callback) {
 		var positions = [
 			[-40, -120, 1],
-			[160, -170, 2000]
+			[80, 70, 2000]
 		];
 
 		$('#boss img').animate({
