@@ -193,58 +193,13 @@
 			<div class="col-md-12">
 				<h3>Simulador 2</h3>
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-12">
 						<div class="panel" id="simulador">
 							<a href="#instruction-modal" data-toggle="modal" id="showTask"><i class="fa fa-plus-square-o"></i> Tarea actual</a>
 							<div id="app">
-								<div class="animation" style="left: 120px; width:600px;" id="contains-palancas">
-									<form class="form-inline" id="palancas"></form>
-								</div>
-
-								<div class="animation" style="left: 870px; width: 500px; height: 400px;" id="mainAnimation">
-									<div id="circle">
-										<div id="people">
-											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:20px; left:15px; z-index:2">
-											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:50px;">
-											<img src="assets/img/sim3/trabajador.png" alt="Trabajador" style="top:-40px; left:80px; z-">
-											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-10px;">
-											<img src="assets/img/sim3/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-50px;">
-
-											<div id="questions">
-												<div id="q1" style="position:absolute;font-size: 0.6em;left: -50px;bottom: -300px;">?</div>
-												<div id="q2" style="position:absolute;font-size: 0.8em;right: -170px;bottom: -290px;">!</div>
-												<div id="q3" style="position:absolute;left: 10px;">?</div>
-											</div>
-										</div>
-										<div id="pyramid">
-											<div id="result" class="message bg-primary" style="top: 30px;position: absolute;left: 120px; width:300px">
-												This is the conclusion that the group reaches.
-											</div>
-											<div id="comments" class="bubble bubbleRight" style="bottom: -30px;right: -60px;">
-												Message 1<br>
-												Message 2<br>
-												Message 3
-											</div>
-										</div>
-										<div id="boss" class="message">
-											<img src="assets/img/sim3/jefe.png" height="150" style="
-											    position: absolute;
-											    top: -40px;
-											    left: -120px;
-											">
-											<span class="text">El gerente decide tomar el café en el taller / planta</span>
-										</div>
-										<div class="messages">
-											<div id="result" class="message bg-warning">Mis 8 horitas y me voy cuanto antes y a ser posible con el menor trabajo posible.</div>
-										</div>
-										<div id="spinner" class="animated"></div>
-									</div>
-								</div>
+								Main application
 							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="panel" id="conclusiones"></div>
 					</div>
 				</div>
 			</div>
@@ -256,59 +211,6 @@
 		</p>
 	</footer>
 
-	<div class="modal fade" id="instruction-modal" tabindex="-1" role="dialog" aria-labelledby="Tarea actual" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Tarea</h4>
-	      </div>
-	      <div class="modal-body">
-				<p>Tarea actual</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	<div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="Ayuda" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Ayuda</h4>
-	      </div>
-	      <div class="modal-body">
-				En esta simulación se pretende:
-				<ol>
-					<li>Destacar la importancia de pensar en términos de "mensajes" cuando se configuran las palancas (teoría de la comunicación)</li>
-					<li>Reflexionar sobre la importancia de la atribución de significados (collective sensemaking)</li>
-					<li>Sobre el riesgo de implantar contextos "débiles" (poco coherentes en el mensaje).</li>
-				</ol>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" data-dismiss="modal" class="btn btn-default">Ok</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="Ayuda" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Atención</h4>
-	      </div>
-	      <div class="modal-body">
-				Por favor, revisa la configuración de palancas que has propuesto. Modifica aquellas que se encuentra resaltadas para lograr que la configuración sea coherente / consistente.
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -319,7 +221,7 @@
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
-	<script type="text/javascript" src="assets/js/main3.js"></script>
+	<script type="text/javascript" src="assets/js/main2.js"></script>
 	<script type="text/javascript">
 		Simulator.start();
 	</script>
