@@ -102,7 +102,6 @@ var Simulator = {
 		]
 	},
 
-
 	// Codigo
 
 	start: function () {
@@ -130,6 +129,43 @@ var Simulator = {
 			}
 		}
 
+		// EVENTS ----------------
+
+		// Click event on initial selection page
+		$seleccion.find('a.btn').click(function(e){
+			e.preventDefault();
+			Simulator.windows.change(1);
+		});
+
+		// Clicks on second page
+		$('#configuracion select').change(function(){
+			$('#configMensaje').text($(this).val());
+		});
+
+		$('#configuracion a.next').click(function(e){
+			e.preventDefault();
+			Simulator.windows.change(2);
+		});
+
+	},
+
+	windows: {
+
+		current: 0,
+
+		/**
+		 * Change to another window
+		 * index is the window reference, in the defined elements inside the function
+		 */
+		change: function(index, callback){
+			var windows = [$('seleccion'), $('#configuracion'), $('#simulador')];
+			if(index == Simulator.windows.current) return;
+
+			Simulator.windows.current = index;
+
+			$('#app .panel').slideUp();
+			windows[index].slideDown();
+		}
 	},
 
 	resize: function () {
@@ -137,7 +173,7 @@ var Simulator = {
 			footerOff = $('footer').offset(),
 			footerHeight = $('footer').height(),
 			win = $(window).height(),
-			height = Math.max(win - simOff.top - footerHeight - 50, 374);
+			height = Math.max(win - simOff.top - footerHeight - 30, 374);
 		$('#app .panel').height(height);
 
 		$('.animation').each(function () {
