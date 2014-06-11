@@ -14,6 +14,71 @@ var Simulator = {
 
 	// Valores
 
+	palancas: [
+		{
+			nombre: 'Seguridad',
+			desc: 'Seguridad de empleo'
+		},
+		{
+			nombre: 'Transparencia',
+			desc: 'Nivel de transparencia en la organización (en las cuentas, objetivos, retos estratégicos, inversiones, …) y en el caso de que exista dónde se pone especialmente el énfasis.'
+		},
+		{
+			nombre: 'Proyecto',
+			desc: 'Grado de Proyecto Compartido: hasta qué punto la organización hace partícipes a las personas del proyecto ("la metáfora de la catedral")'
+		},
+		{
+			nombre: 'Retribución',
+			desc: 'El salario medio de la organización respecto a otras organizaciones del entorno y los incentivos económicos existentes'
+		},
+		{
+			nombre: 'Resultados',
+			desc: 'Participación en Resultados de la empresa (p.ej. en un % de los beneficios)'
+		},
+		{
+			nombre: 'Nivel Formación',
+			desc: 'Nivel de inversión en formación de las personas en la organización'
+		},
+		{
+			nombre: 'Diseño trabajo',
+			desc: 'Grado de autonomía en el puesto de trabajo (enriquecimiento vertical) y grado de enriquecimiento del trabajo (enriquecimiento horizontal)'
+		},
+		{
+			nombre: 'Participación',
+			desc: 'Hasta qué punto la organización hace partícipes a las personas de las decisiones estratégicas'
+		},
+		{
+			nombre: 'Política de Personas',
+			desc: 'El mensaje general transmitido a las personas'
+		},
+		{
+			nombre: 'Liderazgo',
+			desc: 'Estilo de liderazgo predominante en la organización'
+		},
+		{
+			nombre: 'Mensaje',
+			desc: 'El principal mensaje que la dirección transmite a las personas'
+		},
+		{
+			nombre: 'Inversión',
+			desc: 'Dónde se invierten los recursos económicos'
+		},
+		{
+			nombre: 'Tiempo',
+			desc: 'En qué se ocupan los responsables de la organización. Esto es, en qué pasan el tiempo.'
+		},
+		{
+			nombre: 'Indicadores',
+			desc: 'Cuáles son los indicadores más importantes monitorizados por la dirección de la organización. Aquellos especialmente prioritarios. '
+		},
+		{
+			nombre: 'Promoción',
+			desc: 'Cuáles son los criterios de promoción'
+		}
+	],
+	// La configuracion de los modos
+	// el target es la config de las palancas, si no importa se deja en false.
+	// Si se rellena, hay que poner el contenido que debe aparecer en la palanca.
 	modos: {
 		emocionales: [
 			{
@@ -22,6 +87,18 @@ var Simulator = {
 					'Es un buen sitio para trabajar (seguridad, salarios, ritmo, etc)',
 					'¿Para qué cambiar o esforzarse? No  hay muchos retos',
 					'Nuestros "jefes" siguen un estilo de orden y control pero es paternalista y predecible'
+				],
+				target: [
+					'Alta',
+					'Baja',
+					'No se comparte',
+					'Por encima de la media. Sin incentivos y si existen sin efecto real',
+					false,
+					false,
+					false,
+					false,
+					'No hay un mensaje claro',
+					'Paternalista/clásico'
 				]
 			},
 			{
@@ -30,6 +107,18 @@ var Simulator = {
 					'Nos engañan - esto no merece la pena',
 					'Aunque suene a nuevo, es lo de siempre',
 					'No hay nada que pueda hacer, esto no se puede cambiar'
+				],
+				target: [
+					false,
+					'Baja',
+					'No se comparte',
+					false,
+					false,
+					'La justa para la ejecución tarea',
+					false,
+					'Baja/nula',
+					'La persona es el "activo" clave',
+					'Clásico (orden y control)'
 				]
 			},
 			{
@@ -38,6 +127,18 @@ var Simulator = {
 					'Este proyecto realmente merece la pena; veo la visión y realmente me entusiasma',
 					'Los responsables de esta organización confían en nosotros',
 					'Las personas somos clave para la organización por lo que se busca nuestro desarrollo profesional'
+				],
+				target: [
+					'Alta',
+					'Alta; énfasis en el Proyecto',
+					'Se comparte de forma continuada',
+					'Por encima de la media. Sin incentivos',
+					'Si (p.ej. un 30% de beneficios)',
+					'Alta. Filosofía de desarrollo',
+					'Diseño enriquecido',
+					'Alta',
+					'La persona es el "activo" clave',
+					'Transformacional'
 				]
 			},
 			{
@@ -46,6 +147,18 @@ var Simulator = {
 					'No es una opción fracasar; no nos van a sacar del mercado!!',
 					'Es probable que perdamos el empleo si no superamos los retos de mercado más inmediatos',
 					'Los responsables son exigentes; no hay margen de error'
+				],
+				target: [
+					'Baja',
+					'Alta; énfasis en la crudeza del mercado',
+					'No se comparte. La clave es salvar el PG',
+					'Salario mínimo. Incentivos adicionales importantes',
+					false,
+					'La justa para la ejecución tarea',
+					false,
+					'Baja/nula',
+					false,
+					'Liderazgo autoritario'
 				]
 			}
 		],
@@ -61,6 +174,14 @@ var Simulator = {
 					'Se cumplen los compromisos con rigor y responsabilidad',
 					'El resultado si o si, la honestidad, el logro en lugar del esfuerzo, la disciplina',
 					'Materializamos los objetivos relacionados con la productividad, la calidad, el gasto, etc es lo importante'
+				],
+				target_cultural:[
+					'Lograr los objetivos / resultados por encima de todo. Cumplir con los compromisos',
+					'En sistemas de control, información, monitorización a tiempo real, seguimiento de indicadores.',
+					'Monitorizando resultados / objetivos / indicadores',
+					'Productividades, gastos operativos, niveles de calidad, etc.',
+
+					'Los que mejor cumplen con los compromisos, logran resultados, etc'
 				]
 			},
 
@@ -73,6 +194,13 @@ var Simulator = {
 				sig_culturales: [
 					'Fomentamos una comprensión íntima del cliente para que todas las decisiones estén orientadas a cubrir sus necesidades',
 					'Escuchamos al cliente, somos flexibles para adpatarnos a sus necesidades, tenemos vocación de servicio.'
+				],
+				target_cultural:[
+					'Las necesidades del cliente por encima de todo',
+					'En mejorar la comunicación con los clientes y desarrollar soluciones para atender sus necesidades',
+					'Escuchando, atendiendo y estando cerca del cliente',
+					'Reclamaciones de cliente, nivel de fidelización, cuota de mercado, etc.',
+					'Los que mejor conocen a los clientes'
 				]
 			},
 
@@ -85,6 +213,13 @@ var Simulator = {
 					'Perseguimos ser único, lo que nunca antes se ha hecho, buscando los máximos estándares',
 					'Nos caracteriza la curiosidad, aprender del fracaso, ser creativos y desafiar al status quo.',
 					'Se fomenta la experimentación, la vigilancia y el aprendizaje'
+				],
+				target_cultural:[
+					'Sorprender al mercado y el liderazgo de producto es la clave',
+					'En el desarrollo de nuevas soluciones no necesariamente explicitadas por el cliente',
+					'Valorando y asignando recursos a nuevas iniciativas',
+					'Nivel de éxito de nuevos productos, oportunidades detectadas, prospectivas.',
+					'Los más visionarios en nuevos desarrollos'
 				]
 			},
 
@@ -97,6 +232,13 @@ var Simulator = {
 					'Priorizamos el bien común con un compromiso y apoyo en las personas.',
 					'Las personas son la esencia de esta organización',
 					'Nos caracterizamos por la cooperación, el respeto, el "empowerment".'
+				],
+				target_cultural:[
+					'Las personas primero y por encima de todo',
+					'En cambios org. hacia equipos / autonomía',
+					'Escuchando y acompañando a las personas / equipos',
+					'Satisfacción de personas, nivel de desarrollo de equipos, nº de equipos, sentimiento de pertenencia, ..',
+					'Los que mejor se relacionan y tratan con las personas'
 				]
 			}
 		]
@@ -121,6 +263,7 @@ var Simulator = {
 
 		var $seleccion = $('#seleccion'),
 			$select = $('#configuracion select optgroup'),
+			$palancas = $('#palancas'),
 			used_messages = []; // Holder for the used messages, to avoid dupes
 
 		// Rellena el campo de seleccion y los options
@@ -151,6 +294,11 @@ var Simulator = {
 			}
 		}
 
+		// Rellena las palancas
+		for(var i=0; i<Simulator.palancas.length;i++){
+			$palancas.append('<a class="btn btn-default btn-sm">'+Simulator.palancas[i].nombre+'</a>');
+		}
+
 		// EVENTS ----------------
 
 		// Click event on initial selection page
@@ -164,6 +312,7 @@ var Simulator = {
 				Simulator.current.mode = Simulator.modos.culturales[$(this).attr("data-index")];
 				Simulator.current.mode.nombre = Simulator.current.mode.prefijo + ' ' + Simulator.modos.emocionales[$(this).attr("data-extends")].nombre;
 				Simulator.current.mode.sig_emocionales = Simulator.modos.emocionales[$(this).attr("data-extends")].sig_emocionales;
+				Simulator.current.mode.target = Simulator.modos.emocionales[$(this).attr("data-extends")].target;
 			}
 			console.log(Simulator.current);
 			// Change title
