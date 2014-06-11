@@ -18,7 +18,7 @@ var Simulator = {
 		emocionales: [
 			{
 				nombre: 'Confort',
-				sig_energia: [
+				sig_emocionales: [
 					'Es un buen sitio para trabajar (seguridad, salarios, ritmo, etc)',
 					'¿Para qué cambiar o esforzarse? No  hay muchos retos',
 					'Nuestros "jefes" siguen un estilo de orden y control pero es paternalista y predecible'
@@ -26,7 +26,7 @@ var Simulator = {
 			},
 			{
 				nombre: 'Resignación',
-				sig_energia: [
+				sig_emocionales: [
 					'Nos engañan - esto no merece la pena',
 					'Aunque suene a nuevo, es lo de siempre',
 					'No hay nada que pueda hacer, esto no se puede cambiar'
@@ -34,7 +34,7 @@ var Simulator = {
 			},
 			{
 				nombre: 'Pasión',
-				sig_energia: [
+				sig_emocionales: [
 					'Este proyecto realmente merece la pena; veo la visión y realmente me entusiasma',
 					'Los responsables de esta organización confían en nosotros',
 					'Las personas somos clave para la organización por lo que se busca nuestro desarrollo profesional'
@@ -42,22 +42,22 @@ var Simulator = {
 			},
 			{
 				nombre: 'Agresión',
-				sig_energia: [
+				sig_emocionales: [
 					'No es una opción fracasar; no nos van a sacar del mercado!!',
 					'Es probable que perdamos el empleo si no superamos los retos de mercado más inmediatos',
 					'Los responsables son exigentes; no hay margen de error'
 				]
 			}
 		],
-		// Aqui se pone el prefijo, los que extiende, y los comentarios extra
+		// Aqui se pone el prefijo, los que extiende (por referencia), y los comentarios extra
 		culturales: [
 			{
 				prefijo: 'Logro',
 				extiende: [
-					'Pasión',
-					'Agresión'
+					2,
+					3
 				],
-				sig_cultural: [
+				sig_culturales: [
 					'Se cumplen los compromisos con rigor y responsabilidad',
 					'El resultado si o si, la honestidad, el logro en lugar del esfuerzo, la disciplina',
 					'Materializamos los objetivos relacionados con la productividad, la calidad, el gasto, etc es lo importante'
@@ -67,10 +67,10 @@ var Simulator = {
 			{
 				prefijo: 'Cliente',
 				extiende: [
-					'Pasión',
-					'Agresión'
+					2,
+					3
 				],
-				sig_cultural: [
+				sig_culturales: [
 					'Fomentamos una comprensión íntima del cliente para que todas las decisiones estén orientadas a cubrir sus necesidades',
 					'Escuchamos al cliente, somos flexibles para adpatarnos a sus necesidades, tenemos vocación de servicio.'
 				]
@@ -79,9 +79,9 @@ var Simulator = {
 			{
 				prefijo: 'Innovación',
 				extiende: [
-					'Pasión'
+					2
 				],
-				sig_cultural: [
+				sig_culturales: [
 					'Perseguimos ser único, lo que nunca antes se ha hecho, buscando los máximos estándares',
 					'Nos caracteriza la curiosidad, aprender del fracaso, ser creativos y desafiar al status quo.',
 					'Se fomenta la experimentación, la vigilancia y el aprendizaje'
@@ -91,15 +91,21 @@ var Simulator = {
 			{
 				prefijo: 'Eq.-Pers.',
 				extiende: [
-					'Pasión'
+					2
 				],
-				sig_cultural: [
+				sig_culturales: [
 					'Priorizamos el bien común con un compromiso y apoyo en las personas.',
 					'Las personas son la esencia de esta organización',
 					'Nos caracterizamos por la cooperación, el respeto, el "empowerment".'
 				]
 			}
 		]
+	},
+
+	// Variables internas
+	current: {
+		type: '',
+		mode: {}
 	},
 
 	// Codigo
@@ -113,11 +119,20 @@ var Simulator = {
 
 		Simulator.resize();
 
-		var $seleccion = $('#seleccion');
+		var $seleccion = $('#seleccion'),
+			$select = $('#configuracion select optgroup'),
+			used_messages = []; // Holder for the used messages, to avoid dupes
 
-		// Rellena el campo de seleccion
+		// Rellena el campo de seleccion y los options
 		for(var i=0; i<Simulator.modos.emocionales.length; i++){
-			$seleccion.append('<a class="btn btn-default" href="#">'+Simulator.modos.emocionales[i].nombre+'</a> ');
+			$seleccion.append('<a class="btn btn-default" href="#" data-type="emocionales" data-index="'+i+'">'+Simulator.modos.emocionales[i].nombre+'</a> ');
+			// Select
+			for(var a=0;a<Simulator.modos.emocionales[i].sig_emocionales.length;a++){
+				if(used_messages.indexOf(Simulator.modos.emocionales[i].sig_emocionales[a])<0){
+					used_messages.push(Simulator.modos.emocionales[i].sig_emocionales[a]);
+					$select.append('<option>'+Simulator.modos.emocionales[i].sig_emocionales[a]+'</option>');
+				}
+			}
 		}
 
 		$seleccion.append('<hr />');
@@ -125,7 +140,14 @@ var Simulator = {
 		for(var i=0; i<Simulator.modos.culturales.length; i++){
 			var modo = Simulator.modos.culturales[i];
 			for(var a=0;a<modo.extiende.length;a++){
-				$seleccion.append('<a class="btn btn-primary" href="#">'+modo.prefijo+' '+modo.extiende[a]+'</a> ');
+				$seleccion.append('<a class="btn btn-primary" href="#" data-type="culturales" data-index="' + i + '" data-extends="' + modo.extiende[a] + '">' + modo.prefijo + ' ' + Simulator.modos.emocionales[modo.extiende[a]].nombre + '</a> ');
+			}
+			// Select
+			for(var a=0;a<Simulator.modos.culturales[i].sig_culturales.length;a++){
+				if(used_messages.indexOf(Simulator.modos.culturales[i].sig_culturales[a])<0){
+					used_messages.push(Simulator.modos.culturales[i].sig_culturales[a]);
+					$select.append('<option>'+Simulator.modos.culturales[i].sig_culturales[a]+'</option>');
+				}
 			}
 		}
 
@@ -134,12 +156,33 @@ var Simulator = {
 		// Click event on initial selection page
 		$seleccion.find('a.btn').click(function(e){
 			e.preventDefault();
+			Simulator.current.type = $(this).attr("data-type");
+			// Update current mode
+			if(Simulator.current.type=="emocionales"){
+				Simulator.current.mode = Simulator.modos.emocionales[$(this).attr("data-index")];
+			}else{
+				Simulator.current.mode = Simulator.modos.culturales[$(this).attr("data-index")];
+				Simulator.current.mode.nombre = Simulator.current.mode.prefijo + ' ' + Simulator.modos.emocionales[$(this).attr("data-extends")].nombre;
+				Simulator.current.mode.sig_emocionales = Simulator.modos.emocionales[$(this).attr("data-extends")].sig_emocionales;
+			}
+			console.log(Simulator.current);
+			// Change title
+			$('h3 span').text(' - ' + Simulator.current.mode.nombre);
+			// Update message textarea
+			$('#msgBox').html('Mensajes de '+ Simulator.current.mode.nombre);
+			// Change window
 			Simulator.windows.change(1);
 		});
 
 		// Clicks on second page
 		$('#configuracion select').change(function(){
 			$('#configMensaje').text($(this).val());
+		});
+
+		$('#showMsg').click(function(e){
+			e.preventDefault();
+			$(this).hide();
+			$('#msgBox').fadeIn();
 		});
 
 		$('#configuracion a.next').click(function(e){
@@ -158,13 +201,22 @@ var Simulator = {
 		 * index is the window reference, in the defined elements inside the function
 		 */
 		change: function(index, callback){
-			var windows = [$('seleccion'), $('#configuracion'), $('#simulador')];
+			var windows = [$('seleccion'), $('#configuracion'), $('#simulador')],
+				breadcrumbs = $('.breadcrums');
 			if(index == Simulator.windows.current) return;
 
 			Simulator.windows.current = index;
 
 			$('#app .panel').slideUp();
 			windows[index].slideDown();
+
+			// Reset title and current
+			if(index == 0){
+				$('h3 span').text('');
+
+				Simulator.current = {};
+			}
+
 		}
 	},
 
@@ -173,7 +225,7 @@ var Simulator = {
 			footerOff = $('footer').offset(),
 			footerHeight = $('footer').height(),
 			win = $(window).height(),
-			height = Math.max(win - simOff.top - footerHeight - 30, 374);
+			height = Math.max(win - simOff.top - footerHeight - 70, 374);
 		$('#app .panel').height(height);
 
 		$('.animation').each(function () {

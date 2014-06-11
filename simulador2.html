@@ -24,9 +24,7 @@
 		}
 
     	#simulador{
-			height:600px;
 			overflow:hidden;
-			position:relative;
 		}
 
 		#conclusiones{
@@ -195,7 +193,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h3>Simulador 2</h3>
+				<h3>Simulador 2 <span></span></h3>
 				<div class="row">
 					<div class="col-md-12" id="app">
 						<div class="panel" id="seleccion">
@@ -219,20 +217,20 @@
 									<p>
 										<label>En este cuadro encontrarás un listado del que poder seleccionar los "mensajes" que consideres se ajustan al Objetivo<br />
 											<select class="form-control">
-												<option>Opciones</option>
-												<option>Mensaje 1</option>
-												<option>Mensaje 2...</option>
+												<option>Seleccionar...</option>
+												<optgroup label="Mensajes predefinidos"></optgroup>
 											</select>
 										</label>
-										<textarea class="form-control" rows="2"></textarea>
+										<!--<textarea class="form-control" rows="2"></textarea>-->
 									</p>
 
 									<p>
 										<label for="msgbox">Aquí encontrarás los "mensajes" que se han utilizado como guía para la simulación</label>
 
-										<br /><a class="btn btn-default btn-sm">Ver "mensajes"</a><br />
-
-										<textarea class="form-control" id="msgbox" rows="2"></textarea>
+										<p align="center">
+											<a class="btn btn-default btn-sm" id="showMsg">Ver "mensajes"</a>
+											<textarea class="form-control" id="msgBox" rows="2" style="display:none"></textarea>
+										</p>
 									</p>
 
 									<p align="center">
@@ -244,7 +242,17 @@
 						</div>
 
 						<div class="panel" style="display:none" id="simulador">
-							<div class="app">Ventana del simulador</div>
+							<div class="app row">
+								<div class="col-md-6">
+									<h4>Objetivo</h4>
+									<p id="sim_objetivo">Rellenado</p>
+								</div>
+								<div class="col-md-6">
+									<div id="sim_tipos">Tipos</div>
+									<div id="sim_gente">Simulador</div>
+									<div id="sim_resultados">Resultados</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
