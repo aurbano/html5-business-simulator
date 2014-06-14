@@ -175,7 +175,7 @@ var Simulator = {
 					'El resultado si o si, la honestidad, el logro en lugar del esfuerzo, la disciplina',
 					'Materializamos los objetivos relacionados con la productividad, la calidad, el gasto, etc es lo importante'
 				],
-				target_cultural:[
+				target_cultural: [
 					'Lograr los objetivos / resultados por encima de todo. Cumplir con los compromisos',
 					'En sistemas de control, información, monitorización a tiempo real, seguimiento de indicadores.',
 					'Monitorizando resultados / objetivos / indicadores',
@@ -195,7 +195,7 @@ var Simulator = {
 					'Fomentamos una comprensión íntima del cliente para que todas las decisiones estén orientadas a cubrir sus necesidades',
 					'Escuchamos al cliente, somos flexibles para adpatarnos a sus necesidades, tenemos vocación de servicio.'
 				],
-				target_cultural:[
+				target_cultural: [
 					'Las necesidades del cliente por encima de todo',
 					'En mejorar la comunicación con los clientes y desarrollar soluciones para atender sus necesidades',
 					'Escuchando, atendiendo y estando cerca del cliente',
@@ -214,7 +214,7 @@ var Simulator = {
 					'Nos caracteriza la curiosidad, aprender del fracaso, ser creativos y desafiar al status quo.',
 					'Se fomenta la experimentación, la vigilancia y el aprendizaje'
 				],
-				target_cultural:[
+				target_cultural: [
 					'Sorprender al mercado y el liderazgo de producto es la clave',
 					'En el desarrollo de nuevas soluciones no necesariamente explicitadas por el cliente',
 					'Valorando y asignando recursos a nuevas iniciativas',
@@ -233,7 +233,7 @@ var Simulator = {
 					'Las personas son la esencia de esta organización',
 					'Nos caracterizamos por la cooperación, el respeto, el "empowerment".'
 				],
-				target_cultural:[
+				target_cultural: [
 					'Las personas primero y por encima de todo',
 					'En cambios org. hacia equipos / autonomía',
 					'Escuchando y acompañando a las personas / equipos',
@@ -261,54 +261,63 @@ var Simulator = {
 
 		Simulator.resize();
 
+		$('textarea').autosize();
+
 		var $seleccion = $('#seleccion'),
 			$select = $('#configuracion select optgroup'),
 			$palancas = $('#palancas'),
 			used_messages = []; // Holder for the used messages, to avoid dupes
 
 		// Rellena el campo de seleccion y los options
-		for(var i=0; i<Simulator.modos.emocionales.length; i++){
-			$seleccion.append('<a class="btn btn-default" href="#" data-type="emocionales" data-index="'+i+'">'+Simulator.modos.emocionales[i].nombre+'</a> ');
+		for (var i = 0; i < Simulator.modos.emocionales.length; i++) {
+			$seleccion.append('<a class="btn btn-default" href="#" data-type="emocionales" data-index="' + i + '">' + Simulator.modos.emocionales[i].nombre + '</a> ');
 			// Select
-			for(var a=0;a<Simulator.modos.emocionales[i].sig_emocionales.length;a++){
-				if(used_messages.indexOf(Simulator.modos.emocionales[i].sig_emocionales[a])<0){
+			for (var a = 0; a < Simulator.modos.emocionales[i].sig_emocionales.length; a++) {
+				if (used_messages.indexOf(Simulator.modos.emocionales[i].sig_emocionales[a]) < 0) {
 					used_messages.push(Simulator.modos.emocionales[i].sig_emocionales[a]);
-					$select.append('<option>'+Simulator.modos.emocionales[i].sig_emocionales[a]+'</option>');
 				}
 			}
 		}
 
 		$seleccion.append('<hr />');
 
-		for(var i=0; i<Simulator.modos.culturales.length; i++){
+		for (var i = 0; i < Simulator.modos.culturales.length; i++) {
 			var modo = Simulator.modos.culturales[i];
-			for(var a=0;a<modo.extiende.length;a++){
+			for (var a = 0; a < modo.extiende.length; a++) {
 				$seleccion.append('<a class="btn btn-primary" href="#" data-type="culturales" data-index="' + i + '" data-extends="' + modo.extiende[a] + '">' + modo.prefijo + ' ' + Simulator.modos.emocionales[modo.extiende[a]].nombre + '</a> ');
 			}
 			// Select
-			for(var a=0;a<Simulator.modos.culturales[i].sig_culturales.length;a++){
-				if(used_messages.indexOf(Simulator.modos.culturales[i].sig_culturales[a])<0){
+			for (var a = 0; a < Simulator.modos.culturales[i].sig_culturales.length; a++) {
+				if (used_messages.indexOf(Simulator.modos.culturales[i].sig_culturales[a]) < 0) {
 					used_messages.push(Simulator.modos.culturales[i].sig_culturales[a]);
-					$select.append('<option>'+Simulator.modos.culturales[i].sig_culturales[a]+'</option>');
+
 				}
 			}
 		}
 
+		var shuffled_messages = Simulator.shuffle(used_messages);
+
+		for (var i = 0; i < shuffled_messages.length; i++) {
+			$select.append('<option>' + shuffled_messages[i] + '</option>');
+		};
+
 		// Rellena las palancas
-		for(var i=0; i<Simulator.palancas.length;i++){
-			$palancas.append('<a class="btn btn-default btn-sm">'+Simulator.palancas[i].nombre+'</a>');
+		for (var i = 0; i < Simulator.palancas.length; i++) {
+			$palancas.append('<a class="btn btn-default btn-sm">' + Simulator.palancas[i].nombre + '</a>');
 		}
+
+		$palancas.append('<hr /><a class="btn btn-primary btn-sm">Comprobar</a>');
 
 		// EVENTS ----------------
 
 		// Click event on initial selection page
-		$seleccion.find('a.btn').click(function(e){
+		$seleccion.find('a.btn').click(function (e) {
 			e.preventDefault();
 			Simulator.current.type = $(this).attr("data-type");
 			// Update current mode
-			if(Simulator.current.type=="emocionales"){
+			if (Simulator.current.type == "emocionales") {
 				Simulator.current.mode = Simulator.modos.emocionales[$(this).attr("data-index")];
-			}else{
+			} else {
 				Simulator.current.mode = Simulator.modos.culturales[$(this).attr("data-index")];
 				Simulator.current.mode.nombre = Simulator.current.mode.prefijo + ' ' + Simulator.modos.emocionales[$(this).attr("data-extends")].nombre;
 				Simulator.current.mode.sig_emocionales = Simulator.modos.emocionales[$(this).attr("data-extends")].sig_emocionales;
@@ -318,23 +327,34 @@ var Simulator = {
 			// Change title
 			$('h3 span').text(' - ' + Simulator.current.mode.nombre);
 			// Update message textarea
-			$('#msgBox').html('Mensajes de '+ Simulator.current.mode.nombre);
+			if (typeof (Simulator.current.mode.sig_emocionales) !== 'undefined') {
+				for (var i = 0; i < Simulator.current.mode.sig_emocionales.length; i++) {
+					$('#msgBox').append(Simulator.current.mode.sig_emocionales[i] + "\n");
+				}
+			}
+			if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
+				for (var i = 0; i < Simulator.current.mode.sig_culturales.length; i++) {
+					$('#msgBox').append(Simulator.current.mode.sig_culturales[i] + "\n");
+				}
+			}
 			// Change window
 			Simulator.windows.change(1);
 		});
 
 		// Clicks on second page
-		$('#configuracion select').change(function(){
+		$('#configuracion select').change(function () {
 			$('#configMensaje').text($(this).val());
 		});
 
-		$('#showMsg').click(function(e){
+		$('#showMsg').click(function (e) {
 			e.preventDefault();
 			$(this).hide();
-			$('#msgBox').fadeIn();
+			$('#msgBox').fadeIn(100, function () {
+				$(this).trigger('autosize.resize');
+			});
 		});
 
-		$('#configuracion a.next').click(function(e){
+		$('#configuracion a.next').click(function (e) {
 			e.preventDefault();
 			Simulator.windows.change(2);
 		});
@@ -349,10 +369,10 @@ var Simulator = {
 		 * Change to another window
 		 * index is the window reference, in the defined elements inside the function
 		 */
-		change: function(index, callback){
+		change: function (index, callback) {
 			var windows = [$('seleccion'), $('#configuracion'), $('#simulador')],
 				breadcrumbs = $('.breadcrums');
-			if(index == Simulator.windows.current) return;
+			if (index == Simulator.windows.current) return;
 
 			Simulator.windows.current = index;
 
@@ -360,7 +380,7 @@ var Simulator = {
 			windows[index].slideDown();
 
 			// Reset title and current
-			if(index == 0){
+			if (index == 0) {
 				$('h3 span').text('');
 
 				Simulator.current = {};
@@ -383,6 +403,13 @@ var Simulator = {
 				top: top
 			});
 		});
-	}
+	},
+
+	//+ Jonas Raoni Soares Silva
+	//@ http://jsfromhell.com/array/shuffle [v1.0]
+	shuffle: function (o) { //v1.0
+		for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+		return o;
+	},
 
 };

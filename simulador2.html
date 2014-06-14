@@ -187,6 +187,39 @@
 			opacity:1;
 		}
 
+		#graph{
+			border-left: #ccc solid 1px;
+			border-bottom: #ccc solid 1px;
+			position: relative;
+			width: 300px;
+			text-align: center;
+			font-size: 12px;
+			height: 150px;
+		}
+
+		.bar{
+			position: absolute;
+			bottom: 0;
+			width:80px;
+		}
+
+		.x-element{
+			position: relative;
+			bottom: -5px;
+			height: 4px;
+		}
+
+		.y-element{
+			background-color:#6CBDFF;
+			width: 40%;
+			margin: 0 auto -5px;
+		}
+
+		.table-bordered{
+			border:#888 solid 3px;
+			border-radius:4px;
+		}
+
 	</style>
 </head>
 
@@ -197,7 +230,7 @@
 				<h3>Simulador 2 <span></span></h3>
 				<div class="row">
 					<div class="col-md-12" id="app">
-						<div class="panel" id="seleccion">
+						<div class="panel  text-center" id="seleccion">
 							<div class="app">
 								<p>Selecciona el simulador que quieres ejecutar</p>
 								<hr />
@@ -251,9 +284,45 @@
 									<div id="palancas"></div>
 								</div>
 								<div class="col-md-7">
-									<div id="sim_tipos">Tipos</div>
+									<div id="sim_tipos">
+										<table class="table table-bordered text-center" style="width:auto;">
+											<tr>
+												<td style="width:50%">Agresión</td>
+												<td style="width:50%">Pasión</td>
+											</tr>
+											<tr>
+												<td>Resignación</td>
+												<td>Confort</td>
+											</tr>
+										</table>
+									</div>
 									<div id="sim_gente">Simulador</div>
-									<div id="sim_resultados">Resultados</div>
+									<div id="sim_resultados">
+										
+										<div id="graph">
+											<div class="bar" id="graph_0">
+												<div class="y-element" style="height:100px"></div>
+												<div class="x-element">Cliente</div>
+											</div>
+
+											<div class="bar" id="graph_1" style="left:60px">
+												<div class="y-element" style="height:100px"></div>
+												<div class="x-element">Logro</div>
+											</div>
+
+											<div class="bar" id="graph_2" style="left:120px">
+												<div class="y-element" style="height:100px"></div>
+												<div class="x-element">Pasiva</div>
+											</div>
+
+
+											<div class="bar" id="graph_3" style="left:180px">
+												<div class="y-element" style="height:100px"></div>
+												<div class="x-element">Agresiva</div>
+											</div>
+										</div>
+
+									</div>
 								</div>
 							</div>
 						</div>
@@ -276,6 +345,7 @@
     <script src="assets/lib/jquery-1.9.1.min.js"></script>
     <script src="assets/lib/jquery.color-2.1.2.min.js"></script>
 	<script type="text/javascript" src="assets/lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/lib/jquery.autosize.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
 	<script type="text/javascript" src="assets/js/main2.js"></script>
