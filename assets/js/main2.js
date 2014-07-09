@@ -14,68 +14,89 @@ var Simulator = {
 
 	// Valores
 
-	palancas: [
-		{
-			nombre: 'Seguridad',
-			desc: 'Seguridad de empleo'
-		},
-		{
-			nombre: 'Transparencia',
-			desc: 'Nivel de transparencia en la organización (en las cuentas, objetivos, retos estratégicos, inversiones, …) y en el caso de que exista dónde se pone especialmente el énfasis.'
-		},
-		{
-			nombre: 'Proyecto',
-			desc: 'Grado de Proyecto Compartido: hasta qué punto la organización hace partícipes a las personas del proyecto ("la metáfora de la catedral")'
-		},
-		{
-			nombre: 'Retribución',
-			desc: 'El salario medio de la organización respecto a otras organizaciones del entorno y los incentivos económicos existentes'
-		},
-		{
-			nombre: 'Resultados',
-			desc: 'Participación en Resultados de la empresa (p.ej. en un % de los beneficios)'
-		},
-		{
-			nombre: 'Nivel Formación',
-			desc: 'Nivel de inversión en formación de las personas en la organización'
-		},
-		{
-			nombre: 'Diseño trabajo',
-			desc: 'Grado de autonomía en el puesto de trabajo (enriquecimiento vertical) y grado de enriquecimiento del trabajo (enriquecimiento horizontal)'
-		},
-		{
-			nombre: 'Participación',
-			desc: 'Hasta qué punto la organización hace partícipes a las personas de las decisiones estratégicas'
-		},
-		{
-			nombre: 'Política de Personas',
-			desc: 'El mensaje general transmitido a las personas'
-		},
-		{
-			nombre: 'Liderazgo',
-			desc: 'Estilo de liderazgo predominante en la organización'
-		},
-		{
-			nombre: 'Mensaje',
-			desc: 'El principal mensaje que la dirección transmite a las personas'
-		},
-		{
-			nombre: 'Inversión',
-			desc: 'Dónde se invierten los recursos económicos'
-		},
-		{
-			nombre: 'Tiempo',
-			desc: 'En qué se ocupan los responsables de la organización. Esto es, en qué pasan el tiempo.'
-		},
-		{
-			nombre: 'Indicadores',
-			desc: 'Cuáles son los indicadores más importantes monitorizados por la dirección de la organización. Aquellos especialmente prioritarios. '
-		},
-		{
-			nombre: 'Promoción',
-			desc: 'Cuáles son los criterios de promoción'
-		}
-	],
+	palancas: {
+        emocion:[
+            {
+                nombre: 'Seguridad',
+                desc: 'Seguridad de empleo',
+                opt: ['Baja','Alta']
+            },
+            {
+                nombre: 'Transparencia',
+                desc: 'Nivel de transparencia en la organización (en las cuentas, objetivos, retos estratégicos, inversiones, …) y en el caso de que exista dónde se pone especialmente el énfasis.',
+                opt: ['Baja','Alta; énfasis en la crudeza del mercado','Alta; énfasis en el Proyecto']
+            },
+            {
+                nombre: 'Proyecto',
+                desc: 'Grado de Proyecto Compartido: hasta qué punto la organización hace partícipes a las personas del proyecto ("la metáfora de la catedral")',
+                opt: ['No se comparte','No se comparte. La clave es salvar el PG','Se comparte de forma continuada']
+            },
+            {
+                nombre: 'Retribución',
+                desc: 'El salario medio de la organización respecto a otras organizaciones del entorno y los incentivos económicos existentes',
+                opt: ['Salario mínimo. Incentivos adicionales importantes.','Por encima de la media. Sin incentivos','Por encima de la media. Sin incentivos y si existen sin efecto real']
+                
+            },
+            {
+                nombre: 'Resultados',
+                desc: 'Participación en Resultados de la empresa (p.ej. en un % de los beneficios)',
+                opt: ['No se participa en resultados','Si (p.ej. un 30% de beneficios)']
+            },
+            {
+                nombre: 'Nivel Formación',
+                desc: 'Nivel de inversión en formación de las personas en la organización',
+                opt: ['La justa para la ejecución tarea','Alta. Filosofía de desarrollo']
+            },
+            {
+                nombre: 'Diseño trabajo',
+                desc: 'Grado de autonomía en el puesto de trabajo (enriquecimiento vertical) y grado de enriquecimiento del trabajo (enriquecimiento horizontal)',
+                opt: ['Diseño empobrecido','Diseño enriquecido']
+            },
+            {
+                nombre: 'Participación',
+                desc: 'Hasta qué punto la organización hace partícipes a las personas de las decisiones estratégicas',
+                opt: ['Baja / nula','Alta']
+            },
+            {
+                nombre: 'Política de Personas',
+                desc: 'El mensaje general transmitido a las personas',
+                opt: ['No hay un mensaje claro','La persona es el "activo" clave']
+            },
+            {
+                nombre: 'Liderazgo',
+                desc: 'Estilo de liderazgo predominante en la organización',
+                opt: ['Paternalista / clásico','Clásico (orden y control)','Transformacional','Liderazgo autoritario']
+
+            }
+        ],
+        cultural:[
+            {
+                nombre: 'Mensaje',
+                desc: 'El principal mensaje que la dirección transmite a las personas',
+                opt: ['Lograr los objetivos / resultados por encima de todo. Cumplir con los compromisos','Las necesidades del cliente por encima de todo','Sorprender al mercado y el liderazgo de producto es la clave','Las personas primero y por encima de todo']
+            },
+            {
+                nombre: 'Inversión',
+                desc: 'Dónde se invierten los recursos económicos',
+                opt: ['En sistemas de control, información, monitorización a tiempo real, seguimiento de indicadores.','En mejorar la comunicación con los clientes y desarrollar soluciones para atender sus necesidades','En el desarrollo de nuevas soluciones no necesariamente explicitadas por el cliente','En cambios org. hacia equipos / autonomía']
+            },
+            {
+                nombre: 'Tiempo',
+                desc: 'En qué se ocupan los responsables de la organización. Esto es, en qué pasan el tiempo.',
+                opt: ['Monitorizando resultados / objetivos / indicadores','Escuchando, atendiendo y estando cerca del cliente','Valorando y asignando recursos a nuevas iniciativas','Escuchando y acompañando a las personas / equipos']
+            },
+            {
+                nombre: 'Indicadores',
+                desc: 'Cuáles son los indicadores más importantes monitorizados por la dirección de la organización. Aquellos especialmente prioritarios. ',
+                opt: ['Productividades, gastos operativos, niveles de calidad, etc.','Reclamaciones de cliente, nivel de fidelización, cuota de mercado, etc.','Nivel de éxito de nuevos productos, oportunidades detectadas, prospectivas.','Satisfacción de personas, nivel de desarrollo de equipos, nº de equipos, sentimiento de pertenencia, ..']
+            },
+            {
+                nombre: 'Promoción',
+                desc: 'Cuáles son los criterios de promoción',
+                opt: ['Los que mejor cumplen con los compromisos, logran resultados, etc','Los que mejor conocen a los clientes','Los más visionarios en nuevos desarrollos','Los que mejor se relacionan y tratan con las personas']
+            }
+        ]
+    },
 	// La configuracion de los modos
 	// el target es la config de las palancas, si no importa se deja en false.
 	// Si se rellena, hay que poner el contenido que debe aparecer en la palanca.
@@ -98,7 +119,7 @@ var Simulator = {
 					false,
 					false,
 					'No hay un mensaje claro',
-					'Paternalista/clásico'
+					'Paternalista / clásico'
 				]
 			},
 			{
@@ -116,7 +137,7 @@ var Simulator = {
 					false,
 					'La justa para la ejecución tarea',
 					false,
-					'Baja/nula',
+					'Baja / nula',
 					'La persona es el "activo" clave',
 					'Clásico (orden y control)'
 				]
@@ -156,7 +177,7 @@ var Simulator = {
 					false,
 					'La justa para la ejecución tarea',
 					false,
-					'Baja/nula',
+					'Baja / nula',
 					false,
 					'Liderazgo autoritario'
 				]
@@ -182,7 +203,13 @@ var Simulator = {
 					'Productividades, gastos operativos, niveles de calidad, etc.',
 
 					'Los que mejor cumplen con los compromisos, logran resultados, etc'
-				]
+				],
+                graph: [
+                    3,
+                    5,
+                    2.5,
+                    null
+                ]
 			},
 
 			{
@@ -201,7 +228,13 @@ var Simulator = {
 					'Escuchando, atendiendo y estando cerca del cliente',
 					'Reclamaciones de cliente, nivel de fidelización, cuota de mercado, etc.',
 					'Los que mejor conocen a los clientes'
-				]
+				],
+                graph: [
+                    3,
+                    5,
+                    2.5,
+                    null
+                ]
 			},
 
 			{
@@ -220,7 +253,13 @@ var Simulator = {
 					'Valorando y asignando recursos a nuevas iniciativas',
 					'Nivel de éxito de nuevos productos, oportunidades detectadas, prospectivas.',
 					'Los más visionarios en nuevos desarrollos'
-				]
+				],
+                graph: [
+                    3,
+                    5,
+                    2.5,
+                    2
+                ]
 			},
 
 			{
@@ -239,7 +278,13 @@ var Simulator = {
 					'Escuchando y acompañando a las personas / equipos',
 					'Satisfacción de personas, nivel de desarrollo de equipos, nº de equipos, sentimiento de pertenencia, ..',
 					'Los que mejor se relacionan y tratan con las personas'
-				]
+				],
+                graph: [
+                    3,
+                    5,
+                    2.5,
+                    2
+                ]
 			}
 		]
 	},
@@ -262,10 +307,11 @@ var Simulator = {
 		Simulator.resize();
 
 		$('textarea').autosize();
-
+        
+        //  LOAD CONTENT INTO WINDOWS 0 AND 1 ----
 		var $seleccion = $('#seleccion'),
-			$select = $('#configuracion select optgroup'),
-			$palancas = $('#palancas'),
+			$select = $('#configuracion select'),
+            $msgSelected = $('#msgSelectedList');
 			used_messages = []; // Holder for the used messages, to avoid dupes
 
 		// Rellena el campo de seleccion y los options
@@ -298,17 +344,11 @@ var Simulator = {
 		var shuffled_messages = Simulator.shuffle(used_messages);
 
 		for (var i = 0; i < shuffled_messages.length; i++) {
-			$select.append('<option>' + shuffled_messages[i] + '</option>');
+			$select.find('optgroup').append('<option data-index="'+i+'">' + shuffled_messages[i] + '</option>');
 		};
 
-		// Rellena las palancas
-		for (var i = 0; i < Simulator.palancas.length; i++) {
-			$palancas.append('<a class="btn btn-default btn-sm">' + Simulator.palancas[i].nombre + '</a>');
-		}
-
-		$palancas.append('<hr /><a class="btn btn-primary btn-sm">Comprobar</a>');
-
-		// EVENTS ----------------
+		
+		// EVENTS OF WINDOWS 0 AND 1----------------
 
 		// Click event on initial selection page
 		$seleccion.find('a.btn').click(function (e) {
@@ -317,6 +357,7 @@ var Simulator = {
 			// Update current mode
 			if (Simulator.current.type == "emocionales") {
 				Simulator.current.mode = Simulator.modos.emocionales[$(this).attr("data-index")];
+                Simulator.current.mode.graph = [3.5, 3.4, 3.2, 3.3];
 			} else {
 				Simulator.current.mode = Simulator.modos.culturales[$(this).attr("data-index")];
 				Simulator.current.mode.nombre = Simulator.current.mode.prefijo + ' ' + Simulator.modos.emocionales[$(this).attr("data-extends")].nombre;
@@ -342,16 +383,51 @@ var Simulator = {
 		});
 
 		// Clicks on second page
-		$('#configuracion select').change(function () {
+		$select.change(function () {
 			$('#configMensaje').text($(this).val());
 		});
-
+        
+        // Clicks on dropdown menu
+        $select.change(function () {
+            $select.find( 'option:selected' ).each(function() {
+                $msgSelected.append('<li class="list-group-item" data-index="'+$(this).attr('data-index')+'">'+$(this).text()+'<button id="ereaseMsg'+$(this).attr('data-index')+'" class="close">&times;</button></li>');
+                $(this).hide();
+                $select.find('option').eq(0).prop('selected', true);
+                
+                //Erease a message selected and show it on the select dropdown menu
+                $('#ereaseMsg'+$(this).attr('data-index')).click(function (e){
+                    e.preventDefault();
+                    var index = $(this).parent().attr('data-index');
+                    $select.find('optgroup').find('option').each(function(){
+                        
+                        if($(this).attr('data-index') == index){
+                            $(this).show();
+                        }
+                    });
+                    $(this).parent().remove();
+                });
+            });
+        });
+        
+        
 		$('#showMsg').click(function (e) {
 			e.preventDefault();
+            //hide show message button
 			$(this).hide();
+            //hide dropdown menu
+            $('#configuracion select').hide();
 			$('#msgBox').fadeIn(100, function () {
 				$(this).trigger('autosize.resize');
 			});
+            //Check if messages selected were right
+            $msgSelected.find('li').each(function(){
+                $(this).find('button').remove();
+                if($('#msgBox').text().indexOf($(this).text()) != -1){
+                    $(this).addClass('list-group-item-success');
+                }else{
+                    $(this).addClass('list-group-item-danger');
+                }
+            });
 		});
 
 		$('#configuracion a.next').click(function (e) {
@@ -373,7 +449,7 @@ var Simulator = {
 			var windows = [$('seleccion'), $('#configuracion'), $('#simulador')],
 				breadcrumbs = $('.breadcrums');
 			if (index == Simulator.windows.current) return;
-
+            if (index == 2) this.loadWindow2();
 			Simulator.windows.current = index;
 
 			$('#app .panel').slideUp();
@@ -386,9 +462,121 @@ var Simulator = {
 				Simulator.current = {};
 			}
 
-		}
-	},
+		},
+        loadWindow2: function(){
+            $palancas = $('#palancas');
+            // Fill palancas
+            for (var i = 0; i < Simulator.palancas.emocion.length; i++) {
+                $palancas.append('<select class="selectpicker" data-width="fit"> <optgroup id="menu'+Simulator.palancas.emocion[i].nombre.replace(/ /g,'')+'"  label="'+Simulator.palancas.emocion[i].nombre+'"><option title="'+Simulator.palancas.emocion[i].nombre+'" disabled selected>--Selecciona una--</option></optgroup></select>');
+                for (var j = 0; j < Simulator.palancas.emocion[i].opt.length; j++){
+                    $palancas.find('#menu'+Simulator.palancas.emocion[i].nombre.replace(/ /g,'')).append('<option title="'+Simulator.palancas.emocion[i].nombre+'">'+Simulator.palancas.emocion[i].opt[j]+'</option>');
+                }           
+                    
+            }
+            if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
+                for (var i = 0; i < Simulator.palancas.cultural.length; i++) {
+                    $palancas.append('<select class="selectpicker" data-width="fit" data-selected="0"><optgroup id="menu'+Simulator.palancas.cultural[i].nombre.replace(/ /g,'')+'"  label="'+Simulator.palancas.cultural[i].nombre+'"><option title="'+Simulator.palancas.cultural[i].nombre+'" disabled selected>--Selecciona una--</option></optgroup></select>');
+                    
+                    for (var j = 0; j < Simulator.palancas.cultural[i].opt.length; j++){
+                        $palancas.find('#menu'+Simulator.palancas.cultural[i].nombre.replace(/ /g,'')).append('<option title="'+Simulator.palancas.cultural[i].nombre+'">'+Simulator.palancas.cultural[i].opt[j]+'</option>');
+                    }                  
+                }
+            }
+            //Apply style to "palancas"
+            $('.selectpicker').selectpicker();
+            
+            //Handle selects "palancas"
+            $('.selectpicker').on('change', function (e) {
+                var $optionSelected = $("option:selected", this);
+                var $selectParent = $optionSelected.closest('.selectpicker');
+                $selectParent.selectpicker('setStyle', 'btn-info');
+                $selectParent.attr('data-selected','1');
+                console.log($optionSelected.text());
+            });
+            
+            //Add a continue button to start the animation
+            $palancas.append('<hr /><a class="btn btn-primary btn-sm" id="check_window2">Comprobar</a>');
+            
+            //Event, check wether if its possible or not to run the simulation
+            $('#check_window2').click(function(){
+                var rightPalancas = 0;
+                var selectedPalancas = 0;
+                var notSelectedPalancas = [];
+                var numBlink = 4;
+                var currentTargets;
+                var interval = null;
+                var $select = $('select.selectpicker');
+                if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
+                    currentTargets = Simulator.current.mode.target.concat(Simulator.current.mode.target_cultural); 
+                }else{
+                    currentTargets = Simulator.current.mode.target;
+                }
+                var blink = function(){
+                    for(var i=0;i<notSelectedPalancas.length;i++){
+                        if(numBlink%2 == 0){
+                            $select.eq(notSelectedPalancas[i]).selectpicker('setStyle', 'btn-warning','add');
+                        }else{
+                            $select.eq(notSelectedPalancas[i]).selectpicker('setStyle', 'btn-warning','remove');  
+                        }
+                    }
+                    numBlink--;
+                    if(numBlink == 0){
+                        clearInterval(interval);
+                    }
+                }
+                
+                for(var i=0; i<$select.length; i++){
+                     if($select.eq(i).attr('data-selected')=='1'){
+                         selectedPalancas++;
+                     }else{
+                         notSelectedPalancas.push(i);
+                     }
+                }
+                if(selectedPalancas == $select.length){
+                    for(var i=0; i<$select.length; i++){
+                        if($select.eq(i).find('option:selected').text() == currentTargets[i] || !currentTargets[i]){
+                            console.log('bien');
+                            rightPalancas++;
+                            $select.eq(i).selectpicker('setStyle', 'btn-info','remove');
+                            $select.eq(i).selectpicker('setStyle', 'btn-danger','remove');
+                            $select.eq(i).selectpicker('setStyle', 'btn-success','add');
 
+                        }else{
+                            console.log('mal:'+currentTargets[i]+'-'+$select.eq(i).find('option:selected').text());
+                            $select.eq(i).selectpicker('setStyle', 'btn-info','remove');
+                            $select.eq(i).selectpicker('setStyle', 'btn-danger','remove');
+                            $select.eq(i).selectpicker('setStyle', 'btn-danger');
+                        }
+                    }
+                    if(rightPalancas == $select.length){
+                        Simulator.windows.loadGraph();
+                    }
+                }else{
+                        interval = setInterval(function(){blink();},200);
+                }
+            
+            });         
+	},
+    loadGraph: function(){
+        $('#graph').show();
+        var $bars = $('.bar .y-element');
+        var height = 0;
+        for(var i=0; i< $bars.length;i++){
+            if(Simulator.current.mode.graph[i] != null){ 
+                height = Simulator.current.mode.graph[i]/5*130;
+                
+            }else if(Simulator.current.mode.nombre.indexOf('Pasión') != -1){
+                height = 2/5*130;
+            }else{
+                height = 4/5*130;
+            }
+            $bars.eq(i).css("height",height+"px");
+            
+            $bars.eq(i).parent().show({duration:600,easing:'linear'});
+        }       
+        
+    }
+    },
 	resize: function () {
 		var simOff = $('#app').offset(),
 			footerOff = $('footer').offset(),
@@ -412,4 +600,4 @@ var Simulator = {
 		return o;
 	},
 
-};
+}
