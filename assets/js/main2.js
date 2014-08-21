@@ -391,6 +391,7 @@ var Simulator = {
         $seleccion.find('a.btn').click(function (e) {
             e.preventDefault();
             Simulator.current.type = $(this).attr("data-type");
+            Simulator.current.name = $(this).text();
             // Update current mode
             if (Simulator.current.type == "emocionales") {
                 Simulator.current.mode = Simulator.modos.emocionales[$(this).attr("data-index")];
@@ -501,27 +502,62 @@ var Simulator = {
 
         },
         loadWindow2: function () {
+            $goalTitle = $('#title_objetivo');
+            $goalMessages = $('#sim_objetivo');
             $palancas = $('#palancas');
+
+            //Write the selected Goal in the title
+            $goalTitle.append(Simulator.current.name);
+            //Write the messages according to the goal
+            $goalMessages.append('<li>' + $('#msgBox').text().replace(/\n$/, '').replace(/\n/g, '</li><li>') + '</li>');
+            //Toggle function to show goal messages when user move mouse over title
+            $goalTitle.hover(function () {
+                $goalMessages.fadeIn();
+            }, function () {
+                $goalMessages.fadeOut();
+            });
             // Fill palancas
             for (var i = 0; i < Simulator.palancas.emocion.length; i++) {
-                $palancas.append('<select class="selectpicker" data-width="fit"> <optgroup id="menu' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '"  label="' + Simulator.palancas.emocion[i].nombre + '"><option title="' + Simulator.palancas.emocion[i].nombre + '" disabled selected>--Selecciona una--</option></optgroup></select>');
+                if (i % 2 == 0) {
+                    if (i != Simulator.palancas.emocion.length - 1)
+                        $palancas.append('<div class="row" id="columna' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '"><div class="col-md-6" id="elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '"></th></tr>');
+                    else
+                        $palancas.append('<div class="row" id="columna' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '"><div class="col-md-12" id="elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '"></th></tr>');
+                } else {
+                    $palancas.find('#columna' + Simulator.palancas.emocion[i - 1].nombre.replace(/ /g, '')).append('<div class="col-md-6" id="elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '">');
+                }
+                $palancas.find('#elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '')).append('<div><div>' + Simulator.palancas.emocion[i].nombre + '</div><select class="selectpicker" data-width="180px" id="menu' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '"  label = "' + Simulator.palancas.emocion[i].nombre + '"><option disabled selected>--Selecciona una--</option></select></div>');
                 for (var j = 0; j < Simulator.palancas.emocion[i].opt.length; j++) {
-                    $palancas.find('#menu' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '')).append('<option title="' + Simulator.palancas.emocion[i].nombre + '">' + Simulator.palancas.emocion[i].opt[j] + '</option>');
+                    $palancas.find('#menu' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '')).append('<option title="' + Simulator.palancas.emocion[i].opt[j] + '">' + Simulator.palancas.emocion[i].opt[j] + '</option>');
                 }
 
             }
             if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
+
                 for (var i = 0; i < Simulator.palancas.cultural.length; i++) {
-                    $palancas.append('<select class="selectpicker" data-width="fit" data-selected="0"><optgroup id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"  label="' + Simulator.palancas.cultural[i].nombre + '"><option title="' + Simulator.palancas.cultural[i].nombre + '" disabled selected>--Selecciona una--</option></optgroup></select>');
+                    if (i % 2 == 0) {
+                        if (i != Simulator.palancas.cultural.length - 1)
+                            $palancas.append('<div class="row" id="columna' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"><div class="col-md-6" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"></th></tr>');
+                        else
+                            $palancas.append('<div class="row" id="columna' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"><div class="col-md-12" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"></th></tr>');
+                    } else {
+                        $palancas.find('#columna' + Simulator.palancas.cultural[i - 1].nombre.replace(/ /g, '')).append('<div class="col-md-6" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '">');
+                    }
+
+                    $palancas.find('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<div><div>' + Simulator.palancas.cultural[i].nombre + '</div><select class="selectpicker" data-width="180px" data-selected="0" id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"  label="' + Simulator.palancas.cultural[i].nombre + '"><option disabled selected>--Selecciona una--</option></select></div>');
 
                     for (var j = 0; j < Simulator.palancas.cultural[i].opt.length; j++) {
-                        $palancas.find('#menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<option title="' + Simulator.palancas.cultural[i].nombre + '">' + Simulator.palancas.cultural[i].opt[j] + '</option>');
+                        $palancas.find('#menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<option title="' + Simulator.palancas.cultural[i].opt[j] + '">' + Simulator.palancas.cultural[i].opt[j] + '</option>');
                     }
                 }
             }
+
+
             //Apply style to "palancas"
             $('.selectpicker').selectpicker();
 
+            //tooltips for "palancas"
+            $('document').tooltip();
             //Handle selects "palancas"
             $('.selectpicker').on('change', function (e) {
                 var $optionSelected = $("option:selected", this);
