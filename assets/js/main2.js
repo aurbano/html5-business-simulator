@@ -385,8 +385,13 @@ var Simulator = {
         };
 
 
-        // EVENTS OF WINDOWS 0 AND 1----------------
+        // EVENTS OF WINDOWS 0 AND 1 AND 2----------------
 
+        //Start simulation
+        $('#start_simulation').click(function (e) {
+            e.preventDefault();
+            Simulator.windows.change(1);
+        });
         // Click event on initial selection page
         $seleccion.find('a.btn').click(function (e) {
             e.preventDefault();
@@ -417,7 +422,7 @@ var Simulator = {
                 }
             }
             // Change window
-            Simulator.windows.change(1);
+            Simulator.windows.change(2);
         });
 
         // Clicks on second page
@@ -470,7 +475,7 @@ var Simulator = {
 
         $('#configuracion a.next').click(function (e) {
             e.preventDefault();
-            Simulator.windows.change(2);
+            Simulator.windows.change(3);
         });
 
     },
@@ -484,17 +489,17 @@ var Simulator = {
          * index is the window reference, in the defined elements inside the function
          */
         change: function (index, callback) {
-            var windows = [$('seleccion'), $('#configuracion'), $('#simulador')],
+            var windows = [$('#menu_principal'), $('#seleccion'), $('#configuracion'), $('#simulador')],
                 breadcrumbs = $('.breadcrums');
             if (index == Simulator.windows.current) return;
-            if (index == 2) this.loadWindow2();
+            if (index == 3) this.loadWindow2();
             Simulator.windows.current = index;
 
             $('#app .panel').slideUp();
             windows[index].slideDown();
 
             // Reset title and current
-            if (index == 0) {
+            if (index == 1) {
                 $('h3 span').text('');
 
                 Simulator.current = {};
@@ -588,7 +593,7 @@ var Simulator = {
                 var numBlink = 6;
                 var currentTargets;
                 var interval = null;
-                var $select = $('select.selectpicker');
+                var $select = $('#palancas select.selectpicker');
                 if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
                     currentTargets = Simulator.current.mode.target.concat(Simulator.current.mode.target_cultural);
                 } else {
