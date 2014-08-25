@@ -535,7 +535,7 @@ var Simulator = {
                 } else {
                     $palancas.find('#columna' + Simulator.palancas.emocion[i - 1].nombre.replace(/ /g, '')).append('<div class="col-md-6" id="elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '">');
                 }
-                $palancas.find('#elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '')).append('<div><div>' + Simulator.palancas.emocion[i].nombre + '</div><select class="selectpicker" data-width="180px" id="menu' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
+                $palancas.find('#elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '')).append('<div><div class="title_palancas">' + Simulator.palancas.emocion[i].nombre + '</div><select class="selectpicker" data-width="180px" id="menu' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
                 tooltip[$('#elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, '')).attr('id')] = new Opentip('#elemento' + Simulator.palancas.emocion[i].nombre.replace(/ /g, ''), {
                     tipJoint: "bottom left"
                 });
@@ -557,7 +557,7 @@ var Simulator = {
                         $palancas.find('#columna' + Simulator.palancas.cultural[i - 1].nombre.replace(/ /g, '')).append('<div class="col-md-6" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '">');
                     }
 
-                    $palancas.find('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<div><div>' + Simulator.palancas.cultural[i].nombre + '</div><select class="selectpicker" data-width="180px" data-selected="0" id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
+                    $palancas.find('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<div><div class="title_palancas">' + Simulator.palancas.cultural[i].nombre + '</div><select class="selectpicker" data-width="180px" data-selected="0" id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
                     tooltip[$('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).attr('id')] = new Opentip('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, ''), {
                         tipJoint: "bottom left"
                     });
@@ -585,7 +585,7 @@ var Simulator = {
             });
 
             //Add a continue button to start the animation
-            $palancas.append('<hr /><a class="btn btn-primary btn-sm" id="validate_window2">Ver Resultado</a><a class="btn btn-danger btn-sm" id="check_window2" style="margin-left:15px;" disabled>Comprobar</a>');
+            $palancas.append('<hr /><a class="btn btn-primary btn-sm" id="reset_palancas">Reset</a><a class="btn btn-primary btn-sm" id="validate_window2" style="margin-left:15px;">Ver Resultado</a><a class="btn btn-danger btn-sm" id="check_window2" style="margin-left:15px;" disabled>Comprobar</a>');
 
             //Event, check wether if its possible or not to run the simulation
             $('#check_window2,#validate_window2').click(function () {
@@ -669,6 +669,7 @@ var Simulator = {
                         //Disabled check button
                         $('#check_window2').attr('disabled', true);
                         $('#validate_window2').attr('disabled', true);
+                        $('#reset_palancas').attr('disabled', true);
                         Simulator.simulationEnd = true;
                     } else if (!correctPalancas) {
                         //false because the palancas were filled uncorrectly
@@ -689,6 +690,20 @@ var Simulator = {
                     }, 200 * Simulator.config.speed);
                 }
 
+
+
+            });
+
+            $('#reset_palancas').click(function () {
+                var $select = $('#palancas select.selectpicker');
+                for (var i = 0; i < $select.length; i++) {
+                    $select.eq(i).selectpicker('val', '--Selecciona una--');
+                    $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
+                    $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
+                    $select.eq(i).selectpicker('setStyle', 'btn-success', 'remove');
+                    $select.eq(i).selectpicker('setStyle', 'btn-default', 'add');
+                }
+                $select.selectpicker('render');
             });
         }
     },
