@@ -12,8 +12,10 @@ var Simulator = {
         debug: true, // Turn console debugging on/off
         speed: 0.9, // Modificador de la velocidad. 1 : Normal; >1 : Más lento; <1 : Más rapido
         wheel: 4, // Tiempo (s) que tarda en dar una vuelta entera la rueda, relativo a la velocidad del simulador
-    },
+        numberIntents: 1 //Numero intentos para poder comprobar los resultados
 
+    },
+    simulationEnd: false,
 
     // Mensajes de conclusion del gerente, uno por cada fase
     // Como la fase dos no tiene mensaje de gerente se deja en false
@@ -583,10 +585,15 @@ var Simulator = {
             });
 
             //Add a continue button to start the animation
-            $palancas.append('<hr /><a class="btn btn-primary btn-sm" id="check_window2">Comprobar</a>');
+            $palancas.append('<hr /><a class="btn btn-primary btn-sm" id="validate_window2">Ver Resultado</a><a class="btn btn-danger btn-sm" id="check_window2" style="margin-left:15px;" disabled>Comprobar</a>');
 
             //Event, check wether if its possible or not to run the simulation
-            $('#check_window2').click(function () {
+            $('#check_window2,#validate_window2').click(function () {
+                var correctPalancas = false;
+                if ($(this).attr('id') == 'check_window2') {
+                    console.log('Boton correccion');
+                    correctPalancas = true;
+                }
                 var rightPalancas = 0;
                 var selectedPalancas = 0;
                 var notSelectedPalancas = [];
@@ -621,32 +628,61 @@ var Simulator = {
                     }
                 }
                 if (selectedPalancas == $select.length) {
+
                     for (var i = 0; i < $select.length; i++) {
                         if ($select.eq(i).find('option:selected').text() == currentTargets[i] || !currentTargets[i]) {
                             console.log('bien');
                             rightPalancas++;
-                            $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
-                            $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
-                            $select.eq(i).selectpicker('setStyle', 'btn-success', 'add');
+                            if (correctPalancas) {
+                                $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
+                                $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
+                                $select.eq(i).selectpicker('setStyle', 'btn-success', 'add');
+                            }
 
                         } else {
                             console.log('mal:' + currentTargets[i] + '-' + $select.eq(i).find('option:selected').text());
-                            $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
-                            $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
-                            $select.eq(i).selectpicker('setStyle', 'btn-danger');
+                            if (correctPalancas) {
+                                $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
+                                $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
+                                $select.eq(i).selectpicker('setStyle', 'btn-danger');
+                            }
                         }
+
                     }
                     if (rightPalancas == $select.length) {
                         //Disabled palanacas
                         for (var i = 0; i < $select.length; i++) {
+                            $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
+                            $select.eq(i).selectpicker('setStyle', 'btn-success', 'add');
                             $select.eq(i).prop('disabled', true);
                         }
                         $('.selectpicker').selectpicker('render');
+
+                        if (Simulator.Animation.started) {
+                            Simulator.Animation.reset();
+                            Simulator.hideGraph();
+                        }
+
+                        //true because the palancas were filled correctly
+                        Simulator.loadGraph(true);
+                        Simulator.Animation.startAnimation(true);
                         //Disabled check button
                         $('#check_window2').attr('disabled', true);
-                        Simulator.loadGraph();
-                        Simulator.Animation.startAnimation();
+                        $('#validate_window2').attr('disabled', true);
+                        Simulator.simulationEnd = true;
+                    } else if (!correctPalancas) {
+                        //false because the palancas were filled uncorrectly
+                        if (Simulator.Animation.started) {
+                            Simulator.Animation.reset();
+                            Simulator.hideGraph();
+                        }
+                        Simulator.loadGraph(false);
+                        Simulator.Animation.startAnimation(false);
+                        //Disabled check button
+                        $('#check_window2').attr('disabled', true);
+                        $('#validate_window2').attr('disabled', true);
                     }
+
                 } else {
                     interval = setInterval(function () {
                         blink();
@@ -657,29 +693,55 @@ var Simulator = {
         }
     },
 
-    loadGraph: function () {
+    loadGraph: function (valid) {
         $('#graph').show();
-        var $bars = $('.bar .y-element');
+        var $bars = $('#graph .bar .y-element');
         var height = 0;
-        for (var i = 0; i < $bars.length; i++) {
-            if (Simulator.current.mode.graph[i] != null) {
-                height = Simulator.current.mode.graph[i] / 5 * 130;
+        if (valid) {
+            for (var i = 0; i < $bars.length; i++) {
+                if (Simulator.current.mode.graph[i] != null) {
+                    height = Simulator.current.mode.graph[i] / 5 * 130;
 
-            } else if (Simulator.current.mode.nombre.indexOf('Pasión') != -1) {
-                height = 2 / 5 * 130;
-            } else {
-                height = 4 / 5 * 130;
+                } else if (Simulator.current.mode.nombre.indexOf('Pasión') != -1) {
+                    height = 2 / 5 * 130;
+                } else {
+                    height = 4 / 5 * 130;
+                }
+                console.log('number' + i + '-height:' + height);
+                $bars.eq(i).css("height", height + "px");
+                $bars.eq(i).show();
+                $bars.eq(i).parent().show({
+                    duration: 600,
+                    easing: 'linear'
+                });
             }
-            $bars.eq(i).css("height", height + "px");
+        } else {
+            for (var i = 0; i < $bars.length; i++) {
+                //Values to show when the user set the palancas wrong
+                var valuesWrong = [3.5, 3.4, 3.2, 3.3];
 
-            $bars.eq(i).parent().show({
-                duration: 600,
-                easing: 'linear'
-            });
+                height = valuesWrong[i] / 5 * 130;
+                console.log('number' + i + '-height:' + height);
+                $bars.eq(i).css("height", height + "px");
+                $bars.eq(i).show();
+                $bars.eq(i).parent().show({
+                    duration: 600,
+                    easing: 'linear'
+                });
+            }
+
+        }
+    },
+
+    hideGraph: function () {
+        var $bars = $('.bar .y-element');
+        for (var i = 0; i < $bars.length; i++) {
+            height = 0;
+            $bars.eq(i).css("height", height + "px");
+            $bars.eq(i).hide();
         }
 
     },
-
     /**
      * Move the application canvas around.
      * @param  {int}   position Position, 0= Initial, 1= Animation position
@@ -731,6 +793,7 @@ var Simulator = {
         });
     },
     Animation: {
+        started: false,
         questionTimers: [],
         timeout: 0,
         elements: {
@@ -753,26 +816,38 @@ var Simulator = {
                     cm2: jQuery('#cm2'),
                     cm3: jQuery('#cm3')
                 }
-            },
-            boss: {
-                global: jQuery('#boss'),
-                img: jQuery('#boss img'),
-                text: jQuery('#boss_text'),
-                afterthought: jQuery('#afterthought')
             }
         },
-        startAnimation: function () {
+        startAnimation: function (valid) {
             //show the basic elements of the Animation
             this.elements.animation.fadeIn();
             this.moveSpinner();
             this.animateQuestionMark();
-            this.showComments();
+            if (valid == true) {
+                this.showRightComments();
+            } else {
+                this.showWrongComments();
+            }
             setTimeout(function () {
-                Simulator.Animation.showResult();
+                if (valid == true)
+                    Simulator.Animation.showRightResult();
+                else
+                    Simulator.Animation.showWrongResult();
                 Simulator.Animation.stopSpinner();
+                if (!Simulator.simulationEnd) {
+                    $('#validate_window2').attr('disabled', false);
+                    if (Simulator.config.numberIntents == 0) {
+                        $('#check_window2').attr('disabled', false);
+                        $('#check_window2').removeClass('btn-danger');
+                        $('#check_window2').addClass('btn-primary');
+                    } else {
+                        Simulator.config.numberIntents--;
+                    }
+                } else {
+                    $('#palancas').append('<a href="javascript:window.location.reload()" class="btn btn-warning  btn-sm" id="check_window2" style="margin-left:15px;">Reiniciar</a>');
+                }
             }, Simulator.Animation.timeout);
-            //        this.showBoss();
-            //        this.animateBoss();
+            this.started = true;
         },
         moveSpinner: function () {
             this.elements.spinner.addClass('animated');
@@ -781,17 +856,6 @@ var Simulator = {
             this.elements.spinner.one('animationiteration webkitAnimationIteration', function () {
                 $(this).removeClass("animated");
             });
-        },
-        showBoss: function () {
-            this.elements.boss.global.fadeIn();
-            this.elements.boss.text.fadeIn();
-        },
-        animateBoss: function () {
-
-            this.elements.boss.img.animate({
-                "left": "+=250px",
-                "top": "+=200px"
-            }, 1500 * Simulator.config.speed);
         },
         animateQuestionMark: function () {
 
@@ -854,7 +918,7 @@ var Simulator = {
             //Add Max Timeout
             Simulator.Animation.timeout += 8800 * Simulator.config.speed;
         },
-        showResult: function () {
+        showRightResult: function () {
             if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
                 Simulator.Animation.elements.pyramid.result.append(Simulator.current.mode.ref_culturales.replace(/;/, '<br>'));
 
@@ -863,7 +927,11 @@ var Simulator = {
             }
             Simulator.Animation.elements.pyramid.result.fadeIn();
         },
-        showComments: function () {
+        showWrongResult: function () {
+            Simulator.Animation.elements.pyramid.result.append('Palancas con configuracion erronea');
+            Simulator.Animation.elements.pyramid.result.fadeIn();
+        },
+        showRightComments: function () {
             Simulator.Animation.elements.pyramid.comments.global.fadeIn();
             if (typeof (Simulator.current.mode.sig_culturales) !== 'undefined') {
                 setTimeout(function () {
@@ -888,8 +956,36 @@ var Simulator = {
                 }, 1800 * Simulator.config.speed * 3);
             }
         },
-        showAfterthoughts: function () {},
-        hideAfterthoughts: function () {}
+        showWrongComments: function () {
+            Simulator.Animation.elements.pyramid.comments.global.fadeIn();
+            setTimeout(function () {
+                Simulator.Animation.elements.pyramid.comments.cm1.text('xxxxxxxxxxxxxxxxx');
+            }, 1800 * Simulator.config.speed);
+            setTimeout(function () {
+                Simulator.Animation.elements.pyramid.comments.cm2.text('xxxxxxxxxxxxxxxxx');
+            }, 1800 * Simulator.config.speed * 2);
+            setTimeout(function () {
+                Simulator.Animation.elements.pyramid.comments.cm3.text('xxxxxxxxxxxxxxxxx');
+            }, 1800 * Simulator.config.speed * 3);
+
+        },
+        reset: function () {
+            //hide comments
+            Simulator.Animation.elements.pyramid.comments.global.fadeOut();
+            //hide results
+            Simulator.Animation.elements.pyramid.result.fadeOut();
+            //hide all
+            Simulator.Animation.elements.animation.fadeOut();
+            //clean 3 comments
+            for (var u = 0; u < 3; u++) {
+                var element = u + 1;
+                Simulator.Animation.elements.pyramid.comments["cm" + element].text('');
+            }
+            //clean result
+            Simulator.Animation.elements.pyramid.result.text('');
+
+
+        }
 
 
 
