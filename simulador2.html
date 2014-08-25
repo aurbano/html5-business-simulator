@@ -11,6 +11,7 @@
     <link href="assets/css/styles.css" rel="stylesheet">
     <link href="assets/css/slider.css" rel="stylesheet">
     <link href="assets/css/bubbles.css" rel="stylesheet">
+    <link href="assets/css/opentip.css" rel="stylesheet">
     <style>
         #app .panel {
             overflow: auto;
@@ -42,6 +43,11 @@
             -webkit-animation-iteration-count: infinite;
             -webkit-animation-timing-function: linear;
         }
+        .title_palancas {
+            margin-left: 14px;
+            text-align: left;
+            font-size: 12px;
+        }
         @-webkit-keyframes spinX {
             to {
                 -webkit-transform: rotate(360deg);
@@ -67,7 +73,7 @@
             padding: 10px;
             max-width: 300px;
         }
-        #people {
+        .people {
             position: absolute;
             z-index: 3;
             bottom: -13%;
@@ -77,7 +83,7 @@
             height: 180px;
             border-radius: 90px;
         }
-        #people img {
+        .people img {
             position: absolute;
             width: 140px;
         }
@@ -91,7 +97,7 @@
         #questions div {
             display: none;
         }
-        #pyramid {
+        .pyramid {
             width: 306px;
             height: 340px;
             background-image: url(assets/img/sim2/piramide.png);
@@ -138,7 +144,7 @@
             top: 0;
             left: 0;
         }
-        #palancas {
+        .palancas {
             background-color: #DBDBDB;
             border-top: solid #ccc 1px;
             border-radius: 10px;
@@ -149,7 +155,7 @@
             width: 100%;
             height: 100%;
         }
-        #palancas .btn {
+        .palancas .btn {
             margin-right: 10px;
             margin-bottom: 5px;
             margin-top: 5px;
@@ -169,7 +175,7 @@
         .btn[disabled] {
             opacity: 1;
         }
-        #graph {
+        .graph {
             border-left: #ccc solid 1px;
             border-bottom: #ccc solid 1px;
             position: relative;
@@ -197,6 +203,9 @@
             border: #888 solid 3px;
             border-radius: 4px;
         }
+        #start_simulation {
+            font-size: 2.5em;
+        }
     </style>
 </head>
 
@@ -207,7 +216,275 @@
                 <h3>Simulador 2 <span></span></h3>
                 <div class="row">
                     <div class="col-md-12" id="app">
-                        <div class="panel  text-center" id="seleccion">
+                        <div class="panel  text-center" id="menu_principal">
+                            <div class="app">
+                                <div style="margin-bottom:50px;">
+                                    <a class="btn btn-primary" id="start_simulation">Empezar simulacion</a>
+                                </div>
+                                <div class="col-md-5">
+                                    <h4>Objetivo</h4>
+                                    <hr />
+                                    <div class="palancas">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Seguridad</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data- title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Transparencia</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data-title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Proyecto</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data-title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Retribución</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data-title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Resultados</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data-title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Nivel Formación</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data- title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Diseño trabajo</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data- title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Participación</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data- title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Política de Personas</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data- title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <div>Liderazgo</div>
+                                                    <select class="selectpicker" data-width="180px" style="display: none;">
+                                                        <option disabled="" selected="">--Selecciona una--</option>
+                                                    </select>
+                                                    <div class="btn-group bootstrap-select" style="width: 180px;">
+                                                        <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data-title="--Selecciona una--"><span class="filter-option pull-left">--Selecciona una--</span>&nbsp;<span class="caret"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu open">
+                                                            <ul class="dropdown-menu inner selectpicker" role="menu">
+                                                                <li rel="0" class="disabled selected"><a tabindex="-1" class="" style="" href="#"><span class="text">--Selecciona una--</span><i class="glyphicon glyphicon-ok icon-ok check-mark"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr><a class="btn btn-primary btn-sm">Comprobar</a>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class='span2'>
+                                            <table class="table table-bordered text-center" style="width:auto;">
+                                                <tr>
+                                                    <td style="width:50%">Agresión</td>
+                                                    <td style="width:50%">Pasión</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Resignación</td>
+                                                    <td>Confort</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class='span1'>Simulador</div>
+                                        <div class='span3'>
+
+                                            <div class="graph">
+                                                <div class="bar">
+                                                    <div class="y-element"></div>
+                                                    <div class="x-element">Cliente</div>
+                                                </div>
+
+                                                <div class="bar" style="left:60px;">
+                                                    <div class="y-element" style="height:0px"></div>
+                                                    <div class="x-element">Logro</div>
+                                                </div>
+
+                                                <div class="bar" style="left:120px;">
+                                                    <div class="y-element" style="height:0px"></div>
+                                                    <div class="x-element">Pasiva</div>
+                                                </div>
+
+
+                                                <div class="bar" style="left:180px;">
+                                                    <div class="y-element" style="height:0px"></div>
+                                                    <div class="x-element">Agresiva</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class='span6'>
+                                            <div style="overflow:auto;">
+                                                <div class="animation" style="top:150px;width: 530px; height: 400px;">
+                                                    <div>
+                                                        <div class="people">
+                                                            <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:20px; left:9.3px; z-index:2">
+                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:38px; left:50px;">
+                                                            <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:-40px; left:49.6px; z-">
+                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-6.2px;">
+                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-31px;">
+                                                        </div>
+                                                        <div class="pyramid">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="panel  text-center" style="display:none;" id="seleccion">
                             <div class="app">
                                 <p>Selecciona el simulador que quieres ejecutar</p>
                                 <hr />
@@ -282,7 +559,7 @@
                                         <div id="sim_gente" class='span1'>Simulador</div>
                                         <div id="sim_resultados" class='span3'>
 
-                                            <div id="graph" style="display: none;">
+                                            <div id="graph" class="graph">
                                                 <div class="bar" id="graph_0" style="display: none;">
                                                     <div class="y-element" style="height:0px"></div>
                                                     <div class="x-element">Cliente</div>
@@ -310,7 +587,7 @@
                                             <div id="app">
                                                 <div class="animation" style="top:150px;width: 530px; height: 400px;" id="mainAnimation">
                                                     <div id="circle">
-                                                        <div id="people">
+                                                        <div id="people" class="people">
                                                             <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:20px; left:9.3px; z-index:2">
                                                             <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:38px; left:50px;">
                                                             <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:-40px; left:49.6px; z-">
@@ -323,7 +600,7 @@
                                                                 <div id="q3" style="position:absolute;left: 10px;">?</div>
                                                             </div>
                                                         </div>
-                                                        <div id="pyramid">
+                                                        <div id="pyramid" class="pyramid">
                                                             <div id="result" class="message bg-primary" style="top: -15%; position: absolute; left: 5%; width: 300px;display: none;">
                                                                 <!--                                                                This is the conclusion that the group reaches.-->
                                                             </div>
@@ -331,21 +608,6 @@
                                                                 <span id="cm1"></span>
                                                                 <br><span id="cm2"></span>
                                                                 <br><span id="cm3"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div id="boss" class="message">
-                                                            <img src="assets/img/sim2/jefe.png" style="
-											    position: absolute;
-											    top: 40px;
-											    left: 120px;
-											">
-
-                                                        </div>
-                                                        <div id="boss_text" style="position:absolute;top:0;left:20%;display:none;">
-                                                            <span class="text"></span>
-                                                        </div>
-                                                        <div class="messages" style="right:55%; display: none;">
-                                                            <div id="afterthought" class="message bg-warning">
                                                             </div>
                                                         </div>
                                                         <div id="spinner"></div>
@@ -380,6 +642,7 @@
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap-select.js"></script>
+    <script src="assets/js/opentip-jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/main2.js"></script>
     <script>
         Simulator.start();
