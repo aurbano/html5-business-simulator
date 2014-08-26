@@ -16,6 +16,8 @@ var Simulator = {
 
     },
     simulationEnd: false,
+    //name of the face loaded, if not face faceLoad = false
+    faceLoad: false,
 
     // Mensajes de conclusion del gerente, uno por cada fase
     // Como la fase dos no tiene mensaje de gerente se deja en false
@@ -657,6 +659,7 @@ var Simulator = {
                         //Disabled palanacas
                         for (var i = 0; i < $select.length; i++) {
                             $select.eq(i).selectpicker('setStyle', 'btn-info', 'remove');
+                            $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
                             $select.eq(i).selectpicker('setStyle', 'btn-success', 'add');
                             $select.eq(i).prop('disabled', true);
                         }
@@ -668,8 +671,14 @@ var Simulator = {
                         }
 
                         //true because the palancas were filled correctly
-                        Simulator.loadGraph(true);
-                        Simulator.Animation.startAnimation(true);
+
+                        Simulator.loadFaces();
+                        setTimeout(function () {
+                            Simulator.loadGraph(true);
+                        }, 150);
+                        setTimeout(function () {
+                            Simulator.Animation.startAnimation(true);
+                        }, 1000);
                         //Disabled check button
                         $('#check_window2').attr('disabled', true);
                         $('#validate_window2').attr('disabled', true);
@@ -681,8 +690,14 @@ var Simulator = {
                             Simulator.Animation.reset();
                             Simulator.hideGraph();
                         }
-                        Simulator.loadGraph(false);
-                        Simulator.Animation.startAnimation(false);
+
+                        Simulator.loadFaces("resignacion");
+                        setTimeout(function () {
+                            Simulator.loadGraph(false);
+                        }, 150);
+                        setTimeout(function () {
+                            Simulator.Animation.startAnimation(false);
+                        }, 1000);
                         //Disabled check button
                         $('#check_window2').attr('disabled', true);
                         $('#validate_window2').attr('disabled', true);
@@ -731,7 +746,7 @@ var Simulator = {
                 $bars.eq(i).css("height", height + "px");
                 $bars.eq(i).show();
                 $bars.eq(i).parent().show({
-                    duration: 600,
+                    duration: 1000,
                     easing: 'linear'
                 });
             }
@@ -761,6 +776,25 @@ var Simulator = {
             $bars.eq(i).hide();
         }
 
+    },
+    loadFaces: function (face) {
+
+        var faceType;
+        if (typeof face == 'undefined') {
+            faceType = Simulator.normalize(Simulator.current.mode.nombre).toLowerCase().replace(/.*\s/, '');
+        } else {
+            faceType = face;
+        }
+        if (Simulator.faceLoad != faceType) {
+            if (Simulator.faceLoad != false) {
+                console.log('face:' + Simulator.faceLoad + ' to false');
+                $('[data-face*="' + Simulator.faceLoad + '"]').slideToggle();
+
+            }
+            $('[data-face*="' + faceType + '"]').slideToggle();
+            Simulator.faceLoad = faceType;
+            console.log('face:' + Simulator.faceLoad);
+        }
     },
     /**
      * Move the application canvas around.
@@ -793,6 +827,16 @@ var Simulator = {
     shuffle: function (o) { //v1.0
         for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
+    },
+    //+Carlos Benitez
+    //@http://www.etnassoft.com/2011 / 03 / 03 / eliminar - tildes - con - javascript /
+    normalize: function (text) {
+        var acentos = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+        var original = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+        for (var i = 0; i < acentos.length; i++) {
+            text = text.replace(acentos.charAt(i), original.charAt(i));
+        }
+        return text;
     },
     resize: function () {
         var simOff = $('#simulador').offset(),
