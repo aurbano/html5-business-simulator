@@ -549,15 +549,19 @@ var Simulator = {
 
                 for (var i = 0; i < Simulator.palancas.cultural.length; i++) {
                     if (i % 2 == 0) {
-                        if (i != Simulator.palancas.cultural.length - 1)
+                        if (i != Simulator.palancas.cultural.length - 1) {
                             $palancas.append('<div class="row" id="columna' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"><div class="col-md-6" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"></th></tr>');
-                        else
+                        } else {
                             $palancas.append('<div class="row" id="columna' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"><div class="col-md-12" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '"></th></tr>');
+                        }
                     } else {
                         $palancas.find('#columna' + Simulator.palancas.cultural[i - 1].nombre.replace(/ /g, '')).append('<div class="col-md-6" id="elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '">');
                     }
-
-                    $palancas.find('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<div><div class="title_palancas">' + Simulator.palancas.cultural[i].nombre + '</div><select class="selectpicker" data-width="180px" data-selected="0" id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
+                    if (i != Simulator.palancas.cultural.length - 1) {
+                        $palancas.find('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<div><div class="title_palancas">' + Simulator.palancas.cultural[i].nombre + '</div><select class="selectpicker" data-width="180px" data-selected="0" id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
+                    } else {
+                        $palancas.find('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).append('<div><div class="title_palancas" style="margin-left:130px;">' + Simulator.palancas.cultural[i].nombre + '</div><select class="selectpicker" data-width="180px" data-selected="0" id="menu' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '') + '" ><option disabled selected>--Selecciona una--</option></select></div>');
+                    }
                     tooltip[$('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, '')).attr('id')] = new Opentip('#elemento' + Simulator.palancas.cultural[i].nombre.replace(/ /g, ''), {
                         tipJoint: "bottom left"
                     });
@@ -702,6 +706,7 @@ var Simulator = {
                     $select.eq(i).selectpicker('setStyle', 'btn-danger', 'remove');
                     $select.eq(i).selectpicker('setStyle', 'btn-success', 'remove');
                     $select.eq(i).selectpicker('setStyle', 'btn-default', 'add');
+                    $select.eq(i).attr('data-selected', '0');
                 }
                 $select.selectpicker('render');
             });
