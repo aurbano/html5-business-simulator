@@ -1,6 +1,7 @@
 /**
- * Main application code for Mondragon's simulator 3
+ * Main application code for Mondragon's simulator 2
  * @author Alejandro U. Alvarez <alejandro@urbanoalvarez.es>
+ * @author Nicolas Lozano <nlozanoarguelles@gmail.com>
  */
 
 var Simulator = {
@@ -849,12 +850,12 @@ var Simulator = {
             maxHeight: height + "px"
         });
 
-        $('.animation').each(function () {
-            var top = height / 2 - $(this).height() / 2 + 40;
-            $(this).css({
-                top: top
-            });
-        });
+        //        $('.animation').each(function () {
+        //            var top = height / 2 - $(this).height() / 2 + 40;
+        //            $(this).css({
+        //                top: top
+        //            });
+        //        });
     },
     Animation: {
         started: false,
@@ -884,7 +885,7 @@ var Simulator = {
         },
         startAnimation: function (valid) {
             //show the basic elements of the Animation
-            this.elements.animation.fadeIn();
+            this.elements.spinner.fadeIn();
             this.moveSpinner();
             this.animateQuestionMark();
             if (valid == true) {
@@ -893,11 +894,14 @@ var Simulator = {
                 this.showWrongComments();
             }
             setTimeout(function () {
+                Simulator.Animation.stopSpinner();
+            }, Simulator.Animation.timeout / 2);
+            setTimeout(function () {
                 if (valid == true)
                     Simulator.Animation.showRightResult();
                 else
                     Simulator.Animation.showWrongResult();
-                Simulator.Animation.stopSpinner();
+
                 if (!Simulator.simulationEnd) {
                     $('#validate_window2').attr('disabled', false);
                     if (Simulator.config.numberIntents == 0) {
@@ -1039,7 +1043,7 @@ var Simulator = {
             //hide results
             Simulator.Animation.elements.pyramid.result.fadeOut();
             //hide all
-            Simulator.Animation.elements.animation.fadeOut();
+            Simulator.Animation.elements.spinner.fadeOut();
             //clean 3 comments
             for (var u = 0; u < 3; u++) {
                 var element = u + 1;
