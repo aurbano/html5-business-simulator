@@ -17,23 +17,19 @@
             overflow: auto;
         }
         .animation {
-            position: absolute;
-            top: 10%;
-        }
-        #animacion {
-            display: none;
+            position: relative;
         }
         #circle {
             z-index: 1;
         }
         #spinner {
             position: absolute;
+            display: none;
             width: 360px;
             height: 360px;
             background-image: url(assets/img/sim2/spinner.png);
             background-repeat: no-repeat;
             background-size: 360px;
-            top: 15%;
             left: 1%;
             z-index: 2;
         }
@@ -64,8 +60,8 @@
         .messages {
             position: absolute;
             z-index: 3;
-            right: : 150px;
-            bottom: -8%;
+            right: 150px;
+            bottom: 2%;
         }
         .message {
             border-radius: 10px;
@@ -76,7 +72,7 @@
         .people {
             position: absolute;
             z-index: 3;
-            bottom: -13%;
+            top: 50%;
             right: 25%;
             background-color: rgba(200, 200, 200, 0.7);
             width: 200px;
@@ -105,17 +101,7 @@
             background-size: 100%;
             position: absolute;
             z-index: 1;
-            bottom: -15%;
             right: -13%;
-        }
-        #boss {
-            left: -35%;
-            top: -25%;
-            padding: 0;
-            border: none;
-            position: absolute;
-            z-index: 3;
-            display: none;
         }
         .text {
             font-size: 1.3em;
@@ -203,9 +189,6 @@
             border: #888 solid 3px;
             border-radius: 4px;
         }
-        #start_simulation {
-            font-size: 2.5em;
-        }
     </style>
 </head>
 
@@ -213,14 +196,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>Simulador 2 <span></span></h3>
+                <h3>Gestión de la cultura organizativa<span></span></h3>
                 <div class="row">
                     <div class="col-md-12" id="app">
                         <div class="panel  text-center" id="menu_principal">
                             <div class="app">
-                                <div style="margin-bottom:50px;">
-                                    <a class="btn btn-primary" id="start_simulation">Empezar simulacion</a>
-                                </div>
                                 <div class="col-md-5">
                                     <h4>Objetivo</h4>
                                     <hr />
@@ -228,7 +208,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Seguridad</div>
+                                                    <div class="title_palancas">Seguridad</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -246,7 +226,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Transparencia</div>
+                                                    <div class="title_palancas">Transparencia</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -266,7 +246,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Proyecto</div>
+                                                    <div class="title_palancas">Proyecto</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -284,7 +264,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Retribución</div>
+                                                    <div class="title_palancas">Retribución</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -304,7 +284,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Resultados</div>
+                                                    <div class="title_palancas">Resultados</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -322,7 +302,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Nivel Formación</div>
+                                                    <div class="title_palancas">Nivel Formación</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -342,7 +322,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Diseño trabajo</div>
+                                                    <div class="title_palancas">Diseño trabajo</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -360,7 +340,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Participación</div>
+                                                    <div class="title_palancas">Participación</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -380,7 +360,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Política de Personas</div>
+                                                    <div class="title_palancas">Política de Personas</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -398,7 +378,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <div>Liderazgo</div>
+                                                    <div class="title_palancas">Liderazgo</div>
                                                     <select class="selectpicker" data-width="180px" style="display: none;">
                                                         <option disabled="" selected="">--Selecciona una--</option>
                                                     </select>
@@ -415,71 +395,73 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr><a class="btn btn-primary btn-sm">Comprobar</a>
+                                        <hr>
+                                        <a class="btn btn-primary btn-sm" id="start_simulation">Comenzar</a>
+                                        <a class="btn btn-primary btn-sm" disabled>Reset</a>
+                                        <a class="btn btn-primary btn-sm" disabled>Ver Resultado</a>
+                                        <a class="btn btn-primary btn-sm" disabled>Comprobar</a>
                                     </div>
 
                                 </div>
                                 <div class="col-md-7">
                                     <div class="row">
                                         <div class='span2'>
-                                            <table class="table table-bordered text-center" style="width:auto;">
-                                                <tr>
-                                                    <td style="width:50%">Agresión</td>
-                                                    <td style="width:50%">Pasión</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Resignación</td>
-                                                    <td>Confort</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class='span1'>Simulador</div>
-                                        <div class='span3'>
-
-                                            <div class="graph">
-                                                <div class="bar">
-                                                    <div class="y-element"></div>
-                                                    <div class="x-element">Cliente</div>
-                                                </div>
-
-                                                <div class="bar" style="left:60px;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Logro</div>
-                                                </div>
-
-                                                <div class="bar" style="left:120px;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Pasiva</div>
-                                                </div>
-
-
-                                                <div class="bar" style="left:180px;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Agresiva</div>
-                                                </div>
+                                            <div class="col-md-5">
+                                                <table class="table table-bordered text-center" style="width:auto;">
+                                                    <tr>
+                                                        <td style="width:50%">Agresión</td>
+                                                        <td style="width:50%">Pasión</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Resignación</td>
+                                                        <td>Confort</td>
+                                                    </tr>
+                                                </table>
                                             </div>
-
                                         </div>
-                                        <div class='span6'>
-                                            <div style="overflow:auto;">
-                                                <div class="animation" style="top:150px;width: 530px; height: 400px;">
-                                                    <div>
-                                                        <div class="people">
-                                                            <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:20px; left:9.3px; z-index:2">
-                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:38px; left:50px;">
-                                                            <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:-40px; left:49.6px; z-">
-                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-6.2px;">
-                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-31px;">
-                                                        </div>
-                                                        <div class="pyramid">
-                                                        </div>
+                                        <div class='span3'>
+                                            <div class="col-md-7">
+                                                <div class="graph">
+                                                    <div class="bar">
+                                                        <div class="y-element"></div>
+                                                        <div class="x-element">Cliente</div>
+                                                    </div>
+
+                                                    <div class="bar" style="left:60px;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Logro</div>
+                                                    </div>
+
+                                                    <div class="bar" style="left:120px;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Pasiva</div>
+                                                    </div>
+
+
+                                                    <div class="bar" style="left:180px;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Agresiva</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class='span6'>
+                                    </div>
+                                    <div class="animation" style="top:40px;width: 530px; height: 400px;">
+                                        <div>
+                                            <div class="people">
+                                                <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:20px; left:9.3px; z-index:2">
+                                                <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:38px; left:50px;">
+                                                <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:-40px; left:49.6px; z-">
+                                                <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-6.2px;">
+                                                <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-31px;">
+                                            </div>
+                                            <div class="pyramid">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
 
                         </div>
@@ -544,84 +526,85 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="row">
-                                        <div id="sim_tipos" class='span2'>
-                                            <table class="table table-bordered text-center" style="width:auto;">
-                                                <tr>
-                                                    <td style="width:50%"><span data-face="text-agresion">Agresión</span>
-                                                        <img data-face="img-agresion" style="display:none;" src="assets/img/sim2/agresion.png">
-                                                    </td>
-                                                    <td style="width:50%"><span data-face="text-pasion">Pasión</span>
-                                                        <img data-face="img-pasion" style="display:none;" src="assets/img/sim2/pasion.png">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span data-face="text-resignacion">Resignación</span> 
-                                                        <img data-face="img-resignacion" style="display:none;" src="assets/img/sim2/resignacion.png">
-                                                    </td>
-                                                    <td><span data-face="text-confort">Confort</span> 
-                                                        <img data-face="img-confort" style="display:none;" src="assets/img/sim2/comfort.png">
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div id="sim_gente" class='span1'>Simulador</div>
-                                        <div id="sim_resultados" class='span3'>
-
-                                            <div id="graph" class="graph">
-                                                <div class="bar" id="graph_0" style="display: none;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Cliente</div>
-                                                </div>
-
-                                                <div class="bar" id="graph_1" style="left:60px; display: none;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Logro</div>
-                                                </div>
-
-                                                <div class="bar" id="graph_2" style="left:120px; display: none;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Pasiva</div>
-                                                </div>
-
-
-                                                <div class="bar" id="graph_3" style="left:180px; display: none;">
-                                                    <div class="y-element" style="height:0px"></div>
-                                                    <div class="x-element">Agresiva</div>
-                                                </div>
+                                        <div class="col-md-5">
+                                            <div id="sim_tipos" class='span2'>
+                                                <table class="table table-bordered text-center" style="width:auto;">
+                                                    <tr>
+                                                        <td style="width:50%"><span data-face="text-agresion">Agresión</span>
+                                                            <img data-face="img-agresion" style="display:none;" src="assets/img/sim2/agresion.png">
+                                                        </td>
+                                                        <td style="width:50%"><span data-face="text-pasion">Pasión</span>
+                                                            <img data-face="img-pasion" style="display:none;" src="assets/img/sim2/pasion.png">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span data-face="text-resignacion">Resignación</span> 
+                                                            <img data-face="img-resignacion" style="display:none;" src="assets/img/sim2/resignacion.png">
+                                                        </td>
+                                                        <td><span data-face="text-confort">Confort</span> 
+                                                            <img data-face="img-confort" style="display:none;" src="assets/img/sim2/comfort.png">
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                             </div>
-
                                         </div>
-                                        <div id="animacion" class='span6'>
-                                            <div id="app">
-                                                <div class="animation" style="top:150px;width: 530px; height: 400px;" id="mainAnimation">
-                                                    <div id="circle">
-                                                        <div id="people" class="people">
-                                                            <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:20px; left:9.3px; z-index:2">
-                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:38px; left:50px;">
-                                                            <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:-40px; left:49.6px; z-">
-                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-6.2px;">
-                                                            <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-31px;">
+                                        <div class="col-md-7">
 
-                                                            <div id="questions">
-                                                                <div id="q1" style="position:absolute;font-size: 0.6em;left: -50px;bottom: -300px;">?</div>
-                                                                <div id="q2" style="position:absolute;font-size: 0.8em;right: -170px;bottom: -290px;">!</div>
-                                                                <div id="q3" style="position:absolute;left: 10px;">?</div>
-                                                            </div>
-                                                        </div>
-                                                        <div id="pyramid" class="pyramid">
-                                                            <div id="result" class="message bg-primary" style="top: -15%; position: absolute; left: 5%; width: 300px;display: none;">
-                                                                <!--                                                                This is the conclusion that the group reaches.-->
-                                                            </div>
-                                                            <div id="comments" class="bubble bubbleRight" style="bottom: -10%;right: -60px; display: none;">
-                                                                <span id="cm1"></span>
-                                                                <br><span id="cm2"></span>
-                                                                <br><span id="cm3"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div id="spinner"></div>
+                                            <div id="sim_resultados" class='span3'>
+
+                                                <div id="graph" class="graph">
+                                                    <div class="bar" id="graph_0" style="display: none;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Cliente</div>
+                                                    </div>
+
+                                                    <div class="bar" id="graph_1" style="left:60px; display: none;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Logro</div>
+                                                    </div>
+
+                                                    <div class="bar" id="graph_2" style="left:120px; display: none;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Pasiva</div>
+                                                    </div>
+
+
+                                                    <div class="bar" id="graph_3" style="left:180px; display: none;">
+                                                        <div class="y-element" style="height:0px"></div>
+                                                        <div class="x-element">Agresiva</div>
                                                     </div>
                                                 </div>
+
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="animation" style="top:60px;width: 530px; height: 400px;" id="mainAnimation">
+                                        <div id="circle">
+                                            <div id="people" class="people">
+                                                <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:20px; left:9.3px; z-index:2">
+                                                <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:38px; left:50px;">
+                                                <img src="assets/img/sim2/trabajador.png" alt="Trabajador" style="top:-40px; left:49.6px; z-">
+                                                <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:-10px; left:-6.2px;">
+                                                <img src="assets/img/sim2/trabajador(buzo).png" alt="Trabajador" style="top:30px; left:-31px;">
+
+                                                <div id="questions">
+                                                    <div id="q1" style="position:absolute;font-size: 0.6em;left: -50px;bottom: -300px;">?</div>
+                                                    <div id="q2" style="position:absolute;font-size: 0.8em;right: -170px;bottom: -290px;">!</div>
+                                                    <div id="q3" style="position:absolute;left: 10px;">?</div>
+                                                </div>
+                                            </div>
+                                            <div id="pyramid" class="pyramid">
+                                                <div id="result" class="message bg-primary" style="margin-top: -30px; left: 5%; width: 300px;display: none;">
+                                                    <!--                                                                This is the conclusion that the group reaches.-->
+                                                </div>
+                                                <div id="comments" class="bubble bubbleRight" style="bottom: -20%;right: -30px; display: none;">
+                                                    <span id="cm1"></span>
+                                                    <br><span id="cm2"></span>
+                                                    <br><span id="cm3"></span>
+                                                </div>
+                                            </div>
+                                            <div id="spinner"></div>
                                         </div>
                                     </div>
                                 </div>
