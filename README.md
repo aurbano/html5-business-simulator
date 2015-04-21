@@ -1,13 +1,9 @@
-Mondragon
+HTML5 & Vanilla JS Business Sims
 =========
 
-Para que sea más fácil trabajar desarrollaré los siguientes simuladores en ramas aparte, y hare un merge a master cuando el código sea funcional..
+Some work I did a while ago for a client, they contain simple business simulators built on HTML5 + vanilla JavaScript. The text is in Spanish.
 
-El código que hay en gh-pages se podría considerar de "producción", y utiliza JavaScript minimizado.
+They were not built specifically for code maintainability or reusability, so they are slighly messier than I'd like.
 
-Teniendo Nodejs instalado únicamente hace falta ejecutar `npm install` y luego el archivo `minify.bat` para generar `main.min.js`.
-
-Las variables de configuración de cada simulador están arriba del todo del código y van comentadas adecuadamente en Castellano. El resto del código también se puede modificar obviamente, pero podrían producirse errores.
-
-Un saludo,
-Alex
+-----
+MIT License
