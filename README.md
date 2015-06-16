@@ -7,3 +7,5 @@ They were not built specifically for code maintainability or reusability, so the
 
 -----
 MIT License
+
+[![Analytics](https://ga-beacon.appspot.com/UA-3181088-16/html5-business-simulator/readme)](https://github.com/aurbano)
