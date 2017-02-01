@@ -8,7 +8,7 @@ The code in the second & third available simulators is a lot cleaner, as I learn
 
 They were not built specifically for code maintainability or reusability, so they are slighly messier than I'd like.
 
-The two that are available here are:
+Simulators:
 
 * [Plant growing simulator](https://urbanoalvarez.es/html5-business-simulator/)
 * [Culture development simulator](https://urbanoalvarez.es/html5-business-simulator/simulador2.html)
