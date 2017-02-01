@@ -1,13 +1,19 @@
-Mondragon
+HTML5 & Vanilla JS Business Sims
 =========
 
-Para que sea más fácil trabajar desarrollaré los siguientes simuladores en ramas aparte, y hare un merge a master cuando el código sea funcional..
+Some work I did a while ago for a client, they contain simple business simulators built on HTML5 + vanilla JavaScript. The text is in Spanish.
 
-El código que hay en gh-pages se podría considerar de "producción", y utiliza JavaScript minimizado.
+From a technical point of view they are animated scenes all done using JavaScript without any framework. If I had to work on this again I'd probably first develop a simple "presentation" engine that would handle the logic
+The code in the second available simulator is a lot cleaner, as I learned from several mistakes while developing the first.
 
-Teniendo Nodejs instalado únicamente hace falta ejecutar `npm install` y luego el archivo `minify.bat` para generar `main.min.js`.
+They were not built specifically for code maintainability or reusability, so they are slighly messier than I'd like.
 
-Las variables de configuración de cada simulador están arriba del todo del código y van comentadas adecuadamente en Castellano. El resto del código también se puede modificar obviamente, pero podrían producirse errores.
+The two that are available here are:
 
-Un saludo,
-Alex
+* [Plant growing simulator](https://urbanoalvarez.es/html5-business-simulator/)
+* [Business management simulator](https://urbanoalvarez.es/html5-business-simulator/simulador3.html)
+
+-----
+MIT License
+
+[![Analytics](https://ga-beacon.appspot.com/UA-3181088-16/html5-business-simulator/readme)](https://github.com/aurbano)
