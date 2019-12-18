@@ -10,9 +10,9 @@ They were not built specifically for code maintainability or reusability, so the
 
 Simulators:
 
-* [Plant growing simulator](https://urbanoalvarez.es/html5-business-simulator/)
-* [Culture development simulator](https://urbanoalvarez.es/html5-business-simulator/simulador2.html)
-* [Business management simulator](https://urbanoalvarez.es/html5-business-simulator/simulador3.html)
+* [Plant growing simulator](https://aurbano.github.io/html5-business-simulator/)
+* [Culture development simulator](https://aurbano.github.io/html5-business-simulator/simulador2.html)
+* [Business management simulator](https://aurbano.github.io/html5-business-simulator/simulador3.html)
 
 -----
 MIT License
